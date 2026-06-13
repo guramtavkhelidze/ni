@@ -1,0 +1,177 @@
+/* ============================================================
+   CyberX — THEME: TERMINAL
+   Technical command-center. Green on black, sharp edges,
+   monospace headings, scanlines & brackets.
+   Overrides styles.css (loaded after it).
+   ============================================================ */
+
+:root {
+  --bg:        #04060A;
+  --bg-2:      #070B0D;
+  --panel:     #0A0F11;
+  --panel-2:   #0E1517;
+  --line:      rgba(37, 224, 138, 0.16);
+  --line-2:    rgba(37, 224, 138, 0.34);
+
+  --text:  #DDF5E8;
+  --muted: #7FA693;
+  --dim:   #4C6657;
+
+  /* Brand becomes terminal green */
+  --brand:    #25E08A;
+  --brand-2:  #4BF0A0;
+  --brand-dim:#16B26A;
+
+  --blue:     #36D2E6;
+  --indigo:   #E0C04B;
+  --periwinkle:#7FE0C8;
+  --red:      #F0584B;
+
+  --radius: 3px;
+}
+
+/* monospace-forward headings */
+h1, h2, h3, .stat-num, .why-card h3 { font-family: var(--mono); letter-spacing: -.02em; }
+.brand-name { font-family: var(--mono); }
+
+body {
+  background:
+    radial-gradient(60% 50% at 50% -10%, rgba(37,224,138,.08), transparent 60%),
+    var(--bg);
+}
+
+/* faint global scanlines */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(37,224,138,.035) 0 1px, transparent 1px 3px);
+  mix-blend-mode: screen; opacity: .5;
+}
+.nav, .mobile-menu { z-index: 200; }
+
+/* ---- recolor logo + shield gradient stops ---- */
+#mg stop:first-child, #mg2 stop:first-child,
+#sc-stroke stop:first-child { stop-color: #4BF0A0; }
+#mg stop:last-child, #mg2 stop:last-child,
+#sc-stroke stop:last-child { stop-color: #16B26A; }
+#sc-fill stop:first-child { stop-color: #25E08A; stop-opacity: .26; }
+#sc-fill stop:last-child  { stop-color: #16B26A; stop-opacity: .04; }
+.brand-name .x { color: var(--brand); }
+.brand-slogan { color: var(--brand-dim); }
+
+/* ---- buttons: squared, mono ---- */
+.btn { border-radius: 3px; font-family: var(--mono); font-weight: 600; letter-spacing: .02em; }
+.btn-primary {
+  background: var(--brand); color: #04130C;
+  box-shadow: 0 0 0 1px rgba(37,224,138,.4), 0 8px 30px -10px rgba(37,224,138,.55);
+}
+.btn-primary:hover { background: var(--brand-2); box-shadow: 0 0 0 1px rgba(75,240,160,.6), 0 12px 38px -10px rgba(37,224,138,.7); }
+.btn-ghost { border-color: var(--line-2); }
+
+/* ---- eyebrow as command prompt ---- */
+.eyebrow { color: var(--brand); }
+.eyebrow::before { content: ">_"; width: auto; height: auto; background: none; opacity: 1; font-weight: 700; letter-spacing: 0; }
+.eyebrow.green { color: var(--brand); }
+.eyebrow.teal  { color: var(--blue); }
+
+/* ---- hero ---- */
+.hero {
+  background:
+    radial-gradient(120% 90% at 78% 12%, rgba(37,224,138,.14), transparent 55%),
+    radial-gradient(90% 80% at 8% 90%, rgba(10,60,40,.4), transparent 60%),
+    linear-gradient(180deg, #050A07 0%, var(--bg) 70%);
+}
+.hero h1 .hl {
+  background: linear-gradient(110deg, #4BF0A0, #16B26A);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.shield-ring { border-radius: 0; }
+.shield-ring.r1 { border-color: rgba(37,224,138,.25); }
+.shield-ring.r2 { border-color: rgba(75,240,160,.4); }
+.shield-ring.r3 { border-color: rgba(37,224,138,.55); }
+.shield-core { filter: drop-shadow(0 0 30px rgba(37,224,138,.55)); }
+.orbit-dot { background: var(--brand); box-shadow: 0 0 16px var(--brand); border-radius: 0; }
+
+/* ---- stats ---- */
+.stats {
+  background:
+    radial-gradient(55% 45% at 18% 0%, rgba(37,224,138,.07), transparent 60%),
+    radial-gradient(45% 45% at 88% 22%, rgba(54,210,230,.06), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+}
+.stats::before {
+  background-image:
+    linear-gradient(rgba(37,224,138,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,224,138,.04) 1px, transparent 1px);
+  background-size: 38px 38px;
+}
+.stat-num { font-variant-numeric: tabular-nums; }
+.accent-orange { --accent: #25E08A; }
+.accent-blue   { --accent: #36D2E6; }
+.accent-indigo { --accent: #E0C04B; }
+.accent-red    { --accent: #F0584B; }
+.bar-track { background: rgba(37,224,138,.08); border-radius: 0; }
+.bar-fill { border-radius: 0; }
+
+/* corner brackets on panels */
+.stat-panel { position: relative; }
+.stat-panel::before, .stat-panel::after {
+  content: ""; position: absolute; width: 12px; height: 12px; border: 1px solid var(--brand); opacity: .5;
+}
+.stat-panel::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.stat-panel::after  { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+/* ---- solutions ---- */
+.sol-card::before { background: linear-gradient(90deg, var(--brand), var(--brand-dim)); }
+.sol-ic {
+  background: rgba(37,224,138,.1); color: var(--brand); border-color: rgba(37,224,138,.25); border-radius: 4px;
+}
+.sol-card:hover .sol-ic { background: var(--brand); color: #04130C; border-color: var(--brand); }
+.sol-tag { color: var(--dim); }
+
+/* ---- why (stays green, terminal cards) ---- */
+.why {
+  background:
+    radial-gradient(80% 70% at 85% 10%, rgba(37,224,138,.1), transparent 55%),
+    linear-gradient(180deg, var(--bg-2), #050A07);
+}
+.why::before {
+  background-image: linear-gradient(rgba(37,224,138,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(37,224,138,.045) 1px, transparent 1px);
+}
+.why-card { background: linear-gradient(180deg, rgba(12,18,16,.92), rgba(8,13,11,.92)); }
+.why-card:hover { border-color: rgba(37,224,138,.4); }
+.why-num { color: var(--brand); }
+.why-card .glow { background: radial-gradient(circle, rgba(37,224,138,.2), transparent 70%); }
+
+/* ---- industries ---- */
+.industries {
+  background:
+    radial-gradient(90% 80% at 12% 8%, rgba(54,210,230,.1), transparent 55%),
+    linear-gradient(180deg, #050A07, var(--bg-2));
+}
+.ind-card .ic { color: var(--blue); }
+.ind-card:hover { border-color: rgba(54,210,230,.4); }
+
+/* ---- vendors ---- */
+.vendor-chip { font-family: var(--mono); }
+.vendor-chip .dot { background: var(--brand); border-radius: 0; }
+
+/* ---- insights ---- */
+.blog-cat, .blog-readmore { color: var(--brand); }
+.blog-card h3 { font-family: var(--mono); }
+
+/* ---- final cta ---- */
+.final-cta {
+  background:
+    radial-gradient(80% 120% at 50% 0%, rgba(37,224,138,.2), transparent 60%),
+    linear-gradient(180deg, #051009, #04060A);
+}
+.final-cta::before {
+  background-image: linear-gradient(rgba(37,224,138,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(37,224,138,.05) 1px, transparent 1px);
+}
+
+/* ---- dropdown / footer ---- */
+.dd-link .ic { background: rgba(37,224,138,.1); color: var(--brand); border-radius: 4px; }
+.footer-col a:hover { color: var(--brand); }
+.nav.scrolled { background: rgba(4,6,10,.82); }
+.dropdown { background: rgba(5,9,7,.97); }
+.social a:hover { border-color: var(--line-2); }

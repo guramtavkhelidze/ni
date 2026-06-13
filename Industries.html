@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — ინდუსტრიები</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ============================================================
+     INDUSTRIES PAGE — page-specific styles (builds on styles.css)
+     ============================================================ */
+
+  /* ---------- HERO ---------- */
+  .ix-hero {
+    position: relative; overflow: hidden;
+    padding: 128px 0 70px;
+    background:
+      radial-gradient(115% 80% at 82% 4%, rgba(255,75,38,.17), transparent 55%),
+      radial-gradient(80% 70% at 4% 96%, rgba(120,22,10,.30), transparent 60%),
+      linear-gradient(180deg, #0b0608 0%, var(--bg) 80%);
+  }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .8; z-index: 0; }
+  .ix-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 62%, var(--bg) 100%); }
+  .ix-hero .wrap { position: relative; z-index: 3; }
+  .ix-hero-head { max-width: 880px; }
+  .ix-hero h1 { font-size: clamp(2.05rem, 4.4vw, 3.6rem); font-weight: 800; letter-spacing: -.03em; margin: 24px 0 0; text-wrap: balance; }
+  .ix-hero h1 .hl { background: linear-gradient(110deg, var(--brand-2), var(--brand)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ix-hero .sub { font-size: clamp(1.04rem, 1.5vw, 1.24rem); color: var(--muted); max-width: 640px; margin: 26px 0 0; line-height: 1.7; }
+  .ix-metrics { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 42px; }
+  .ix-metric { padding: 18px 28px 16px; min-width: 140px; background: rgba(18,20,25,.55); border: 1px solid var(--line); border-radius: 14px; backdrop-filter: blur(6px); transition: border-color .3s, transform .3s var(--ease); }
+  .ix-metric:hover { border-color: var(--line-2); transform: translateY(-3px); }
+  .ix-metric .v { font-size: 2.1rem; font-weight: 800; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .ix-metric .v small { font-size: 1.1rem; color: var(--brand-2); }
+  .ix-metric .k { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-top: 10px; }
+
+  /* ============================================================
+     EXPLORER — tab rail + animated themed stage
+     ============================================================ */
+  .ix-explorer { position: relative; background: linear-gradient(180deg, var(--bg), var(--bg-2)); padding: 96px 0 110px; }
+  .ix-explorer::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+    background-size: 52px 52px; mask-image: radial-gradient(80% 60% at 50% 0%, #000, transparent 80%);
+  }
+  .ix-explorer .wrap { position: relative; z-index: 2; }
+  .ix-sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+  .ix-sec-head h2 { font-size: clamp(1.8rem, 3.4vw, 2.8rem); margin-top: 16px; text-wrap: balance; }
+  .ix-hint { font-family: var(--mono); font-size: .76rem; letter-spacing: .04em; color: var(--dim); display: flex; align-items: center; gap: 10px; }
+  .ix-hint kbd { font-family: var(--mono); font-size: .72rem; color: var(--muted); border: 1px solid var(--line-2); border-radius: 6px; padding: 3px 7px; background: rgba(255,255,255,.03); }
+
+  .ix-console { display: grid; grid-template-columns: 320px 1fr; gap: 26px; align-items: stretch; }
+
+  /* tab rail */
+  .ix-rail { display: flex; flex-direction: column; gap: 6px; }
+  .ix-tab {
+    position: relative; display: grid; grid-template-columns: 30px 34px 1fr; align-items: center; gap: 12px;
+    width: 100%; text-align: left; padding: 13px 16px; border-radius: 12px;
+    background: var(--panel); border: 1px solid var(--line); color: var(--muted);
+    overflow: hidden; transition: background .25s var(--ease), border-color .25s, color .25s, transform .2s var(--ease);
+  }
+  .ix-tab:hover { background: var(--panel-2); border-color: var(--line-2); color: var(--text); transform: translateX(3px); }
+  .ix-num { font-family: var(--mono); font-size: .76rem; color: var(--dim); transition: color .25s; }
+  .ix-ic { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: rgba(255,255,255,.04); color: var(--muted); transition: background .25s, color .25s; }
+  .ix-ic svg { width: 19px; height: 19px; }
+  .ix-nm { font-size: .94rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; }
+  .ix-tab .ix-bar { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--ac); transform: scaleX(0); transform-origin: left; }
+  .ix-tab.active { background: linear-gradient(180deg, rgba(var(--rgb),.14), rgba(var(--rgb),.05)); border-color: rgba(var(--rgb),.45); color: var(--text); }
+  .ix-tab.active .ix-num { color: var(--ac); }
+  .ix-tab.active .ix-ic { background: var(--ac); color: #0b0507; }
+  .ix-tab.active::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 3px; background: var(--ac); box-shadow: 0 0 12px rgba(var(--rgb),.7); }
+
+  /* stage */
+  .ix-stage {
+    position: relative; overflow: hidden; border-radius: 20px; min-height: 540px;
+    border: 1px solid rgba(var(--rgb),.3);
+    background:
+      radial-gradient(120% 90% at 82% 6%, rgba(var(--rgb),.16), transparent 58%),
+      linear-gradient(180deg, var(--panel), #0b0d11);
+    --ac: #FF7A3C; --rgb: 255,122,60;
+    transition: border-color .5s var(--ease), background .5s var(--ease);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 56px 56px 50px;
+  }
+  .ix-motif { position: absolute; left: 0; right: 0; top: 0; height: 100%; z-index: 0; opacity: .16; pointer-events: none;
+    mask-image: radial-gradient(120% 80% at 70% 18%, #000 0%, transparent 72%); }
+  .ix-motif svg.mf { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ix-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(var(--rgb),.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--rgb),.05) 1px, transparent 1px);
+    background-size: 30px 30px; mask-image: radial-gradient(90% 90% at 50% 50%, #000, transparent); }
+
+  .ix-detail { position: relative; z-index: 2; max-width: 640px; }
+  .ix-ghost { position: absolute; top: -38px; right: -18px; z-index: -1; font-family: var(--mono); font-weight: 600; font-size: clamp(7rem, 13vw, 12rem); line-height: .8; color: transparent; -webkit-text-stroke: 1px rgba(var(--rgb),.2); pointer-events: none; user-select: none; letter-spacing: -.04em; }
+  .ix-head { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+  .ix-bigic { width: 64px; height: 64px; flex-shrink: 0; border-radius: 16px; display: grid; place-items: center; background: rgba(var(--rgb),.12); border: 1px solid rgba(var(--rgb),.35); color: var(--ac); }
+  .ix-bigic svg { width: 34px; height: 34px; }
+  .ix-en { font-family: var(--mono); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ac); margin-bottom: 8px; }
+  .ix-title { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+  .ix-p1 { font-size: 1.1rem; color: var(--text); line-height: 1.66; opacity: .94; }
+  .ix-help { display: flex; align-items: flex-start; gap: 14px; margin-top: 22px; padding-top: 22px; border-top: 1px dashed rgba(var(--rgb),.35); }
+  .ix-chk { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(var(--rgb),.16); color: var(--ac); margin-top: 2px; }
+  .ix-chk svg { width: 16px; height: 16px; }
+  .ix-help p { font-size: 1rem; color: var(--muted); line-height: 1.66; }
+  .ix-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .ix-tag { font-size: .84rem; color: var(--text); padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(var(--rgb),.4); background: rgba(var(--rgb),.08); white-space: nowrap; }
+  .ix-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; font-weight: 600; font-size: .96rem; padding: 13px 24px; border-radius: 999px; color: #0b0507; background: var(--ac); border: 1px solid var(--ac); transition: transform .25s var(--ease), box-shadow .25s, filter .25s; }
+  .ix-cta svg { width: 16px; height: 16px; transition: transform .25s var(--ease); }
+  .ix-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -10px rgba(var(--rgb),.6); filter: brightness(1.06); }
+  .ix-cta:hover svg { transform: translateX(4px); }
+
+  /* enter animation (re-triggered each switch). Base state is VISIBLE so the
+     content never gets stuck hidden if the animation is interrupted. */
+  .ix-detail > * { opacity: 1; }
+  .ix-detail.enter > * { animation: ixEnter .55s var(--ease) backwards; }
+  .ix-detail.enter > *:nth-child(1) { animation-delay: .03s; }
+  .ix-detail.enter > *:nth-child(2) { animation-delay: .10s; }
+  .ix-detail.enter > *:nth-child(3) { animation-delay: .17s; }
+  .ix-detail.enter > *:nth-child(4) { animation-delay: .24s; }
+  .ix-detail.enter > *:nth-child(5) { animation-delay: .31s; }
+  .ix-detail.enter > *:nth-child(6) { animation-delay: .38s; }
+  @keyframes ixEnter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  /* ---- motif keyframes ---- */
+  .mf-ecg { animation: ecgScroll 4.2s linear infinite; }
+  @keyframes ecgScroll { to { transform: translateX(-260px); } }
+  .mf-bar { transform-box: fill-box; transform-origin: center bottom; animation: barPulse 1.7s var(--ease) infinite alternate; }
+  @keyframes barPulse { from { transform: scaleY(.22); } to { transform: scaleY(1); } }
+  .mf-candle { transform-box: fill-box; transform-origin: center; animation: candleFade 2.6s ease-in-out infinite alternate; }
+  @keyframes candleFade { from { opacity: .25; } to { opacity: .85; } }
+  .mf-ripple { transform-box: fill-box; transform-origin: center; animation: ripple 4.5s var(--ease) infinite; }
+  @keyframes ripple { 0% { transform: scale(.15); opacity: .8; } 80% { opacity: 0; } 100% { transform: scale(3.4); opacity: 0; } }
+  .mf-dot { transform-box: fill-box; transform-origin: center; animation: dotPulse 2.6s ease-in-out infinite; }
+  @keyframes dotPulse { 0%,100% { opacity: .12; transform: scale(.65); } 50% { opacity: .9; transform: scale(1); } }
+  .mf-flow { animation: flowDash 1.3s linear infinite; }
+  @keyframes flowDash { to { stroke-dashoffset: -44; } }
+  .mf-rot { transform-box: fill-box; transform-origin: center; }
+  .mf-rot.a { animation: spin 20s linear infinite; }
+  .mf-rot.b { animation: spin 14s linear infinite reverse; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ix-detail > * { opacity: 1 !important; transform: none !important; animation: none !important; }
+    .mf-ecg, .mf-bar, .mf-candle, .mf-ripple, .mf-dot, .mf-flow, .mf-rot { animation: none !important; }
+    .ix-tab .ix-bar { display: none; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1080px) {
+    .ix-console { grid-template-columns: 1fr; gap: 18px; }
+    .ix-rail { flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 6px; }
+    .ix-rail::-webkit-scrollbar { display: none; }
+    .ix-tab { flex: 0 0 auto; width: auto; min-width: 210px; scroll-snap-align: start; }
+    .ix-stage { min-height: 0; padding: 40px 32px 40px; }
+  }
+  @media (max-width: 760px) {
+    .ix-hero { padding: 134px 0 60px; }
+    .ix-explorer { padding: 64px 0 80px; }
+    .ix-head { gap: 14px; }
+    .ix-bigic { width: 54px; height: 54px; }
+    .ix-bigic svg { width: 28px; height: 28px; }
+    .ix-stage { padding: 34px 22px 36px; }
+    .ix-metric { flex: 1; min-width: 120px; padding: 15px 18px 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Cyber<span class="x">X</span></span>
+        <span class="brand-slogan">Secure · Resilient · Ready</span>
+      </span>
+    </a>
+
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="Blog V2.html">Blog</a></div>
+      <div class="menu-item"><a href="Industries.html" aria-current="page">Industries</a></div>
+      <div class="menu-item"><a href="Contact.html">Contact</a></div>
+    </nav>
+
+    <a class="btn btn-primary nav-cta" href="index.html#final">მოითხოვე კონსულტაცია</a>
+
+    <button class="hamburger" id="hamburger" aria-label="მენიუ">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="Solutions.html">Solutions</a>
+  <a class="mm-item" href="Vendors.html">Vendors</a>
+  <a class="mm-item" href="Blog V2.html">Blog</a>
+  <a class="mm-item" href="Industries.html">Industries</a>
+  <a class="mm-item" href="Contact.html">Contact</a>
+  <a class="btn btn-primary" href="index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<main id="ix-top">
+
+  <!-- HERO -->
+  <section class="ix-hero" data-screen-label="Industries · Hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="wrap">
+      <div class="ix-hero-head">
+        <span class="eyebrow">ინდუსტრიები</span>
+        <h1>უსაფრთხოება, <span class="hl">მორგებული</span> თქვენს ინდუსტრიაზე</h1>
+        <p class="sub">ყველა სექტორს აქვს საკუთარი რისკები, სისტემები და მარეგულირებელი მოთხოვნები. აირჩიეთ თქვენი ინდუსტრია და ნახეთ, როგორ იცავს CyberX თითოეულ მათგანს.</p>
+      </div>
+      <div class="ix-metrics">
+        <div class="ix-metric"><div class="v" data-count="11">0</div><div class="k">ინდუსტრია</div></div>
+        <div class="ix-metric"><div class="v" data-count="13" data-suffix="">0</div><div class="k">გადაწყვეტილება</div></div>
+        <div class="ix-metric"><div class="v"><span data-count="24">0</span><small>/7</small></div><div class="k">SOC მონიტორინგი</div></div>
+        <div class="ix-metric"><div class="v" data-count="9" data-suffix="+">0</div><div class="k">გლობალური ვენდორი</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORER -->
+  <section class="ix-explorer" id="ixSection" data-screen-label="Industries · Explorer">
+    <div class="wrap">
+      <div class="ix-sec-head">
+        <div>
+          <span class="eyebrow teal">სექტორების რუკა</span>
+          <h2>აირჩიეთ თქვენი ინდუსტრია</h2>
+        </div>
+        <div class="ix-hint"><kbd>↑</kbd><kbd>↓</kbd> ნავიგაცია · ავტომატური გადართვა</div>
+      </div>
+
+      <div class="ix-console" id="ixConsole">
+        <div class="ix-rail" id="ixRail" role="tablist" aria-label="ინდუსტრიები"></div>
+        <div class="ix-stage" id="ixStage">
+          <div class="ix-motif" id="ixMotif"></div>
+          <div class="ix-detail enter"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="final" data-screen-label="Industries · CTA">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center">დაიწყეთ აქ</span>
+      <h2>ვერ პოულობთ თქვენს ინდუსტრიას? მაინც დაგიცავთ.</h2>
+      <p>CyberX-ის ექსპერტები შეაფასებენ თქვენი სექტორის სპეციფიკურ რისკებს და შეგირჩევენ მორგებულ უსაფრთხოების ეკოსისტემას.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="index.html#final">Talk to CyberX Expert <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-ghost" href="Solutions.html">გადაწყვეტილებების ნახვა</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>კომპანია</h4>
+          <a href="index.html#about">ჩვენს შესახებ</a>
+          <a href="Solutions.html">გადაწყვეტილებები</a>
+          <a href="Industries.html">ინდუსტრიები</a>
+        </div>
+        <div class="footer-col">
+          <h4>რესურსები</h4>
+          <a href="index.html#insights">ბლოგი / Insights</a>
+          <a href="Vendors.html">ვენდორები</a>
+        </div>
+        <div class="footer-col">
+          <h4>დაკავშირება</h4>
+          <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="index.html#final">კონტაქტი</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script src="industries.js"></script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <rect x="5" y="6" width="10" height="10" rx="2" stroke="#FF7A3C" stroke-width="1.3" opacity=".5"/>
+    <rect x="19" y="6" width="10" height="10" rx="2" stroke="#36D2E6" stroke-width="1.3" opacity=".6"/>
+    <rect x="5" y="20" width="10" height="8" rx="2" stroke="#2D7FF9" stroke-width="1.3" opacity=".6"/>
+    <path d="M24 19 26 23h-4l2-4Z" stroke="#25E08A" stroke-width="1.3" stroke-linejoin="round"/>
+    <path d="M19 24h10M19 27h7" stroke="#8B9BF5" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
+  </svg>
+</template>
+</body>
+</html>

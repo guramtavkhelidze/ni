@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — ვენდორები</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ============================================================
+     VENDORS PAGE — page-specific styles (builds on styles.css)
+     ============================================================ */
+
+  /* ---------- HERO + ORBIT ECOSYSTEM ---------- */
+  .vx-hero {
+    position: relative; overflow: hidden;
+    padding: 124px 0 60px;
+    background:
+      radial-gradient(115% 75% at 80% 4%, rgba(255,75,38,.18), transparent 55%),
+      radial-gradient(80% 70% at 6% 96%, rgba(120,22,10,.30), transparent 60%),
+      linear-gradient(180deg, #0b0608 0%, var(--bg) 78%);
+  }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .8; z-index: 0; }
+  .vx-hero .wrap { position: relative; z-index: 3; }
+  .vx-hero-head { max-width: 880px; margin: 0 auto; text-align: center; }
+  .vx-hero-head .eyebrow { justify-content: center; }
+  .vx-hero h1 {
+    font-size: clamp(2.05rem, 4.3vw, 3.6rem); font-weight: 800; letter-spacing: -.03em;
+    margin: 24px 0 0; text-wrap: balance;
+  }
+  .vx-hero h1 .hl {
+    background: linear-gradient(110deg, var(--brand-2), var(--brand));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .vx-hero .sub {
+    font-size: clamp(1.04rem, 1.5vw, 1.24rem); color: var(--muted);
+    max-width: 640px; margin: 26px auto 0; line-height: 1.7;
+  }
+
+  /* orbit stage */
+  .orbit {
+    position: relative; z-index: 2;
+    width: min(660px, 92vw); margin: 28px auto 0;
+    /* height set by JS = width (square) */
+  }
+  #orbitLines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: visible; }
+  .orbit-line { stroke: rgba(255,255,255,.10); stroke-width: 1; transition: stroke .3s; }
+  .orbit.spot .orbit-line { stroke: rgba(255,255,255,.05); }
+
+  /* concentric decorative rings */
+  .orbit-rings { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; pointer-events: none; }
+  .orbit-rings span {
+    position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,.06);
+  }
+  .orbit-rings .o1 { width: 47%; height: 47%; }
+  .orbit-rings .o2 { width: 69%; height: 69%; border-style: dashed; border-color: rgba(255,75,38,.12); animation: spin 60s linear infinite; }
+  .orbit-rings .o3 { width: 87%; height: 87%; }
+
+  /* center core */
+  .orbit-core {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    z-index: 4; width: 124px; height: 124px; display: grid; place-items: center; text-align: center;
+  }
+  .orbit-core .glow {
+    position: absolute; inset: -40px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,75,38,.30), transparent 68%);
+    animation: corePulse 3.4s var(--ease) infinite;
+  }
+  @keyframes corePulse { 0%,100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.12); opacity: 1; } }
+  .orbit-core .shield {
+    position: relative; z-index: 2; width: 76px; height: 84px;
+    filter: drop-shadow(0 0 22px rgba(255,75,38,.6));
+  }
+  .orbit-core .co-label {
+    position: absolute; bottom: -34px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--brand-2); white-space: nowrap;
+  }
+
+  /* vendor plates */
+  .vplate {
+    position: absolute; left: 0; top: 0;
+    display: grid; place-items: center;
+    background: #fff; border: 1px solid var(--line-2); border-radius: 13px;
+    box-shadow: 0 10px 30px -12px rgba(0,0,0,.7);
+    overflow: hidden; z-index: 3;
+    transition: box-shadow .3s var(--ease), opacity .35s var(--ease), filter .35s var(--ease);
+  }
+  .vplate.orbit {
+    width: clamp(86px, 17%, 122px); aspect-ratio: 2.6 / 1;
+    will-change: transform;
+  }
+  .vplate img { width: 100%; height: 100%; object-fit: contain; }
+  .vplate.is-text { border-color: rgba(255,255,255,.16); }
+  .vplate .vp-word { font-size: .9rem; font-weight: 700; letter-spacing: -.01em; }
+  .vplate.orbit .vp-word { font-size: clamp(.62rem, 1.7vw, .82rem); }
+  .vplate.orbit:hover {
+    z-index: 6; box-shadow: 0 18px 44px -10px rgba(0,0,0,.85), 0 0 0 2px rgba(255,75,38,.45);
+  }
+  .orbit.spot .vplate.dim { opacity: .26; filter: saturate(.5); }
+
+  .vx-foot {
+    position: relative; z-index: 3; text-align: center;
+    margin-top: 30px; font-family: var(--mono); font-size: .76rem; letter-spacing: .04em; color: var(--dim);
+  }
+  .vx-foot b { color: var(--brand-2); }
+
+  /* ============================================================
+     DIRECTORY — index rail + stacked vendor blocks
+     ============================================================ */
+  .vd-body { position: relative; background: linear-gradient(180deg, var(--bg), var(--bg-2)); padding: 96px 0 40px; }
+  .vd-body::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000, transparent 80%);
+  }
+  .vd-layout { position: relative; z-index: 2; display: grid; grid-template-columns: 244px 1fr; gap: 60px; align-items: start; }
+
+  /* sticky index rail */
+  .vd-idx { position: sticky; top: 104px; align-self: start; }
+  .vd-idx-head {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--dim);
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--line);
+  }
+  .vd-idx-head b { color: var(--brand-2); font-family: var(--font); font-size: 1rem; font-weight: 700; }
+  .vd-idx-list { position: relative; padding-left: 22px; }
+  .vd-idx-list::before { content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 1px; background: var(--line); }
+  .vd-idx-prog { position: absolute; left: 4px; top: 6px; width: 1px; height: 0; background: linear-gradient(var(--brand-2), var(--brand)); transition: height .4s var(--ease); box-shadow: 0 0 8px rgba(255,75,38,.6); }
+  .vd-idx-row { position: relative; display: flex; align-items: center; gap: 11px; padding: 8px 0; color: var(--dim); cursor: pointer; transition: color .25s var(--ease); }
+  .vd-idx-row .ix { font-family: var(--mono); font-size: .74rem; width: 22px; flex-shrink: 0; }
+  .vd-idx-row .nm { font-size: .88rem; font-weight: 500; line-height: 1.3; transition: color .25s, transform .25s var(--ease); }
+  .vd-idx-row::before { content: ""; position: absolute; left: -22px; top: 50%; transform: translateY(-50%) scale(.5); width: 7px; height: 7px; border-radius: 50%; background: var(--dim); opacity: .5; transition: all .25s var(--ease); }
+  .vd-idx-row:hover { color: var(--muted); }
+  .vd-idx-row:hover .nm { transform: translateX(2px); }
+  .vd-idx-row.active { color: var(--text); }
+  .vd-idx-row.active .ix { color: var(--brand-2); }
+  .vd-idx-row.active::before { background: var(--brand); opacity: 1; transform: translateY(-50%) scale(1); box-shadow: 0 0 10px var(--brand); }
+
+  /* blocks */
+  .vd-blocks { min-width: 0; }
+  .vd-block { position: relative; padding: 58px 0 62px; border-top: 1px solid var(--line); --ac: #FF7A3C; --rgb: 255,75,38; }
+  .vd-block:first-child { border-top: none; padding-top: 6px; }
+  .vd-wm {
+    position: absolute; top: 22px; right: 0; z-index: 0;
+    font-family: var(--mono); font-weight: 600; font-size: clamp(6rem, 12vw, 11rem); line-height: .8;
+    color: transparent; -webkit-text-stroke: 1px rgba(var(--rgb), .13);
+    pointer-events: none; user-select: none; letter-spacing: -.04em; will-change: transform;
+  }
+  .vd-grid { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) 312px; gap: 48px; align-items: start; }
+  .vd-content { max-width: 660px; }
+
+  .vd-tagline { font-family: var(--mono); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ac); display: inline-flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .vd-tagline .num { color: var(--dim); }
+  .vd-content h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.06; margin: 16px 0 14px; }
+  .vd-lead { font-size: 1.1rem; color: var(--text); line-height: 1.64; opacity: .94; margin-bottom: 14px; }
+  .vd-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; }
+
+  .vd-block-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 36px; margin-top: 30px; padding-top: 26px; border-top: 1px dashed var(--line-2); }
+  .vd-sol h4, .vd-ind h4 { font-family: var(--mono); font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin-bottom: 16px; }
+  .vd-sol ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .vd-sol li { display: flex; align-items: center; gap: 11px; font-size: .96rem; font-weight: 500; color: var(--text); }
+  .vd-sol .sc { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; background: rgba(var(--rgb), .14); color: var(--ac); }
+  .vd-sol .sc svg { width: 13px; height: 13px; }
+  .vd-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .vd-tag {
+    font-size: .84rem; color: var(--muted); padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--line-2); background: rgba(255,255,255,.025);
+    transition: color .25s, border-color .25s, background .25s;
+  }
+  .vd-block.in .vd-tag:hover { color: var(--text); border-color: rgba(var(--rgb), .45); background: rgba(var(--rgb), .08); }
+  .vd-ind-text { color: var(--muted); font-size: .98rem; line-height: 1.64; text-wrap: pretty; }
+  .vd-ind { position: relative; }
+  .vd-ind-tags { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .vd-ind-tags .vd-tag { font-size: .92rem; padding: 10px 18px; font-weight: 500; }
+
+  .vd-cta {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 30px;
+    font-weight: 600; font-size: .96rem; padding: 13px 24px; border-radius: 999px;
+    color: var(--text); background: rgba(var(--rgb), .08); border: 1px solid rgba(var(--rgb), .3);
+    transition: background .25s var(--ease), border-color .25s, transform .25s, box-shadow .25s, color .25s;
+  }
+  .vd-cta svg { width: 16px; height: 16px; transition: transform .25s var(--ease); }
+  .vd-cta:hover { background: var(--ac); color: #0b0507; border-color: var(--ac); transform: translateY(-2px); box-shadow: 0 12px 30px -10px rgba(var(--rgb), .6); }
+  .vd-cta:hover svg { transform: translateX(4px); }
+
+  /* side: logo plate + viz */
+  .vd-side { position: sticky; top: 104px; display: flex; flex-direction: column; gap: 16px; }
+  .vd-plate {
+    position: relative; width: 100%; aspect-ratio: 2.6 / 1; border-radius: 16px; overflow: hidden;
+    background: #fff; border: 1px solid var(--line-2); display: grid; place-items: center;
+    box-shadow: 0 16px 40px -16px rgba(0,0,0,.7);
+  }
+  .vd-plate img { width: 100%; height: 100%; object-fit: contain; }
+  .vd-plate.is-text { border-color: rgba(255,255,255,.16); }
+  .vd-plate .vp-word { font-size: 1.9rem; font-weight: 700; letter-spacing: -.01em; }
+
+  .vd-viz { position: relative; height: 168px; border-radius: 16px; overflow: hidden; border: 1px solid var(--line);
+    background: radial-gradient(120% 100% at 70% 20%, rgba(var(--rgb), .12), transparent 60%), linear-gradient(180deg, rgba(18,20,25,.6), rgba(12,14,18,.6)); }
+  .vd-viz::before { content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(var(--rgb),.06) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--rgb),.06) 1px, transparent 1px);
+    background-size: 24px 24px; mask-image: radial-gradient(80% 80% at 50% 50%, #000, transparent); }
+  .vd-radar { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 168px; height: 168px; }
+  .vd-radar .ring { fill: none; stroke: rgba(var(--rgb), .25); stroke-width: 1; }
+  .vd-radar .ring.dash { stroke-dasharray: 4 6; }
+  .vd-block.in .vd-radar .rot { transform-origin: 100px 100px; animation: spin 16s linear infinite; }
+  .vd-radar .sweep { transform-origin: 100px 100px; }
+  .vd-block.in .vd-radar .sweep { animation: sweep 4.5s linear infinite; }
+  @keyframes sweep { to { transform: rotate(360deg); } }
+  .vd-radar .core { fill: var(--ac); filter: drop-shadow(0 0 8px rgba(var(--rgb),.9)); }
+  .vd-radar .blip { fill: var(--ac); opacity: 0; }
+  .vd-block.in .vd-radar .blip { animation: blip 4.5s linear infinite; }
+  .vd-radar .blip.b2 { animation-delay: 1.4s; }
+  .vd-radar .blip.b3 { animation-delay: 2.7s; }
+  @keyframes blip { 0%,12% { opacity: 0; } 18% { opacity: 1; } 55% { opacity: 0; } 100% { opacity: 0; } }
+  .vd-scan { position: absolute; left: 0; right: 0; height: 50px; background: linear-gradient(180deg, transparent, rgba(var(--rgb), .14), transparent); }
+  .vd-block.in .vd-scan { animation: scanY 3.4s var(--ease) infinite; }
+  @keyframes scanY { 0% { top: -50px; } 100% { top: 168px; } }
+
+  /* reveal */
+  .vd-r { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .vd-block.in .vd-r { opacity: 1; transform: none; }
+  .vd-block.in .vd-r[data-d="1"] { transition-delay: .07s; }
+  .vd-block.in .vd-r[data-d="2"] { transition-delay: .15s; }
+  .vd-block.in .vd-r[data-d="3"] { transition-delay: .23s; }
+
+  /* ============================================================
+     WHY — closing rationale (teal zone)
+     ============================================================ */
+  .vx-why {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(85% 75% at 88% 8%, rgba(54,210,230,.12), transparent 55%),
+      radial-gradient(70% 80% at 4% 96%, rgba(45,127,249,.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-2), #07090A);
+  }
+  .vx-why::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(54,210,230,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(54,210,230,.05) 1px, transparent 1px);
+    background-size: 60px 60px; mask-image: radial-gradient(70% 70% at 72% 26%, #000, transparent);
+  }
+  .vx-why .wrap { position: relative; z-index: 2; }
+  .vx-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+  .vx-why-head h2 { font-size: clamp(1.9rem, 3.4vw, 2.9rem); margin: 18px 0 0; text-wrap: balance; }
+  .vx-why-head .lead { color: var(--text); font-size: 1.12rem; line-height: 1.7; margin-top: 22px; opacity: .94; }
+  .vx-why-list { display: flex; flex-direction: column; gap: 14px; }
+  .vx-why-card {
+    position: relative; padding: 28px 30px 30px; border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(20,24,26,.86), rgba(14,18,19,.86)); border: 1px solid var(--line);
+    transition: transform .3s var(--ease), border-color .3s;
+  }
+  .vx-why-card:hover { transform: translateY(-3px); border-color: rgba(54,210,230,.35); }
+  .vx-why-card .n { font-family: var(--mono); font-size: .78rem; letter-spacing: .15em; color: var(--teal); }
+  .vx-why-card p { color: var(--muted); font-size: 1.02rem; line-height: 1.66; margin-top: 12px; }
+  .vx-why-card b { color: var(--text); font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vd-r { opacity: 1 !important; transform: none !important; }
+    .orbit-rings .o2, .orbit-core .glow, .vd-radar .rot, .vd-radar .sweep, .vd-radar .blip, .vd-scan { animation: none !important; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1080px) {
+    .vd-grid { grid-template-columns: 1fr; gap: 30px; }
+    .vd-side { position: static; flex-direction: column; max-width: 420px; }
+    .vd-plate { max-width: 360px; }
+    .vd-viz { height: 150px; }
+    .vx-why-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+  @media (max-width: 920px) {
+    .vd-layout { grid-template-columns: 1fr; gap: 0; }
+    .vd-idx { display: none; }
+  }
+  @media (max-width: 760px) {
+    .vx-hero { padding: 132px 0 50px; }
+    .vd-body { padding: 64px 0 30px; }
+    .vd-block { padding: 44px 0 48px; }
+    .vd-block-cols { grid-template-columns: 1fr; gap: 24px; }
+    .vd-side { flex-direction: column; }
+    .vd-plate { max-width: 280px; }
+    .vd-wm { font-size: 5.5rem; top: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Cyber<span class="x">X</span></span>
+        <span class="brand-slogan">Secure · Resilient · Ready</span>
+      </span>
+    </a>
+
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="Vendors.html" aria-current="page">Vendors</a></div>
+      <div class="menu-item"><a href="Blog V2.html">Blog</a></div>
+      <div class="menu-item"><a href="Industries.html">Industries</a></div>
+      <div class="menu-item"><a href="Contact.html">Contact</a></div>
+    </nav>
+
+    <a class="btn btn-primary nav-cta" href="index.html#final">მოითხოვე კონსულტაცია</a>
+
+    <button class="hamburger" id="hamburger" aria-label="მენიუ">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="Solutions.html">Solutions</a>
+  <a class="mm-item" href="Vendors.html">Vendors</a>
+  <a class="mm-item" href="Blog V2.html">Blog</a>
+  <a class="mm-item" href="Industries.html">Industries</a>
+  <a class="mm-item" href="Contact.html">Contact</a>
+  <a class="btn btn-primary" href="index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<main id="vx-top">
+
+  <!-- HERO + ORBIT ECOSYSTEM -->
+  <section class="vx-hero" data-screen-label="Vendors · Hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="wrap">
+      <div class="vx-hero-head">
+        <span class="eyebrow">ტექნოლოგიური ვენდორები</span>
+        <h1>ერთიანი <span class="hl">უსაფრთხოების</span> ეკოსისტემა</h1>
+        <p class="sub">მსოფლიო დონის ვენდორები ერთ ორბიტაზე CyberX-ის ბირთვის ირგვლივ — გადააბიჯეთ კურსორი ნებისმიერ ვენდორს.</p>
+      </div>
+
+      <div class="orbit" id="orbitStage">
+        <svg id="orbitLines"></svg>
+        <div class="orbit-rings"><span class="o1"></span><span class="o2"></span><span class="o3"></span></div>
+        <div class="orbit-core">
+          <span class="glow"></span>
+          <svg class="shield" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#cg)" stroke-width="1.6" fill="rgba(255,75,38,.10)"/>
+            <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#cg)" stroke-width="2.4" stroke-linecap="round"/>
+            <defs><linearGradient id="cg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+          </svg>
+          <span class="co-label">CyberX Core</span>
+        </div>
+        <!-- vendor plates injected by JS -->
+      </div>
+
+      <p class="vx-foot"><b>10</b> გლობალური ვენდორი · ერთი ნდობის ფენა</p>
+    </div>
+  </section>
+
+  <!-- DIRECTORY -->
+  <section class="vd-body" data-screen-label="Vendors · Directory">
+    <div class="wrap">
+      <div class="vd-layout">
+        <aside class="vd-idx">
+          <div class="vd-idx-head"><span>ვენდორები</span><b>10</b></div>
+          <div class="vd-idx-list" id="vdIdxList">
+            <div class="vd-idx-prog" id="vdIdxProg"></div>
+          </div>
+        </aside>
+        <div class="vd-blocks" id="vdBlocks"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY THESE TECHNOLOGIES MATTER -->
+  <section class="section vx-why" data-screen-label="Vendors · Why">
+    <div class="wrap">
+      <div class="vx-why-grid">
+        <div class="vx-why-head">
+          <span class="eyebrow teal">რატომ აქვს მნიშვნელობა</span>
+          <h2>რატომ არის ეს ტექნოლოგიები მნიშვნელოვანი?</h2>
+          <p class="lead">თანამედროვე კიბერსაფრთხეები ყოველდღიურად უფრო რთული, მიზანმიმართული და მასშტაბური ხდება. ორგანიზაციებს სჭირდებათ მრავალშრიანი უსაფრთხოების მიდგომა, რომელიც იცავს Endpoint-ებს, ქსელებს, იდენტობებს, Cloud-ს, სამრეწველო სისტემებს, აპლიკაციებსა და უსაფრთხოების ოპერაციებს.</p>
+        </div>
+        <div class="vx-why-list">
+          <div class="vx-why-card reveal">
+            <span class="n">01</span>
+            <p><b>CyberX თანამშრომლობს კიბერუსაფრთხოების სფეროს წამყვან საერთაშორისო ვენდორებთან</b>, რათა ორგანიზაციებს მიაწოდოს მსოფლიო დონის ტექნოლოგიები — რისკების შემცირებისთვის, საფრთხეების უკეთესი ხილვადობისა და კიბერმდგრადობის გასაძლიერებლად.</p>
+          </div>
+          <div class="vx-why-card reveal" data-delay="1">
+            <span class="n">02</span>
+            <p>ეს ტექნოლოგიები ეხმარება ორგანიზაციებს <b>მუდმივად ცვალებადი კიბერსაფრთხეების წინასწარ აღმოჩენასა და ეფექტურ მართვაში</b> — პროაქტიული, და არა რეაქტიული მიდგომით.</p>
+          </div>
+          <div class="vx-why-card reveal" data-delay="2">
+            <span class="n">03</span>
+            <p>ჩვენი მიზანია არა მხოლოდ უსაფრთხოების პროდუქტების მიწოდება, არამედ <b>ისეთი ეკოსისტემის შექმნა</b>, რომელიც ორგანიზაციებს საშუალებას მისცემს უსაფრთხოდ განახორციელონ ციფრული ტრანსფორმაცია და განავითარონ ბიზნესი.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="final" data-screen-label="Vendors · CTA">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center">დაიწყეთ აქ</span>
+      <h2>მზად ხართ ააწყოთ თქვენი უსაფრთხოების ეკოსისტემა?</h2>
+      <p>განიხილეთ რომელი ვენდორების კომბინაცია უხდება თქვენს ინფრასტრუქტურას — CyberX-ის ექსპერტებთან ერთად.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="index.html#final">Talk to CyberX Expert <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-ghost" href="Solutions.html">გადაწყვეტილებების ნახვა</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>კომპანია</h4>
+          <a href="index.html#about">ჩვენს შესახებ</a>
+          <a href="Solutions.html">გადაწყვეტილებები</a>
+          <a href="index.html#industries">ინდუსტრიები</a>
+        </div>
+        <div class="footer-col">
+          <h4>რესურსები</h4>
+          <a href="index.html#insights">ბლოგი / Insights</a>
+          <a href="Vendors.html">ვენდორები</a>
+        </div>
+        <div class="footer-col">
+          <h4>დაკავშირება</h4>
+          <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="index.html#final">კონტაქტი</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script src="vendors.js"></script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <circle cx="17" cy="17" r="13" stroke="#FF7A3C" stroke-width="1" stroke-dasharray="3 4" opacity=".5"/>
+    <circle cx="17" cy="17" r="8" stroke="#FF7A3C" stroke-width="1" opacity=".4"/>
+    <path d="M17 6.2 26 9.6v6.2c0 5.4-3.7 9.2-9 10.7C12.7 25 9 21.2 9 15.8V9.6L17 6.2Z" stroke="url(#tg)" stroke-width="1.4" fill="rgba(255,75,38,.14)"/>
+    <path d="M13.5 13 20.5 20M20.5 13 13.5 20" stroke="url(#tg)" stroke-width="2" stroke-linecap="round"/>
+    <defs><linearGradient id="tg" x1="9" y1="6" x2="26" y2="27" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+  </svg>
+</template>
+</body>
+</html>

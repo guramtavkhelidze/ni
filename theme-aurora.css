@@ -1,0 +1,161 @@
+/* ============================================================
+   CyberX — THEME: AURORA
+   Cool, glassmorphic, blue / cyan / violet. Premium & airy.
+   Overrides styles.css (loaded after it).
+   ============================================================ */
+
+:root {
+  /* Surfaces — deep navy */
+  --bg:        #060A16;
+  --bg-2:      #0A1024;
+  --panel:     rgba(22, 32, 60, 0.55);
+  --panel-2:   rgba(30, 42, 76, 0.7);
+  --line:      rgba(140, 175, 255, 0.14);
+  --line-2:    rgba(150, 190, 255, 0.28);
+
+  --text:  #EAF0FF;
+  --muted: #9DAAC8;
+  --dim:   #5E6C8C;
+
+  /* Brand becomes cyan→blue */
+  --brand:    #2D8CF9;
+  --brand-2:  #36D2F5;
+  --brand-dim:#1B5FC2;
+
+  --blue:     #2D8CF9;
+  --indigo:   #6A5BE0;
+  --periwinkle:#8B9BF5;
+  --red:      #F05B8C;
+
+  --radius: 20px;
+}
+
+body {
+  background:
+    radial-gradient(60% 50% at 80% -5%, rgba(54,210,245,.10), transparent 60%),
+    radial-gradient(50% 50% at 0% 30%, rgba(106,91,224,.12), transparent 60%),
+    var(--bg);
+}
+
+/* glass softening across cards */
+.stat-card, .sol-card, .stat-panel, .blog-card, .vendor-chip, .ind-card {
+  backdrop-filter: blur(14px) saturate(135%);
+  -webkit-backdrop-filter: blur(14px) saturate(135%);
+}
+
+/* ---- recolor logo + shield gradient stops ---- */
+#mg stop:first-child, #mg2 stop:first-child,
+#sc-stroke stop:first-child { stop-color: #36D2F5; }
+#mg stop:last-child, #mg2 stop:last-child,
+#sc-stroke stop:last-child { stop-color: #2D8CF9; }
+#sc-fill stop:first-child { stop-color: #36D2F5; stop-opacity: .30; }
+#sc-fill stop:last-child  { stop-color: #2D8CF9; stop-opacity: .05; }
+.brand-name .x { color: var(--brand-2); }
+
+/* ---- buttons ---- */
+.btn-primary {
+  background: linear-gradient(110deg, #36D2F5, #2D8CF9);
+  box-shadow: 0 10px 34px -10px rgba(45,140,249,.7);
+}
+.btn-primary:hover {
+  background: linear-gradient(110deg, #4ad9f8, #4495ff);
+  box-shadow: 0 16px 46px -12px rgba(54,210,245,.8);
+}
+
+/* ---- eyebrow ---- */
+.eyebrow { color: var(--brand-2); }
+.eyebrow.green { color: #3CE0C8; }
+.eyebrow.teal  { color: #6FB8FF; }
+
+/* ---- hero ---- */
+.hero {
+  background:
+    radial-gradient(120% 90% at 80% 8%, rgba(54,210,245,.18), transparent 55%),
+    radial-gradient(90% 80% at 5% 95%, rgba(106,91,224,.22), transparent 60%),
+    linear-gradient(180deg, #070C1C 0%, var(--bg) 70%);
+}
+.hero h1 .hl {
+  background: linear-gradient(110deg, #6FE3FF, #2D8CF9 55%, #6A5BE0);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.shield-ring.r1 { border-color: rgba(54,210,245,.28); }
+.shield-ring.r2 { border-color: rgba(45,140,249,.4); }
+.shield-ring.r3 { border-color: rgba(106,91,224,.55); }
+.shield-core { filter: drop-shadow(0 0 34px rgba(54,210,245,.55)); }
+.orbit-dot { background: #36D2F5; box-shadow: 0 0 18px #36D2F5; }
+
+/* ---- stats ---- */
+.stats {
+  background:
+    radial-gradient(55% 45% at 16% 0%, rgba(54,210,245,.08), transparent 60%),
+    radial-gradient(45% 45% at 88% 22%, rgba(106,91,224,.1), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+}
+.stats::before {
+  background-image:
+    linear-gradient(rgba(140,175,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140,175,255,.04) 1px, transparent 1px);
+}
+.accent-orange { --accent: #36D2F5; }
+.accent-blue   { --accent: #2D8CF9; }
+.accent-indigo { --accent: #6A5BE0; }
+.accent-red    { --accent: #F05B8C; }
+
+/* ---- solutions ---- */
+.solutions { background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
+.sol-card::before { background: linear-gradient(90deg, #36D2F5, #2D8CF9); }
+.sol-ic {
+  background: linear-gradient(150deg, rgba(54,210,245,.16), rgba(45,140,249,.12));
+  color: #6FE3FF; border-color: rgba(54,210,245,.28);
+}
+.sol-card:hover .sol-ic { background: linear-gradient(150deg, #36D2F5, #2D8CF9); color: #051022; border-color: transparent; }
+
+/* ---- why (violet zone instead of green) ---- */
+.why {
+  background:
+    radial-gradient(80% 70% at 85% 10%, rgba(106,91,224,.16), transparent 55%),
+    radial-gradient(70% 80% at 5% 95%, rgba(54,210,245,.1), transparent 60%),
+    linear-gradient(180deg, var(--bg-2), #070C1C);
+}
+.why::before {
+  background-image: linear-gradient(rgba(106,91,224,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(106,91,224,.06) 1px, transparent 1px);
+}
+.why-card { background: linear-gradient(180deg, rgba(26,36,66,.7), rgba(16,24,48,.7)); }
+.why-card:hover { border-color: rgba(106,91,224,.45); }
+.why-num { color: #9B8BFF; }
+.why-card .glow { background: radial-gradient(circle, rgba(106,91,224,.28), transparent 70%); }
+
+/* ---- industries (cyan stays, cooler) ---- */
+.industries {
+  background:
+    radial-gradient(90% 80% at 12% 8%, rgba(54,210,245,.13), transparent 55%),
+    linear-gradient(180deg, #070C1C, var(--bg-2));
+}
+.ind-card .ic { color: #36D2F5; }
+.ind-card:hover { border-color: rgba(54,210,245,.45); }
+.ind-card:hover .scan { background: linear-gradient(180deg, transparent, rgba(54,210,245,.08)); opacity: 1; }
+
+/* ---- vendors ---- */
+.vendors { background: var(--bg); }
+.vendor-chip .dot { background: #36D2F5; }
+
+/* ---- insights ---- */
+.insights { background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
+.blog-cat, .blog-readmore { color: #6FE3FF; }
+
+/* ---- final cta ---- */
+.final-cta {
+  background:
+    radial-gradient(80% 120% at 50% 0%, rgba(54,210,245,.22), transparent 60%),
+    radial-gradient(60% 90% at 50% 100%, rgba(106,91,224,.2), transparent 60%),
+    linear-gradient(180deg, #07101f, #060A16);
+}
+.final-cta::before {
+  background-image: linear-gradient(rgba(54,210,245,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(54,210,245,.05) 1px, transparent 1px);
+}
+
+/* ---- dropdown / footer accents ---- */
+.dd-link .ic { background: rgba(54,210,245,.12); color: #6FE3FF; }
+.footer-col a:hover { color: #6FE3FF; }
+.nav.scrolled { background: rgba(6,10,22,.8); }
+.dropdown { background: rgba(8,12,26,.96); }

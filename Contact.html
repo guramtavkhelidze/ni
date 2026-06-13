@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — კონტაქტი</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ============================================================
+     CONTACT · V1 — Split Console
+     ============================================================ */
+  .cx-wrap { position: relative; overflow: hidden; min-height: 100vh; padding: 120px 0 70px; display: flex; align-items: center;
+    background: radial-gradient(110% 70% at 82% 6%, rgba(255,75,38,.18), transparent 55%), radial-gradient(80% 70% at 4% 96%, rgba(120,22,10,.30), transparent 60%), linear-gradient(180deg,#0b0608 0%,var(--bg) 80%); }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .7; z-index: 0; }
+  .cx-wrap > .wrap { position: relative; z-index: 3; width: 100%; }
+  .cx-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 64px; align-items: center; }
+
+  /* left info */
+  .cx-info h1 { font-size: clamp(2.05rem,4vw,3.5rem); font-weight: 800; letter-spacing: -.03em; margin: 20px 0 0; text-wrap: balance; }
+  .cx-info h1 .hl { background: linear-gradient(110deg,var(--brand-2),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .cx-info .lead { font-size: 1.14rem; color: var(--muted); max-width: 440px; margin: 24px 0 0; line-height: 1.7; }
+
+  .cx-channels { display: flex; flex-direction: column; gap: 10px; margin: 38px 0 0; }
+  .cx-ch { display: flex; align-items: center; gap: 16px; padding: 15px 18px; border: 1px solid var(--line); border-radius: 14px; background: rgba(18,20,25,.45); backdrop-filter: blur(6px); transition: border-color .25s var(--ease), transform .25s var(--ease), background .25s; }
+  .cx-ch:hover { border-color: var(--line-2); transform: translateX(4px); background: rgba(18,20,25,.7); }
+  .cx-ch .ic { width: 44px; height: 44px; flex-shrink: 0; border-radius: 11px; display: grid; place-items: center; background: rgba(255,75,38,.1); border: 1px solid rgba(255,75,38,.24); color: var(--brand-2); transition: background .25s, color .25s; }
+  .cx-ch:hover .ic { background: var(--brand); color: #fff; }
+  .cx-ch .ic svg { width: 21px; height: 21px; }
+  .cx-ch .t { font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+  .cx-ch .v { font-size: 1rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .cx-ch .arr { margin-left: auto; color: var(--dim); transition: transform .25s var(--ease), color .25s; }
+  .cx-ch:hover .arr { color: var(--brand-2); transform: translateX(3px); }
+  .cx-ch .arr svg { width: 17px; height: 17px; }
+
+  .cx-book { margin-top: 28px; display: inline-flex; }
+
+  /* right form */
+  .cx-card { position: relative; border: 1px solid var(--line-2); border-radius: 22px; overflow: hidden;
+    background: linear-gradient(180deg, rgba(20,23,28,.92), rgba(12,14,18,.92)); backdrop-filter: blur(14px);
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,.7); }
+  .cx-card::before { content:""; position:absolute; inset:0 0 auto 0; height:3px; background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--teal)); }
+  .cx-card-in { padding: 40px 42px 38px; }
+  .cx-card h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+  .cx-card .sub { color: var(--muted); font-size: .98rem; margin-top: 8px; }
+
+  .cx-form { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .fld { position: relative; display: flex; flex-direction: column; gap: 8px; }
+  .fld.full { grid-column: 1 / -1; }
+  .fld label { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); display: flex; align-items: center; gap: 6px; }
+  .fld label .req { color: var(--brand-2); }
+  .fld input, .fld select, .fld textarea { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line-2);
+    background: rgba(255,255,255,.04); color: var(--text); font-family: inherit; font-size: .98rem; transition: border-color .22s, background .22s, box-shadow .22s; }
+  .fld textarea { resize: vertical; min-height: 110px; }
+  .fld input::placeholder, .fld textarea::placeholder { color: var(--dim); }
+  .fld input:focus, .fld select:focus, .fld textarea:focus { outline: none; border-color: var(--brand); background: rgba(255,255,255,.07); box-shadow: 0 0 0 4px rgba(255,75,38,.12); }
+  .fld select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' stroke='%239AA2AC' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+  .fld select option { background: #121419; color: var(--text); }
+  .fld .err { font-size: .76rem; color: var(--red); display: none; }
+  .fld.invalid input, .fld.invalid select, .fld.invalid textarea { border-color: var(--red); }
+  .fld.invalid .err { display: block; }
+
+  .cx-submit { grid-column: 1 / -1; margin-top: 6px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .cx-submit .btn { padding: 15px 30px; }
+  .cx-submit .note { font-family: var(--mono); font-size: .76rem; color: var(--dim); }
+
+  /* success state */
+  .cx-card.sent .cx-form, .cx-card.sent .cx-card-head { display: none; }
+  .cx-success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 30px 10px 14px; }
+  .cx-card.sent .cx-success { display: flex; animation: fadeUp .5s var(--ease); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .cx-check { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; background: rgba(37,224,138,.12); border: 1px solid rgba(37,224,138,.4); margin-bottom: 22px; }
+  .cx-check svg { width: 40px; height: 40px; color: var(--green); }
+  .cx-check svg path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .6s .15s var(--ease) forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .cx-success h3 { font-size: 1.5rem; font-weight: 800; }
+  .cx-success p { color: var(--muted); margin-top: 10px; max-width: 360px; }
+  .cx-success .btn { margin-top: 24px; }
+
+  .reveal { opacity: 1; }
+  .reveal.in { animation: cxIn .6s var(--ease) both; }
+  .reveal.in[data-d="1"]{animation-delay:.08s} .reveal.in[data-d="2"]{animation-delay:.16s} .reveal.in[data-d="3"]{animation-delay:.24s}
+  @keyframes cxIn { from { opacity: .35; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1!important;transform:none!important} .reveal.in{animation:none} .cx-check svg path{animation:none;stroke-dashoffset:0} }
+
+  @media (max-width: 980px) {
+    .cx-grid { grid-template-columns: 1fr; gap: 44px; }
+    .cx-wrap { min-height: 0; padding: 130px 0 70px; }
+  }
+  @media (max-width: 560px) {
+    .cx-form { grid-template-columns: 1fr; }
+    .cx-card-in { padding: 30px 24px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+    </a>
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="Industries.html">Industries</a></div>
+      <div class="menu-item"><a href="Blog V2.html">Insights</a></div>
+      <div class="menu-item"><a href="Contact.html" aria-current="page">Contact</a></div>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="#contact-form">ზარის დაჯავშნა</a>
+    <button class="hamburger" id="hamburger" aria-label="მენიუ"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="Solutions.html">Solutions</a>
+  <a class="mm-item" href="Vendors.html">Vendors</a>
+  <a class="mm-item" href="Industries.html">Industries</a>
+  <a class="mm-item" href="Blog V2.html">Insights</a>
+  <a class="mm-item" href="Contact.html">Contact</a>
+</div>
+
+<main>
+  <section class="cx-wrap" data-screen-label="Contact · Split">
+    <canvas id="hero-canvas"></canvas>
+    <div class="wrap">
+      <div class="cx-grid">
+        <!-- INFO -->
+        <div class="cx-info">
+          <span class="eyebrow reveal">Contact our team</span>
+          <h1 class="reveal" data-d="1">დაგვი<span class="hl">კავშირდით</span></h1>
+          <p class="lead reveal" data-d="2">გაქვთ შეკითხვა ან გსურთ კონსულტაცია კიბერუსაფრთხოებაზე? შეავსეთ ფორმა და CyberX-ის გუნდი დაგიკავშირდებათ მოკლე დროში.</p>
+          <div class="cx-channels" id="cxChannels"></div>
+          <a class="btn btn-ghost cx-book reveal" data-d="3" href="#contact-form"><svg viewBox="0 0 24 24" fill="none" style="width:17px;height:17px"><path d="M15.5 13.5 14 15c-1.5-.6-3.9-3-4.5-4.5L11 9c.4-.4.4-1 .1-1.5L9.5 5C9 4.3 8 4.2 7.4 4.8l-1 1c-.7.7-.9 1.7-.5 2.6C7.3 12 10 14.7 13.6 16c.9.4 1.9.2 2.6-.5l1-1c.6-.6.5-1.6-.2-2.1l-2-1.5c-.5-.3-1.1-.3-1.5.1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> ზარის დაჯავშნა</a>
+        </div>
+
+        <!-- FORM -->
+        <div class="cx-card reveal" data-d="2" id="contact-form">
+          <div class="cx-card-in">
+            <div class="cx-card-head">
+              <h2>Contact our team</h2>
+              <p class="sub">შეავსეთ ველები — ვუპასუხებთ 24 საათში.</p>
+            </div>
+            <form class="cx-form" id="cxForm" novalidate>
+              <div class="fld">
+                <label>სახელი, გვარი <span class="req">*</span></label>
+                <input type="text" name="name" placeholder="ნინო ბერიძე" required>
+                <span class="err">შეავსეთ ეს ველი</span>
+              </div>
+              <div class="fld">
+                <label>ელ. ფოსტა <span class="req">*</span></label>
+                <input type="email" name="email" placeholder="nino@company.ge" required>
+                <span class="err">შეიყვანეთ სწორი ელ. ფოსტა</span>
+              </div>
+              <div class="fld">
+                <label>მობილური</label>
+                <input type="tel" name="mobile" placeholder="+995 5xx xx xx xx">
+                <span class="err"></span>
+              </div>
+              <div class="fld">
+                <label>ორგანიზაცია</label>
+                <input type="text" name="org" placeholder="კომპანიის სახელი">
+                <span class="err"></span>
+              </div>
+              <div class="fld full">
+                <label>ინტერესის სერვისი</label>
+                <select name="service" id="cxService"><option value="" disabled selected>აირჩიეთ სერვისი…</option></select>
+                <span class="err"></span>
+              </div>
+              <div class="fld full">
+                <label>შეტყობინება <span class="req">*</span></label>
+                <textarea name="message" placeholder="მოგვწერეთ თქვენი შეკითხვა ან საჭიროება…" required></textarea>
+                <span class="err">დაწერეთ შეტყობინება</span>
+              </div>
+              <div class="cx-submit">
+                <button class="btn btn-primary" type="submit">გაგზავნა <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <span class="note">თქვენი მონაცემები დაცულია.</span>
+              </div>
+            </form>
+          </div>
+          <div class="cx-success">
+            <div class="cx-check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>გმადლობთ!</h3>
+            <p>თქვენი შეტყობინება მიღებულია. CyberX-ის გუნდი მალე დაგიკავშირდებათ.</p>
+            <button class="btn btn-ghost" type="button" id="cxAgain">ახალი შეტყობინება</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>კომპანია</h4><a href="index.html#about">ჩვენს შესახებ</a><a href="Solutions.html">გადაწყვეტილებები</a><a href="Industries.html">ინდუსტრიები</a></div>
+        <div class="footer-col"><h4>რესურსები</h4><a href="Blog V2.html">ბლოგი / Insights</a><a href="Vendors.html">ვენდორები</a></div>
+        <div class="footer-col"><h4>დაკავშირება</h4><a href="mailto:info@cyberx.ge">info@cyberx.ge</a><a href="Contact.html">კონტაქტი</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9V7c0-1 .5-1.5 1.6-1.5H17V2.5h-2.4C11.8 2.5 11 4.2 11 6.4V9H8.5v3H11v9.5h3V12h2.3l.4-3H14Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script src="contact-data.js"></script>
+<script>
+(function () {
+  const D = window.CONTACT;
+  // channels
+  const arr = '<span class="arr"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  document.getElementById('cxChannels').innerHTML = D.channels.map((c, i) => `
+    <a class="cx-ch reveal" data-d="${Math.min(i,3)}" href="${c.href}"${c.id!=='email'?' target="_blank" rel="noopener"':''}>
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none">${c.icon}</svg></span>
+      <span><span class="t">${c.label}</span><span class="v">${c.value}</span></span>
+      ${arr}
+    </a>`).join('');
+
+  // service options
+  const sel = document.getElementById('cxService');
+  D.services.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+
+  // validation + submit
+  const form = document.getElementById('cxForm');
+  const card = document.getElementById('contact-form');
+  function validate() {
+    let ok = true;
+    form.querySelectorAll('[required]').forEach(inp => {
+      const fld = inp.closest('.fld');
+      let bad = !inp.value.trim();
+      if (inp.type === 'email' && inp.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(inp.value)) bad = true;
+      fld.classList.toggle('invalid', bad);
+      if (bad) ok = false;
+    });
+    return ok;
+  }
+  form.querySelectorAll('input,textarea').forEach(inp => inp.addEventListener('input', () => inp.closest('.fld').classList.remove('invalid')));
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validate()) { form.querySelector('.invalid input,.invalid textarea')?.focus(); return; }
+    card.classList.add('sent');
+  });
+  document.getElementById('cxAgain').addEventListener('click', () => { form.reset(); card.classList.remove('sent'); });
+
+  // reveal
+  if (window.IntersectionObserver) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+  setTimeout(() => document.querySelectorAll('.reveal:not(.in)').forEach(el => el.classList.add('in')), 1400);
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', ev => {
+    const id = a.getAttribute('href').slice(1); if (!id) return;
+    const el = document.getElementById(id); if (!el) return; ev.preventDefault();
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 92, behavior: 'smooth' });
+    if (id === 'contact-form') form.querySelector('input')?.focus({ preventScroll: true });
+  }));
+})();
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <rect x="5" y="8" width="24" height="18" rx="3" stroke="#FF7A3C" stroke-width="1.4"/>
+    <path d="M6 11l11 7 11-7" stroke="#FF7A3C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</template>
+</body>
+</html>
