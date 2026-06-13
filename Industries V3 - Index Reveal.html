@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ინდუსტრიები — V3 · Index Reveal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#07080A; --bg-2:#0C0E12; --panel:#121419;
+    --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.14);
+    --text:#EEF1F4; --muted:#9AA2AC; --dim:#687078;
+    --teal:#36D2E6; --teal-2:#19A6BC;
+    --font:'Noto Sans Georgian',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 32px;}
+
+  .idx-sec{
+    position:relative;padding:118px 0 122px;overflow:hidden;
+    background:
+      radial-gradient(70% 60% at 85% 4%, rgba(54,210,230,.12), transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg-2));
+  }
+  /* big background glyph that morphs on hover */
+  .ghost{position:absolute;right:-3%;top:46%;transform:translateY(-50%);width:min(46vw,560px);height:min(46vw,560px);
+    color:rgba(54,210,230,.07);pointer-events:none;transition:opacity .5s var(--ease),transform .6s var(--ease);opacity:0;}
+  .ghost svg{width:100%;height:100%;}
+  .ghost.show{opacity:1;}
+
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:10px;font-weight:500;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.8;}
+  .sec-head{max-width:780px;margin-bottom:30px;position:relative;z-index:2;}
+  .sec-head h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:800;letter-spacing:-.01em;line-height:1.08;margin-top:18px;text-wrap:balance;}
+
+  .idx-list{position:relative;z-index:2;border-top:1px solid var(--line);}
+  .idx-row{position:relative;display:flex;align-items:center;gap:clamp(16px,3vw,40px);
+    padding:clamp(14px,2vw,22px) 6px;border-bottom:1px solid var(--line);cursor:pointer;text-decoration:none;color:inherit;
+    transition:padding-left .4s var(--ease);}
+  .idx-row .rnum{font-family:var(--mono);font-size:.92rem;color:var(--dim);width:42px;flex-shrink:0;letter-spacing:.04em;transition:color .35s;}
+  .idx-row .rname{
+    font-size:clamp(1.5rem,3.6vw,2.7rem);font-weight:800;letter-spacing:-.02em;line-height:1.04;flex:1;min-width:0;
+    color:transparent;-webkit-text-stroke:1px rgba(238,241,244,.32);text-stroke:1px rgba(238,241,244,.32);
+    transition:color .35s var(--ease),-webkit-text-stroke-color .35s var(--ease),transform .4s var(--ease);
+    transform-origin:left center;
+  }
+  .idx-row .rtag{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+    white-space:nowrap;opacity:.0;transform:translateX(-8px);transition:opacity .35s,transform .35s,color .35s;flex-shrink:0;}
+  .idx-row .rarrow{width:30px;height:30px;flex-shrink:0;color:var(--teal);opacity:0;transform:translateX(-12px) rotate(-12deg);transition:opacity .35s,transform .4s var(--ease);}
+  .idx-row .rarrow svg{width:100%;height:100%;}
+
+  /* hover state */
+  .idx-row:hover,.idx-row.active{padding-left:24px;}
+  .idx-row:hover .rnum,.idx-row.active .rnum{color:var(--teal);}
+  .idx-row:hover .rname,.idx-row.active .rname{color:var(--text);-webkit-text-stroke-color:transparent;transform:translateX(4px);}
+  .idx-row:hover .rtag,.idx-row.active .rtag{opacity:1;transform:none;color:var(--teal);}
+  .idx-row:hover .rarrow,.idx-row.active .rarrow{opacity:1;transform:none;}
+  /* dim siblings when one is hovered */
+  .idx-list:hover .idx-row:not(:hover) .rname{-webkit-text-stroke-color:rgba(238,241,244,.16);}
+
+  /* sweeping teal underline that follows active row */
+  .idx-list .marker{position:absolute;left:0;height:2px;background:linear-gradient(90deg,var(--teal),transparent);
+    opacity:0;transition:transform .45s var(--ease),width .45s var(--ease),opacity .35s;pointer-events:none;}
+
+  /* floating cursor chip with the icon */
+  .float{position:fixed;z-index:30;width:84px;height:84px;border-radius:16px;display:grid;place-items:center;pointer-events:none;
+    background:rgba(8,14,16,.9);border:1px solid rgba(54,210,230,.45);color:var(--teal);
+    box-shadow:0 18px 50px -12px rgba(0,0,0,.8),0 0 30px rgba(54,210,230,.25);backdrop-filter:blur(6px);
+    opacity:0;transform:translate(-50%,-50%) scale(.7);transition:opacity .25s var(--ease),transform .25s var(--ease);}
+  .float.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  .float svg{width:40px;height:40px;}
+  .float::after{content:attr(data-n);position:absolute;bottom:-9px;right:-9px;width:24px;height:24px;border-radius:50%;
+    background:var(--teal);color:#04181c;font-family:var(--mono);font-size:.66rem;font-weight:600;display:grid;place-items:center;}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  .idx-row.reveal{transform:translateY(14px);}
+  .idx-row.reveal.in{transform:none;}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;}}
+  @media(max-width:720px){
+    .idx-sec{padding:74px 0 80px;}
+    .wrap{padding:0 16px;}
+    .idx-row .rtag{display:none;}
+    .float{display:none;}
+    .idx-row{gap:14px;padding:14px 4px;}
+    /* outlined giant type is hard to read at phone size — fill it instead */
+    .idx-row .rname{font-size:clamp(1.3rem,5.4vw,2rem);-webkit-text-stroke-width:0;text-stroke-width:0;color:var(--muted);line-height:1.12;}
+    .idx-row:hover .rname,.idx-row.active .rname{color:var(--text);}
+    .idx-list:hover .idx-row:not(:hover) .rname{-webkit-text-stroke-color:transparent;}
+    .idx-row .rnum{width:28px;font-size:.78rem;}
+    .idx-row:hover,.idx-row.active{padding-left:14px;}
+    .idx-row .rarrow{width:24px;height:24px;}
+    .ghost{width:min(64vw,360px);opacity:0;}
+    .ghost.show{opacity:.06;}
+  }
+</style>
+</head>
+<body>
+  <section class="idx-sec" id="idx">
+    <div class="ghost" id="ghost"></div>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">ინდუსტრიები</div>
+        <h2>ინდუსტრიები, რომლებსაც ვიცავთ</h2>
+      </div>
+
+      <div class="idx-list" id="list">
+        <span class="marker" id="marker"></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="float" id="float" data-n=""></div>
+
+<script>
+const ic={
+  smb:'<path d="M4 20V9l5-3 5 3v11M14 20v-7h5v7M3 20h18M8 12h2M8 15h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  bank:'<path d="M4 10h16M6 10v8M10 10v8M14 10v8M18 10v8M3 20h18M12 3 4 7h16l-8-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+  gov:'<path d="M5 21V9l7-5 7 5v12M9 21v-6h6v6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+  telecom:'<path d="M12 20V8M8 11a5.7 5.7 0 0 1 8 0M5 8a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  energy:'<path d="M13 3 5 13h6l-1 8 8-11h-6l1-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+  mfg:'<circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  retail:'<path d="M6 8h12l1 12H5L6 8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.6"/>',
+  edu:'<path d="M12 4 3 8l9 4 9-4-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11v4c0 1.5 2.2 2.5 5 2.5s5-1 5-2.5v-4" stroke="currentColor" stroke-width="1.6"/>',
+  logistics:'<path d="M3 16V8h11v8M14 11h4l3 3v2h-7" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="1.6"/>',
+  gaming:'<rect x="3" y="7" width="18" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7 11v2M6 12h2M15 11.5h.01M17.5 13.5h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'
+};
+const DATA=[
+  {full:'SMB ბიზნეს გადაწყვეტილებები',t:'SMB',i:'smb'},
+  {full:'ბანკები და ფინანსური სექტორი',t:'Finance',i:'bank'},
+  {full:'სახელმწიფო სექტორი',t:'Government',i:'gov'},
+  {full:'ტელეკომი',t:'Telecom',i:'telecom'},
+  {full:'ენერგეტიკა',t:'Energy',i:'energy'},
+  {full:'წარმოება',t:'Manufacturing',i:'mfg'},
+  {full:'Retail',t:'Retail',i:'retail'},
+  {full:'განათლება',t:'Education',i:'edu'},
+  {full:'ტრანსპორტი და ლოგისტიკა',t:'Logistics',i:'logistics'},
+  {full:'Gaming & Casinos',t:'Gaming',i:'gaming'}
+];
+const svg=p=>'<svg viewBox="0 0 24 24" fill="none">'+p+'</svg>';
+const arrow='<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+const list=document.getElementById('list');
+const marker=document.getElementById('marker');
+DATA.forEach((d,i)=>{
+  const a=document.createElement('a');
+  a.className='idx-row reveal';a.href='#industries';a.dataset.i=i;
+  a.style.transitionDelay=(i*0.05)+'s';
+  a.innerHTML=`<span class="rnum">${String(i+1).padStart(2,'0')}</span>
+    <span class="rname">${d.full}</span>
+    <span class="rtag">${d.t}</span>
+    <span class="rarrow">${arrow}</span>`;
+  list.appendChild(a);
+});
+
+const rows=[...list.querySelectorAll('.idx-row')];
+const float=document.getElementById('float');
+const ghost=document.getElementById('ghost');
+const sec=document.getElementById('idx');
+
+function setActive(i){
+  rows.forEach((r,k)=>r.classList.toggle('active',k===i));
+  const r=rows[i].getBoundingClientRect();
+  const lr=list.getBoundingClientRect();
+  marker.style.opacity='1';
+  marker.style.width=Math.min(r.width,160)+'px';
+  marker.style.transform=`translateY(${rows[i].offsetTop+rows[i].offsetHeight-2}px)`;
+  // float chip icon
+  float.innerHTML=svg(ic[DATA[i].i]);
+  float.dataset.n=String(i+1).padStart(2,'0');
+  float.classList.add('show');
+  // ghost glyph
+  ghost.innerHTML=svg(ic[DATA[i].i]);
+  ghost.classList.add('show');
+}
+function clearActive(){
+  rows.forEach(r=>r.classList.remove('active'));
+  marker.style.opacity='0';
+  float.classList.remove('show');
+  ghost.classList.remove('show');
+}
+rows.forEach((r,i)=>{
+  r.addEventListener('mouseenter',()=>{stopAuto();setActive(i);});
+  r.addEventListener('click',e=>{e.preventDefault();stopAuto();setActive(i);clearTimeout(r._t);r._t=setTimeout(()=>{if(!auto)startAuto();},4500);});
+});
+sec.addEventListener('mousemove',e=>{
+  float.style.left=e.clientX+'px';
+  float.style.top=e.clientY+'px';
+});
+list.addEventListener('mouseleave',()=>{if(!auto)clearActive();});
+
+// auto-cycle until user interacts (drives ghost glyph only, no float chip)
+let auto=null,ai=0;
+function startAuto(){
+  if(auto)return;
+  auto=setInterval(()=>{
+    rows.forEach((r,k)=>r.classList.toggle('active',k===ai));
+    const row=rows[ai];
+    marker.style.opacity='1';
+    marker.style.width=Math.min(row.getBoundingClientRect().width,160)+'px';
+    marker.style.transform=`translateY(${row.offsetTop+row.offsetHeight-2}px)`;
+    ghost.innerHTML=svg(ic[DATA[ai].i]);ghost.classList.add('show');
+    ai=(ai+1)%DATA.length;
+  },2200);
+}
+function stopAuto(){if(auto){clearInterval(auto);auto=null;rows.forEach(r=>r.classList.remove('active'));marker.style.opacity='0';}}
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');
+    if(e.target.id==='list'){setTimeout(startAuto,1100);}
+    io.unobserve(e.target);}
+}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+io.observe(list);
+// fallback for embedded/iframe contexts where IO may not fire
+setTimeout(()=>{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));list.classList.add('in');startAuto();const s=document.createElement('style');s.textContent='.reveal{opacity:1!important;transform:none!important;transition:none!important}';document.head.appendChild(s);},1100);
+</script>
+</body>
+</html>

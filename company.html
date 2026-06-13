@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — Company / ჩვენ შესახებ</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../company.css">
+</head>
+<body>
+
+<!-- ============================================================ NAV ============================================================ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Cyber<span class="x">X</span></span>
+        <span class="brand-slogan">Secure · Resilient · Ready</span>
+      </span>
+    </a>
+
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item has-dropdown" data-menu="company">
+        <button type="button">Company
+          <svg class="caret" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="menu-item has-dropdown" data-menu="solutions">
+        <button type="button">Solutions
+          <svg class="caret" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Blog V2.html">Blog</a></div>
+      <div class="menu-item has-dropdown" data-menu="industries">
+        <button type="button">Industries
+          <svg class="caret" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="menu-item"><a href="../Contact.html">Contact</a></div>
+    </nav>
+
+    <a class="btn btn-primary nav-cta" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+
+    <button class="hamburger" id="hamburger" aria-label="მენიუ">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- dropdowns -->
+  <div class="dropdown" id="dd-company">
+    <div class="dropdown-inner">
+      <div class="dd-head">Company</div>
+      <div class="dd-grid cols-2">
+        <a class="dd-link" href="company.html#about"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>ჩვენს შესახებ</a>
+        <a class="dd-link" href="company.html#mission"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.7"/></svg></span>CyberX-ის მიზანი</a>
+        <a class="dd-link" href="company.html#relevance"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6.5V12c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6.5L12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>რატომ არის კიბერუსაფრთხოება დღეს უფრო აქტუალური, ვიდრე ოდესმე?</a>
+        <a class="dd-link" href="company.html#future"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>კიბერუსაფრთხოების მომავალი</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dropdown" id="dd-solutions">
+    <div class="dropdown-inner">
+      <div class="dd-head">Solutions</div>
+      <div class="dd-grid cols-4">
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>XDR / EDR Endpoint Protection</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="19" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="18" r="2" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 7.5 11 16M17.5 7.5 13 16M7 6h10" stroke="currentColor" stroke-width="1.6"/></svg></span>Network Security</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 17 18H7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>Cloud Security Solutions</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg></span>Data Loss Prevention (DLP)</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v3M12 18v3M5 7l2 1M17 16l2 1M5 17l2-1M17 8l2-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/></svg></span>Vulnerability Management</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M9 21h6M12 17v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>SIEM / SOC Monitoring</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 11a4 4 0 0 1 8 0M6 14c0-1 .3-2 .6-2.7M18 14c0-1-.3-2-.6-2.7M9 20c-1-1.5-1.5-3.5-1.5-6M15 20c1-1.5 1.5-3.5 1.5-6M12 13v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>MFA &amp; Identity Security</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="9" width="16" height="11" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 9V6h8v3M9 14h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>OT / ICS Infrastructure Protection</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Email Security</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Penetration Testing &amp; Red Teaming</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21a9 9 0 1 0-9-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 12 4 8M12 12v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Threat Intelligence</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4 3 8l9 4 9-4-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11v4c0 1.5 2.2 2.5 5 2.5s5-1 5-2.5v-4" stroke="currentColor" stroke-width="1.6"/></svg></span>Security Awareness Training</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Sure MDM</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dropdown" id="dd-industries">
+    <div class="dropdown-inner">
+      <div class="dd-head">Industries</div>
+      <div class="dd-grid cols-4">
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/></svg></span>ჯანდაცვა (Healthcare)</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10h16M6 10v8M10 10v8M14 10v8M18 10v8M3 20h18M12 3 4 7h16l-8-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>SMB ბიზნეს გადაწყვეტილებები</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10h16M6 10v8M10 10v8M14 10v8M18 10v8M3 20h18M12 3 4 7h16l-8-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>ბანკები და ფინანსური სექტორი</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M5 21V9l7-5 7 5v12M9 21v-6h6v6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>სახელმწიფო სექტორი</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M8 11a5.7 5.7 0 0 1 8 0M5 8a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>ტელეკომი</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M13 3 5 13h6l-1 8 8-11h-6l1-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>ენერგეტიკა</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>წარმოება</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M6 8h12l1 12H5L6 8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.6"/></svg></span>Retail</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4 3 8l9 4 9-4-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11v4c0 1.5 2.2 2.5 5 2.5s5-1 5-2.5v-4" stroke="currentColor" stroke-width="1.6"/></svg></span>განათლება</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M3 16V8h11v8M14 11h4l3 3v2h-7" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="1.6"/></svg></span>ტრანსპორტი და ლოგისტიკა</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7 11v2M6 12h2M15 11.5h.01M17.5 13.5h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>Gaming &amp; Casinos</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="company.html#about">Company</a>
+  <a class="mm-sub" href="company.html#about">— ჩვენს შესახებ</a>
+  <a class="mm-sub" href="company.html#mission">— CyberX-ის მიზანი</a>
+  <a class="mm-sub" href="company.html#relevance">— რატომ აქტუალურია კიბერუსაფრთხოება</a>
+  <a class="mm-sub" href="company.html#future">— კიბერუსაფრთხოების მომავალი</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Blog V2.html">Blog</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+  <a class="btn btn-primary" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<!-- section scroll-spy rail -->
+<aside class="sec-rail" aria-hidden="true">
+  <a href="#about"><span class="rn">01</span><span class="rbar"></span><span class="rl">ჩვენს შესახებ</span></a>
+  <a href="#mission"><span class="rn">02</span><span class="rbar"></span><span class="rl">CyberX-ის მიზანი</span></a>
+  <a href="#relevance"><span class="rn">03</span><span class="rbar"></span><span class="rl">რატომ აქტუალურია</span></a>
+  <a href="#future"><span class="rn">04</span><span class="rbar"></span><span class="rl">მომავალი</span></a>
+</aside>
+
+<main id="top">
+
+  <!-- ============================================================ HERO ============================================================ -->
+  
+
+  <!-- ============================================================ BLOCK 1 — ABOUT ============================================================ -->
+  <section class="co-sec about co-grid-bg" id="about" style="padding-top:150px;">
+    <div class="wrap">
+      <div class="co-head reveal">
+        <span class="co-num">01 — ჩვენს შესახებ</span>
+        <h2>CyberX — თანამედროვე კიბერუსაფრთხოების კომპანია</h2>
+        <p class="lead">CyberX ორგანიზაციებს ეხმარება კიბერსაფრთხეებისგან დაცვაში, IT ინფრასტრუქტურის უსაფრთხოების გაძლიერებასა და თანამედროვე ციფრული რისკების მართვაში — საქართველოსა და კავკასიის რეგიონში.</p>
+      </div>
+
+      <div class="about-cards r-stagger">
+        <div class="ac">
+          <span class="ac-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>რა არის CyberX</h3>
+          <p>კიბერუსაფრთხოების გადაწყვეტილებების მიმწოდებელი, რომელიც ორგანიზაციებს ეხმარება ციფრული აქტივების დაცვასა და თანამედროვე რისკების მართვაში მთელ რეგიონში.</p>
+        </div>
+        <div class="ac">
+          <span class="ac-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.2 3.2-5.5 7-5.5s7 2.3 7 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          <h3>ვინ ვართ</h3>
+          <p>სანდო პარტნიორი მათთვის, ვინც მყარ და მასშტაბურ დაცვას ეძებს. ვთანამშრომლობთ მსოფლიოს წამყვან ბრენდებთან და მათ გადაწყვეტილებებს ვუსადაგებთ ბიზნესს, სახელმწიფო უწყებებსა და კრიტიკულ ინფრასტრუქტურას.</p>
+        </div>
+        <div class="ac">
+          <span class="ac-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 9-9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M3 4v4h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m9 12 2 2 4-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>ჩვენი მიდგომა</h3>
+          <p>კიბერუსაფრთხოება ჩვენთვის პროდუქტის გაყიდვაზე მეტია. ვთავაზობთ სრულ ციკლს — სწორი გადაწყვეტილების შერჩევიდან დანერგვამდე და შემდგომ მხარდაჭერამდე, მაღალი კომპეტენციითა და გამოცდილებით.</p>
+        </div>
+      </div>
+
+      <div class="tagline-strip reveal">
+        <svg class="ts-ic" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V5l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <p>საფრთხე <span class="em">რეალურია</span> — თქვენი დაცვა ჩვენი <span class="em">პრიორიტეტი</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ BLOCK 2 — MISSION ============================================================ -->
+  <section class="co-sec mission co-grid-bg" id="mission" style="--gl:rgba(37,224,138,.05);">
+    <div class="wrap">
+      <div class="mission-layout">
+        <div class="mission-aside">
+          <div class="reveal">
+            <span class="co-num">02 — CyberX-ის მიზანი</span>
+            <h2 style="font-size:clamp(1.9rem,3.6vw,2.8rem);margin:18px 0 22px;text-wrap:balance;">ვეხმარებით ორგანიზაციებს ციფრული აქტივების დაცვაში</h2>
+            <p class="lead">CyberX-ის მიზანია დაეხმაროს ორგანიზაციებს თანამედროვე კიბერსაფრთხეების ეფექტურად მართვასა და ციფრული აქტივების დაცვაში.</p>
+            <div class="close">CyberX აერთიანებს თანამედროვე ტექნოლოგიებს, საერთაშორისო პარტნიორებსა და პროფესიონალურ გამოცდილებას, რათა შემოგთავაზოთ ეფექტური, მასშტაბირებადი და მომავლის მოთხოვნებზე მორგებული გადაწყვეტილებები.</div>
+          </div>
+        </div>
+
+        <div class="goals r-stagger">
+          <div class="goal"><span class="gmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>დავიცვათ ბიზნესები, სახელმწიფო უწყებები და კრიტიკული ინფრასტრუქტურა მუდმივად განვითარებადი კიბერსაფრთხეებისგან.</p></div>
+          <div class="goal"><span class="gmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>შევამციროთ უსაფრთხოების რისკები პროაქტიული მიდგომებითა და თანამედროვე ტექნოლოგიებით.</p></div>
+          <div class="goal"><span class="gmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>დავნერგოთ მსოფლიო ლიდერი მწარმოებლების ინოვაციური კიბერუსაფრთხოების გადაწყვეტილებები.</p></div>
+          <div class="goal"><span class="gmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>უზრუნველვყოთ უსაფრთხოების მაღალი დონე, უწყვეტი ოპერირება და ბიზნესის მდგრადობა.</p></div>
+          <div class="goal"><span class="gmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>გავაძლიეროთ ორგანიზაციების კიბერუსაფრთხოების კულტურა და ცნობიერება.</p></div>
+          <div class="goal"><span class="gmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>ხელი შევუწყოთ რეგიონში კიბერუსაფრთხოების სტანდარტების, პრაქტიკებისა და ტექნოლოგიური შესაძლებლობების განვითარებას.</p></div>
+          <div class="goal"><span class="gmark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>გავხდეთ სანდო პარტნიორი ორგანიზაციებისთვის, რომლებიც უსაფრთხო და მდგრად ციფრულ გარემოს ქმნიან.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ BLOCK 3 — RELEVANCE ============================================================ -->
+  <section class="co-sec relevance co-grid-bg" id="relevance">
+    <div class="wrap">
+      <div class="co-head reveal">
+        <span class="co-num">03 — რატომ აქტუალურია</span>
+        <h2>რატომ არის კიბერუსაფრთხოება დღეს უფრო აქტუალური, ვიდრე ოდესმე?</h2>
+        <p class="lead">ციფრული ტექნოლოგიების სწრაფ განვითარებასთან ერთად კიბერსაფრთხეები ერთ-ერთ ყველაზე მნიშვნელოვან ბიზნეს რისკად იქცა. შეტევები სულ უფრო დახვეწილი, ავტომატიზებული და მასშტაბურია — რაც უსაფრთხოების ეფექტურ მართვას კრიტიკულად მნიშვნელოვანს ხდის.</p>
+      </div>
+
+      <div class="reasons r-stagger">
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.7"/><path d="M12 13v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="r-n">01</span></div><p>Ransomware შეტევების მუდმივი ზრდა და მათი მზარდი ფინანსური ზიანი.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7" ry="3" stroke="currentColor" stroke-width="1.7"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="r-n">02</span></div><p>მონაცემთა გაჟონვისა და კონფიდენციალური ინფორმაციის დაკარგვის შემთხვევების მატება.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="7" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.7"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2M3 10h2M3 14h2M19 10h2M19 14h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="r-n">03</span></div><p>ხელოვნურ ინტელექტზე (AI) დაფუძნებული კიბერშეტევების განვითარება.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 17 18H7Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span><span class="r-n">04</span></div><p>Cloud ინფრასტრუქტურისა და SaaS სერვისების ფართო გავრცელება.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="r-n">05</span></div><p>დისტანციური და ჰიბრიდული სამუშაო გარემოების ზრდა.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="r-n">06</span></div><p>სახელმწიფო, ფინანსურ, ჯანდაცვისა და კრიტიკული ინფრასტრუქტურის სექტორებზე გახშირებული მიზანმიმართული თავდასხმები.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="r-n">07</span></div><p>Phishing, Business Email Compromise (BEC) და Social Engineering შეტევების ზრდა.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M9 11V7a3 3 0 0 1 6 0v4" stroke="currentColor" stroke-width="1.7"/><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="m9 15 2 2 3-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="r-n">08</span></div><p>რეგულაციებისა და შესაბამისობის (Compliance) მოთხოვნების გამკაცრება.</p></div>
+        <div class="reason"><div class="r-top"><span class="r-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.4" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="6" r="2.4" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="18" r="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M7.6 7.6 11 15M16.4 7.6 13 15M8 6h8" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="r-n">09</span></div><p>ბიზნეს პროცესების მზარდი დამოკიდებულება ციფრულ სისტემებსა და მონაცემებზე.</p></div>
+      </div>
+
+      <div class="urgent-callout reveal">
+        <p>დღეს კიბერუსაფრთხოება აღარ წარმოადგენს მხოლოდ IT დეპარტამენტის პასუხისმგებლობას. ის არის ბიზნესის მდგრადობის, რეპუტაციის, ფინანსური სტაბილურობისა და უწყვეტი ოპერირების ერთ-ერთი მთავარი საფუძველი.</p>
+        <p class="punch">ორგანიზაციებისთვის კიბერუსაფრთხოება უკვე <span class="em">აღარ არის არჩევანი</span> — ეს დღევანდელი აუცილებლობაა.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ BLOCK 4 — FUTURE ============================================================ -->
+  <section class="co-sec future co-grid-bg" id="future" style="--gl:rgba(54,210,230,.05);">
+    <div class="wrap">
+      <div class="co-head reveal">
+        <span class="co-num">04 — კიბერუსაფრთხოების მომავალი</span>
+        <h2>კიბერუსაფრთხოების მომავალი</h2>
+      </div>
+
+      <div class="future-intro reveal">
+        <p>ტექნოლოგიების განვითარებასთან ერთად კიბერსაფრთხეებიც უფრო კომპლექსური და დახვეწილი ხდება. ხელოვნური ინტელექტის, ღრუბლოვანი ინფრასტრუქტურის, IoT მოწყობილობებისა და ციფრული ტრანსფორმაციის ზრდა ორგანიზაციებს სრულიად ახალ გამოწვევებს უქმნის.</p>
+        <p>მომავალი კიბერუსაფრთხოება დაფუძნებული იქნება ავტომატიზაციაზე, ხელოვნურ ინტელექტსა და პროაქტიულ დაცვაზე — რაც საფრთხეების რეალურ დროში აღმოჩენისა და შეჩერების საშუალებას მისცემს ორგანიზაციებს.</p>
+      </div>
+
+      <div class="fm-label">მომავალი წლების ძირითადი მიმართულებები</div>
+      <div class="marquee" id="future-marquee">
+        <div class="mq-row" data-row="a"></div>
+        <div class="mq-row rev" data-row="b"></div>
+      </div>
+
+      <div class="future-close reveal">
+        <p>მომავალში ორგანიზაციები სულ უფრო მეტად დაეყრდნობიან ინტელექტუალურ, ავტომატიზებულ და მონაცემებზე დაფუძნებულ უსაფრთხოების სისტემებს, რომლებიც შეძლებენ საფრთხეების პროგნოზირებას, პრევენციასა და სწრაფ რეაგირებას.</p>
+        <div class="fc-cyber">CyberX-ის მიზანია მომხმარებლებს <span class="em">დღესვე</span> მიაწოდოს ის ტექნოლოგიები და მიდგომები, რომლებიც ხვალინდელი კიბერსაფრთხეების წინააღმდეგ მეტად ეფექტური იქნება.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CTA ============================================================ -->
+  
+
+</main>
+
+<!-- ============================================================ FOOTER ============================================================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის — რისკების შესამცირებლად და კიბერმდგრადობის გასაძლიერებლად.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>კომპანია</h4>
+          <a href="company.html#about">ჩვენს შესახებ</a>
+          <a href="company.html#mission">CyberX-ის მიზანი</a>
+          <a href="../index.html#solutions">გადაწყვეტილებები</a>
+          <a href="../index.html#industries">ინდუსტრიები</a>
+        </div>
+        <div class="footer-col">
+          <h4>რესურსები</h4>
+          <a href="../index.html#insights">ბლოგი / Insights</a>
+          <a href="../index.html#final">კონტაქტი</a>
+          <a href="../index.html#vendors">ვენდორები</a>
+        </div>
+        <div class="footer-col">
+          <h4>დაკავშირება</h4>
+          <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="../index.html#final">მოითხოვე კონსულტაცია</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- future directions marquee ---------- */
+(function future() {
+  const wrap = document.getElementById('future-marquee');
+  if (!wrap) return;
+  const items = [
+    'AI-Driven Security & Threat Intelligence','Zero Trust Architecture','Cloud-Native Security',
+    'Autonomous Threat Detection & Response','Identity-Centric Security','OT/ICS Infrastructure Protection',
+    'Quantum-Safe Encryption','AI Attack Detection & Prevention','Deepfake & Digital Fraud Protection',
+    'Cyber Resilience & Business Continuity','Extended Detection and Response (XDR)',
+    'Secure Access Service Edge (SASE)','Cybersecurity Automation & Orchestration'
+  ];
+  const split = Math.ceil(items.length / 2);
+  const rows = { a: items.slice(0, split), b: items.slice(split) };
+  function chip(t, alt) {
+    return '<span class="fchip' + (alt ? ' alt' : '') + '"><span class="fdot"></span>' + t + '</span>';
+  }
+  Object.entries(rows).forEach(([key, list]) => {
+    const row = wrap.querySelector('[data-row="' + key + '"]');
+    const alt = key === 'b';
+    const html = list.map(t => chip(t, alt)).join('');
+    row.innerHTML = html + html; // duplicate for seamless loop
+  });
+})();
+
+/* ---------- reveals + staggered grids (self-contained; not reliant on app.js) ---------- */
+(function reveals() {
+  const items = document.querySelectorAll('.reveal, .r-stagger');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  items.forEach(el => io.observe(el));
+  // safety net: never leave content hidden if observers are throttled (backgrounded iframe / print)
+  setTimeout(() => items.forEach(el => el.classList.add('in')), 1400);
+})();
+
+/* ---------- section rail scroll-spy ---------- */
+(function spy() {
+  const secs = [...document.querySelectorAll('.co-sec')];
+  const dots = [...document.querySelectorAll('.sec-rail a')];
+  if (!secs.length) return;
+  const map = { about: 0, mission: 1, relevance: 2, future: 3 };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = map[e.target.id];
+        dots.forEach((d, k) => d.classList.toggle('on', k === i));
+      }
+    });
+  }, { rootMargin: '-46% 0px -46% 0px' });
+  secs.forEach(s => io.observe(s));
+})();
+
+
+</script>
+<script src="../app.js"></script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#tg)" stroke-width="1.6" fill="rgba(255,75,38,.12)"/>
+    <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#tg)" stroke-width="2.4" stroke-linecap="round"/>
+    <defs><linearGradient id="tg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+  </svg>
+</template>
+</body>
+</html>

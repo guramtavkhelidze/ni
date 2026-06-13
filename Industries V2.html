@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — ინდუსტრიები · ვერსია 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../industries-motifs.css">
+<style>
+  /* ============================================================
+     INDUSTRIES · V2 — "Sector Wall" (bento mosaic + overlay)
+     ============================================================ */
+
+  /* HERO */
+  .v2-hero { position: relative; overflow: hidden; padding: 124px 0 70px;
+    background: radial-gradient(115% 80% at 82% 4%, rgba(255,75,38,.16), transparent 55%), radial-gradient(80% 70% at 4% 96%, rgba(120,22,10,.30), transparent 60%), linear-gradient(180deg,#0b0608 0%,var(--bg) 80%); }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .8; z-index: 0; }
+  .v2-hero::after { content:""; position:absolute; inset:0; pointer-events:none; background: linear-gradient(180deg, transparent 62%, var(--bg) 100%); }
+  .v2-hero .wrap { position: relative; z-index: 3; }
+  .v2-hero h1 { font-size: clamp(2.05rem,4.4vw,3.6rem); font-weight: 800; letter-spacing: -.03em; margin: 24px 0 0; text-wrap: balance; max-width: 14ch; }
+  .v2-hero h1 .hl { background: linear-gradient(110deg,var(--brand-2),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .v2-hero .sub { font-size: clamp(1.04rem,1.5vw,1.24rem); color: var(--muted); max-width: 620px; margin: 26px 0 0; line-height: 1.7; }
+
+  /* WALL */
+  .v2-wall { position: relative; background: linear-gradient(180deg,var(--bg),var(--bg-2)); padding: 70px 0 110px; }
+  .v2-wall-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 34px; }
+  .v2-wall-head h2 { font-size: clamp(1.7rem,3.2vw,2.6rem); margin-top: 14px; }
+  .v2-wall-head .hint { font-family: var(--mono); font-size: .76rem; color: var(--dim); letter-spacing: .04em; }
+
+  .v2-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 168px; gap: 14px; grid-auto-flow: dense; }
+  .v2-tile {
+    position: relative; overflow: hidden; text-align: left; cursor: pointer;
+    border-radius: 18px; padding: 22px; border: 1px solid rgba(var(--rgb),.28);
+    background: linear-gradient(165deg, rgba(var(--rgb),.14), rgba(18,20,25,.7) 60%);
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform .3s var(--ease), border-color .3s, box-shadow .3s;
+  }
+  .v2-tile.big { grid-column: span 2; grid-row: span 2; }
+  .v2-tile.wide { grid-column: span 2; }
+  .v2-tile:hover { transform: translateY(-5px); border-color: rgba(var(--rgb),.6); box-shadow: 0 22px 50px -22px rgba(var(--rgb),.6); }
+
+  .v2-motif { position: absolute; inset: 0; z-index: 0; opacity: .14; pointer-events: none; mask-image: radial-gradient(120% 90% at 70% 25%, #000, transparent 78%); }
+  .v2-tile.s .v2-motif * { animation-play-state: paused; }
+  .v2-tile.s:hover .v2-motif * { animation-play-state: running; }
+  .v2-tile:hover .v2-motif { opacity: .26; }
+
+  .v2-gh { position: absolute; top: 14px; right: 18px; z-index: 1; font-family: var(--mono); font-size: .8rem; color: rgba(var(--rgb),.85); }
+  .v2-ic { position: relative; z-index: 2; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(var(--rgb),.16); border: 1px solid rgba(var(--rgb),.32); color: var(--ac); }
+  .v2-ic svg { width: 25px; height: 25px; }
+  .v2-tile.big .v2-ic { width: 58px; height: 58px; }
+  .v2-tile.big .v2-ic svg { width: 31px; height: 31px; }
+  .v2-meta { position: relative; z-index: 2; }
+  .v2-en { display: block; font-family: var(--mono); font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; color: rgba(var(--rgb),.9); margin-bottom: 6px; }
+  .v2-nm { display: block; font-size: 1.06rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.2; color: var(--text); }
+  .v2-tile.big .v2-nm { font-size: 1.5rem; }
+  .v2-teaser { display: none; color: var(--muted); font-size: .95rem; line-height: 1.55; margin-top: 10px; }
+  .v2-tile.big .v2-teaser, .v2-tile.wide .v2-teaser { display: block; }
+  .v2-go { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--ac); background: rgba(var(--rgb),.12); border: 1px solid rgba(var(--rgb),.3); opacity: 0; transform: translateX(-4px); transition: opacity .25s var(--ease), transform .25s var(--ease), background .25s; }
+  .v2-go svg { width: 15px; height: 15px; }
+  .v2-tile:hover .v2-go { opacity: 1; transform: none; }
+  .v2-tile:hover .v2-go { background: var(--ac); color: #0b0507; }
+  .v2-tile.big .v2-go, .v2-tile.wide .v2-go { right: 22px; bottom: 22px; }
+
+  /* OVERLAY */
+  .v2-overlay { position: fixed; inset: 0; z-index: 300; display: none; place-items: center; padding: 28px;
+    background: rgba(5,6,8,.74); backdrop-filter: blur(10px); }
+  .v2-overlay.show { display: grid; }
+  .v2-ov-card { position: relative; overflow: hidden; width: min(820px, 100%); max-height: 90vh; overflow-y: auto;
+    border-radius: 24px; border: 1px solid rgba(var(--rgb),.4); padding: 48px 52px 46px;
+    background: radial-gradient(120% 80% at 84% 4%, rgba(var(--rgb),.18), transparent 56%), linear-gradient(180deg,var(--panel),#0a0c10);
+    --ac:#FF7A3C; --rgb:255,122,60; scrollbar-width: none; }
+  .v2-ov-card::-webkit-scrollbar { display: none; }
+  .v2-overlay.show .v2-ov-card { animation: v2card .38s var(--ease) both; }
+  @keyframes v2card { from { transform: scale(.94) translateY(12px); } to { transform: none; } }
+  .v2-ov-motif { position: absolute; inset: 0; z-index: 0; opacity: .16; pointer-events: none; mask-image: radial-gradient(110% 70% at 78% 10%, #000, transparent 72%); }
+  .v2-ov-body { position: relative; z-index: 2; }
+  .v2-ov-gh { position: absolute; top: -22px; right: -10px; z-index: -1; font-family: var(--mono); font-weight: 600; font-size: clamp(5rem,12vw,9rem); line-height: .8; color: transparent; -webkit-text-stroke: 1px rgba(var(--rgb),.22); }
+  .v2-ov-head { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+  .v2-ov-ic { width: 62px; height: 62px; flex-shrink: 0; border-radius: 16px; display: grid; place-items: center; background: rgba(var(--rgb),.14); border: 1px solid rgba(var(--rgb),.36); color: var(--ac); }
+  .v2-ov-ic svg { width: 33px; height: 33px; }
+  .v2-ov-en { font-family: var(--mono); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ac); margin-bottom: 8px; }
+  .v2-ov-title { font-size: clamp(1.7rem,3vw,2.4rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+  .v2-ov-p1 { font-size: 1.1rem; color: var(--text); line-height: 1.66; opacity: .94; }
+  .v2-ov-help { display: flex; gap: 14px; margin-top: 22px; padding-top: 22px; border-top: 1px dashed rgba(var(--rgb),.35); }
+  .v2-ov-chk { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(var(--rgb),.16); color: var(--ac); margin-top: 2px; }
+  .v2-ov-chk svg { width: 16px; height: 16px; }
+  .v2-ov-help p { font-size: 1rem; color: var(--muted); line-height: 1.66; }
+  .v2-ov-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .v2-ov-tag { font-size: .84rem; color: var(--text); padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(var(--rgb),.4); background: rgba(var(--rgb),.08); white-space: nowrap; }
+  .v2-ov-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; font-weight: 600; font-size: .96rem; padding: 13px 24px; border-radius: 999px; color: #0b0507; background: var(--ac); border: 1px solid var(--ac); transition: transform .25s var(--ease), box-shadow .25s, filter .25s; }
+  .v2-ov-cta svg { width: 16px; height: 16px; transition: transform .25s var(--ease); }
+  .v2-ov-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -10px rgba(var(--rgb),.6); filter: brightness(1.06); }
+  .v2-ov-cta:hover svg { transform: translateX(4px); }
+
+  .v2-ov-body.enter > * { animation: v2Enter .5s var(--ease) backwards; }
+  .v2-ov-body.enter > *:nth-child(2){animation-delay:.05s} .v2-ov-body.enter > *:nth-child(3){animation-delay:.11s}
+  .v2-ov-body.enter > *:nth-child(4){animation-delay:.17s} .v2-ov-body.enter > *:nth-child(5){animation-delay:.23s} .v2-ov-body.enter > *:nth-child(6){animation-delay:.29s}
+  @keyframes v2Enter { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform:none; } }
+
+  .v2-ov-close, .v2-ov-nav { position: absolute; z-index: 4; background: rgba(255,255,255,.06); border: 1px solid var(--line-2); color: var(--text); border-radius: 50%; display: grid; place-items: center; cursor: pointer; transition: background .2s, transform .2s var(--ease); }
+  .v2-ov-close { top: 18px; right: 18px; width: 40px; height: 40px; }
+  .v2-ov-close svg { width: 20px; height: 20px; }
+  .v2-ov-close:hover, .v2-ov-nav:hover { background: rgba(255,255,255,.14); }
+  .v2-ov-nav { bottom: 18px; width: 44px; height: 44px; }
+  .v2-ov-nav svg { width: 20px; height: 20px; }
+  .v2-ov-nav.prev { right: 74px; }
+  .v2-ov-nav.next { right: 22px; }
+  .v2-ov-nav.prev svg { transform: rotate(180deg); }
+
+  @media (max-width: 980px) {
+    .v2-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 158px; }
+    .v2-tile.big { grid-column: span 2; grid-row: span 2; }
+    .v2-tile.wide { grid-column: span 2; }
+    .v2-ov-card { padding: 40px 28px 40px; }
+  }
+  @media (max-width: 560px) {
+    .v2-hero { padding: 132px 0 56px; }
+    .v2-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .v2-tile { min-height: 150px; }
+    .v2-tile.big, .v2-tile.wide { grid-column: span 1; grid-row: span 1; }
+    .v2-teaser { display: block !important; }
+    .v2-ov-nav.prev { right: 70px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+    </a>
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="../Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="../Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Blog V2.html">Blog</a></div>
+      <div class="menu-item"><a href="../Industries.html" aria-current="page">Industries</a></div>
+      <div class="menu-item"><a href="../Contact.html">Contact</a></div>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+    <button class="hamburger" id="hamburger" aria-label="მენიუ"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="../Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Blog V2.html">Blog</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+  <a class="btn btn-primary" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<main id="v2-top">
+  <!-- HERO -->
+  <section class="v2-hero" data-screen-label="Industries V2 · Hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="wrap">
+      <span class="eyebrow">ინდუსტრიები</span>
+      <h1>თითოეული სექტორი, <span class="hl">დაცული</span></h1>
+      <p class="sub">11 ინდუსტრია — ერთ ცოცხალ კედელზე. შეეხეთ ნებისმიერ სექტორს და გახსენით სრული სურათი იმისა, თუ როგორ იცავს მას CyberX.</p>
+    </div>
+  </section>
+
+  <!-- WALL -->
+  <section class="section v2-wall" id="v2Section" data-screen-label="Industries V2 · Wall">
+    <div class="wrap">
+      <div class="v2-wall-head">
+        <div>
+          <span class="eyebrow teal">სექტორების კედელი</span>
+          <h2>აირჩიეთ თქვენი ინდუსტრია</h2>
+        </div>
+        <span class="hint">დააჭირეთ ბარათს დეტალებისთვის →</span>
+      </div>
+      <div class="v2-grid" id="v2grid"></div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="final" data-screen-label="Industries V2 · CTA">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center">დაიწყეთ აქ</span>
+      <h2>ვერ პოულობთ თქვენს ინდუსტრიას? მაინც დაგიცავთ.</h2>
+      <p>CyberX-ის ექსპერტები შეაფასებენ თქვენი სექტორის სპეციფიკურ რისკებს და შეგირჩევენ მორგებულ უსაფრთხოების ეკოსისტემას.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="../index.html#final">Talk to CyberX Expert <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-ghost" href="../Solutions.html">გადაწყვეტილებების ნახვა</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>კომპანია</h4><a href="../index.html#about">ჩვენს შესახებ</a><a href="../Solutions.html">გადაწყვეტილებები</a><a href="../Industries.html">ინდუსტრიები</a></div>
+        <div class="footer-col"><h4>რესურსები</h4><a href="../index.html#insights">ბლოგი / Insights</a><a href="../Vendors.html">ვენდორები</a></div>
+        <div class="footer-col"><h4>დაკავშირება</h4><a href="#" target="_blank" rel="noopener">LinkedIn</a><a href="../index.html#final">კონტაქტი</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- FOCUS OVERLAY -->
+<div class="v2-overlay" id="v2ov" role="dialog" aria-modal="true">
+  <div class="v2-ov-card" id="v2ovCard">
+    <span class="v2-ov-motif" id="v2ovMotif"></span>
+    <button class="v2-ov-close" id="v2ovClose" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="v2-ov-nav prev" id="v2ovPrev" aria-label="წინა"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="v2-ov-nav next" id="v2ovNext" aria-label="შემდეგი"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="v2-ov-body" id="v2ovBody"></div>
+  </div>
+</div>
+
+<script src="../app.js"></script>
+<script src="../industries-data.js"></script>
+<script src="../industries-v2.js"></script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <rect x="5" y="5" width="13" height="13" rx="2.5" stroke="#FF7A3C" stroke-width="1.3" opacity=".6"/>
+    <rect x="20" y="5" width="9" height="9" rx="2" stroke="#36D2E6" stroke-width="1.3" opacity=".6"/>
+    <rect x="20" y="16" width="9" height="13" rx="2" stroke="#2D7FF9" stroke-width="1.3" opacity=".6"/>
+    <rect x="5" y="20" width="13" height="9" rx="2" stroke="#25E08A" stroke-width="1.3" opacity=".6"/>
+  </svg>
+</template>
+</body>
+</html>

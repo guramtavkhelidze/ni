@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>რას ვაკეთებთ — V2 · Constellation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#07080A; --bg-2:#0C0E12; --panel:#121419;
+    --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.14);
+    --text:#EEF1F4; --muted:#9AA2AC; --dim:#687078;
+    --brand:#FF4B26; --brand-2:#FF7A3C; --green:#25E08A;
+    --font:'Noto Sans Georgian',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 32px;}
+
+  .orbit-sec{
+    position:relative;padding:120px 0 130px;
+    background:
+      radial-gradient(60% 60% at 50% 46%, rgba(255,75,38,.10), transparent 62%),
+      linear-gradient(180deg,var(--bg-2),var(--bg));
+  }
+  .orbit-sec::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+    background-size:54px 54px;mask-image:radial-gradient(75% 75% at 50% 50%,#000,transparent 92%);pointer-events:none;
+  }
+  .orbit-sec .wrap{position:relative;z-index:2;}
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brand-2);display:inline-flex;align-items:center;gap:10px;font-weight:500;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.8;}
+  .sec-head{text-align:center;max-width:720px;margin:0 auto 24px;}
+  .sec-head .eyebrow{justify-content:center;}
+  .sec-head h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:800;letter-spacing:-.01em;line-height:1.08;margin-top:18px;text-wrap:balance;}
+  .sec-head p{color:var(--muted);font-size:1.05rem;margin-top:16px;}
+
+  /* stage */
+  .stage{position:relative;width:100%;aspect-ratio:1/.82;max-width:840px;margin:8px auto 0;}
+  @media(max-width:760px){.stage{aspect-ratio:1/1.15;}}
+  .stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  .links line{stroke:rgba(255,122,60,.28);stroke-width:1;stroke-dasharray:4 5;
+    stroke-dashoffset:200;transition:stroke-dashoffset 1.1s var(--ease),stroke .3s,stroke-width .3s,opacity .3s;}
+  .stage.in .links line{stroke-dashoffset:0;}
+  .links line.lit{stroke:var(--brand);stroke-width:1.8;opacity:1;}
+  .links line.dim{opacity:.25;}
+
+  /* core */
+  .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:160px;height:160px;display:grid;place-items:center;z-index:5;}
+  .core .ring{position:absolute;border-radius:50%;border:1px solid rgba(255,75,38,.3);}
+  .core .ring.a{width:160px;height:160px;border-style:dashed;animation:spin 30s linear infinite;}
+  .core .ring.b{width:118px;height:118px;border-color:rgba(255,122,60,.4);animation:spin 22s linear infinite reverse;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .core .disc{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;text-align:center;
+    background:radial-gradient(circle at 50% 35%,rgba(255,122,60,.32),rgba(255,75,38,.08));
+    border:1px solid rgba(255,75,38,.5);box-shadow:0 0 50px -6px rgba(255,75,38,.55);}
+  .core .disc b{font-size:1.7rem;font-weight:800;letter-spacing:-.02em;line-height:1;}
+  .core .disc span{display:block;font-family:var(--mono);font-size:.52rem;letter-spacing:.22em;color:var(--brand-2);text-transform:uppercase;margin-top:5px;}
+
+  /* nodes */
+  .node{position:absolute;transform:translate(-50%,-50%);z-index:4;
+    display:flex;align-items:center;gap:9px;padding:9px 13px 9px 9px;border-radius:999px;
+    background:rgba(16,18,23,.85);border:1px solid var(--line);cursor:pointer;white-space:nowrap;
+    backdrop-filter:blur(6px);
+    opacity:0;transition:opacity .5s var(--ease),transform .5s var(--ease),border-color .3s,background .3s,box-shadow .3s;}
+  .stage.in .node{opacity:1;}
+  .node .ni{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;
+    background:rgba(255,75,38,.12);color:var(--brand-2);border:1px solid rgba(255,75,38,.25);transition:all .3s;}
+  .node .ni svg{width:17px;height:17px;}
+  .node .nl{font-size:.82rem;font-weight:600;letter-spacing:-.01em;color:var(--muted);transition:color .3s;}
+  .node:hover,.node.active{border-color:rgba(255,75,38,.6);background:rgba(28,18,16,.92);box-shadow:0 10px 36px -10px rgba(255,75,38,.6);transform:translate(-50%,-50%) scale(1.06);}
+  .node:hover .ni,.node.active .ni{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .node:hover .nl,.node.active .nl{color:var(--text);}
+  .node.faded{opacity:.32 !important;}
+  .node .dotpin{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--brand-2);box-shadow:0 0 10px var(--brand-2);}
+
+  /* readout */
+  .readout{max-width:560px;margin:34px auto 0;text-align:center;min-height:78px;}
+  .readout .rt{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brand-2);}
+  .readout h3{font-size:1.5rem;font-weight:800;letter-spacing:-.015em;margin:8px 0 8px;}
+  .readout p{color:var(--muted);font-size:1.02rem;line-height:1.6;}
+  .readout.swap{animation:swapIn .45s var(--ease);}
+  @keyframes swapIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){.core .ring{animation:none !important;}.reveal{opacity:1 !important;transform:none !important;}.node{opacity:1 !important;}}
+  @media(max-width:600px){
+    .orbit-sec{padding:72px 0 78px;}
+    .wrap{padding:0 18px;}
+    .sec-head p{font-size:.96rem;margin-top:12px;}
+    .stage{aspect-ratio:1/1.2;max-width:420px;}
+    .node .nl{display:none;}
+    .node{padding:7px;}
+    .node .ni{width:27px;height:27px;}
+    .node .ni svg{width:15px;height:15px;}
+    .core{width:128px;height:128px;}
+    .core .ring.a{width:128px;height:128px;}
+    .core .ring.b{width:94px;height:94px;}
+    .core .disc{width:78px;height:78px;}
+    .core .disc b{font-size:1.32rem;}
+    .core .disc span{font-size:.46rem;}
+    .readout{margin-top:22px;min-height:88px;}
+    .readout h3{font-size:1.25rem;}
+    .readout p{font-size:.95rem;}
+  }
+</style>
+</head>
+<body>
+  <section class="orbit-sec">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">რას ვაკეთებთ</div>
+        <h2>ერთი დაცვის ბირთვი — ცამეტი ორბიტა</h2>
+        <p>ჩვენი გადაწყვეტილებები ერთ კავშირში ხვდება. შეეხეთ ნებისმიერ კვანძს.</p>
+      </div>
+
+      <div class="stage reveal" id="stage" data-delay="1">
+        <svg class="links" id="links" preserveAspectRatio="none" viewBox="0 0 1000 820"></svg>
+        <div class="core">
+          <span class="ring a"></span><span class="ring b"></span>
+          <span class="disc"><span><b>CyberX</b><span>Core</span></span></span>
+        </div>
+      </div>
+
+      <div class="readout" id="readout">
+        <div class="rt" id="r-tag">გადაატარეთ კურსორი</div>
+        <h3 id="r-title">13 ინტეგრირებული სერვისი</h3>
+        <p id="r-desc">თითოეული კვანძი დაკავშირებულია ცენტრალურ ბირთვთან — ერთიანი, კოორდინირებული დაცვა.</p>
+      </div>
+    </div>
+  </section>
+
+<script>
+const ic={
+  shield:'<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+  net:'<circle cx="5" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="19" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="18" r="2" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 7.5 11 16M17.5 7.5 13 16M7 6h10" stroke="currentColor" stroke-width="1.6"/>',
+  cloud:'<path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 17 18H7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+  lock:'<rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/>',
+  bug:'<circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v3M12 18v3M5 7l2 1M17 16l2 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  monitor:'<rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M9 21h6M12 17v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  id:'<path d="M8 11a4 4 0 0 1 8 0M12 13v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  ot:'<rect x="4" y="9" width="16" height="11" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 9V6h8v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+  target:'<circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>',
+  intel:'<path d="M12 21a9 9 0 1 0-9-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 12 4 8M12 12v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  people:'<path d="M12 4 3 8l9 4 9-4-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11v4c0 1.5 2.2 2.5 5 2.5s5-1 5-2.5v-4" stroke="currentColor" stroke-width="1.6"/>',
+  phone:'<rect x="7" y="3" width="10" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'
+};
+const DATA=[
+  {n:'XDR / EDR',full:'XDR / EDR Endpoint Protection',t:'Endpoint',i:'shield',d:'ბოლო წერტილების უწყვეტი მონიტორინგი და საფრთხეებზე ავტომატური რეაგირება.'},
+  {n:'Network',full:'Network Security',t:'Network',i:'net',d:'ქსელის პერიმეტრის დაცვა, სეგმენტაცია და ტრაფიკის ღრმა ანალიზი.'},
+  {n:'Cloud',full:'Cloud Security Solutions',t:'Cloud',i:'cloud',d:'ღრუბლოვანი ინფრასტრუქტურის კონფიგურაციისა და წვდომის უწყვეტი დაცვა.'},
+  {n:'DLP',full:'Data Loss Prevention',t:'Data',i:'lock',d:'სენსიტიური მონაცემების გაჟონვის პრევენცია და კონტროლი არხებზე.'},
+  {n:'Vuln. Mgmt',full:'Vulnerability Management',t:'Risk',i:'bug',d:'სისუსტეების უწყვეტი სკანირება, პრიორიტეტიზაცია და აღმოფხვრა.'},
+  {n:'SIEM / SOC',full:'SIEM / SOC Monitoring',t:'Monitoring',i:'monitor',d:'უსაფრთხოების მოვლენების ცენტრალიზებული მონიტორინგი 24/7 რეჟიმში.'},
+  {n:'MFA / ID',full:'MFA & Identity Security',t:'Identity',i:'id',d:'მრავალფაქტორიანი ავთენტიფიკაცია და იდენტობის მართვა.'},
+  {n:'OT / ICS',full:'OT / ICS Protection',t:'OT / ICS',i:'ot',d:'ინდუსტრიული და კრიტიკული ინფრასტრუქტურის სპეციალიზებული დაცვა.'},
+  {n:'Email',full:'Email Security',t:'Email',i:'mail',d:'ფიშინგისა და მავნე დანართების წინააღმდეგ ელფოსტის დაცვა.'},
+  {n:'Pen Test',full:'Penetration Testing & Red Teaming',t:'Offensive',i:'target',d:'რეალური თავდასხმის სიმულაცია სისუსტეების გამოსავლენად.'},
+  {n:'Threat Intel',full:'Threat Intelligence',t:'Intel',i:'intel',d:'საფრთხეების შესახებ მონაცემების შეგროვება და ანალიზი.'},
+  {n:'Awareness',full:'Security Awareness Training',t:'People',i:'people',d:'თანამშრომლების ცნობიერების ამაღლება და უწყვეტი ტრენინგი.'},
+  {n:'Sure MDM',full:'Sure MDM',t:'Mobile',i:'phone',d:'მობილური მოწყობილობების ცენტრალიზებული მართვა და დაცვა.'}
+];
+const svg=p=>'<svg viewBox="0 0 24 24" fill="none">'+p+'</svg>';
+
+const stage=document.getElementById('stage');
+const linksSvg=document.getElementById('links');
+const VB={w:1000,h:820},cx=500,cy=410;
+const N=DATA.length;
+// distribute on two radii rings for a fuller constellation
+const nodes=DATA.map((s,i)=>{
+  const ang=(-90 + i*(360/N))*Math.PI/180;
+  const ring=i%2===0?1:0.74;
+  const rx=350*ring, ry=300*ring;
+  return {...s,x:cx+Math.cos(ang)*rx,y:cy+Math.sin(ang)*ry};
+});
+
+// draw links + nodes
+linksSvg.innerHTML=nodes.map((n,i)=>`<line x1="${cx}" y1="${cy}" x2="${n.x}" y2="${n.y}" data-i="${i}" style="transition-delay:${i*0.05}s"></line>`).join('');
+nodes.forEach((n,i)=>{
+  const b=document.createElement('button');
+  b.className='node';b.dataset.i=i;
+  b.style.left=(n.x/VB.w*100)+'%';
+  b.style.top=(n.y/VB.h*100)+'%';
+  b.style.transitionDelay=(0.25+i*0.05)+'s';
+  b.innerHTML=`<span class="ni">${svg(ic[n.i])}</span><span class="nl">${n.n}</span>`;
+  stage.appendChild(b);
+});
+
+const lines=[...linksSvg.querySelectorAll('line')];
+const nodeEls=[...stage.querySelectorAll('.node')];
+const r={tag:document.getElementById('r-tag'),title:document.getElementById('r-title'),desc:document.getElementById('r-desc'),box:document.getElementById('readout')};
+
+function focus(i){
+  const s=DATA[i];
+  lines.forEach((l,k)=>{l.classList.toggle('lit',k===i);l.classList.toggle('dim',k!==i);});
+  nodeEls.forEach((el,k)=>{el.classList.toggle('active',k===i);el.classList.toggle('faded',k!==i);});
+  r.tag.textContent=s.t;
+  r.title.textContent=s.full;
+  r.desc.textContent=s.d;
+  r.box.classList.remove('swap');void r.box.offsetWidth;r.box.classList.add('swap');
+}
+function clearFocus(){
+  lines.forEach(l=>l.classList.remove('lit','dim'));
+  nodeEls.forEach(el=>el.classList.remove('active','faded'));
+  r.tag.textContent='გადაატარეთ კურსორი';
+  r.title.textContent='13 ინტეგრირებული სერვისი';
+  r.desc.textContent='თითოეული კვანძი დაკავშირებულია ცენტრალურ ბირთვთან — ერთიანი, კოორდინირებული დაცვა.';
+}
+nodeEls.forEach((el,i)=>{
+  el.addEventListener('mouseenter',()=>{stopAuto();focus(i);});
+  el.addEventListener('click',()=>{stopAuto();focus(i);});
+});
+stage.addEventListener('mouseleave',()=>{if(!auto)clearFocus();});
+
+let auto=null,ai=0;
+function startAuto(){if(auto)return;auto=setInterval(()=>{focus(ai);ai=(ai+1)%N;},2600);}
+function stopAuto(){if(auto){clearInterval(auto);auto=null;}}
+
+// reveal + kick off
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');
+    if(e.target===stage){setTimeout(startAuto,1100);}
+    io.unobserve(e.target);}
+}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// fallback for embedded/iframe contexts where IO may not fire
+setTimeout(()=>{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));stage.classList.add('in');startAuto();const s=document.createElement('style');s.textContent='.reveal{opacity:1!important;transform:none!important;transition:none!important}.node{opacity:1!important}';document.head.appendChild(s);},1100);
+</script>
+</body>
+</html>

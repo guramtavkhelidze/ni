@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>რას ვაკეთებთ — V3 · Kinetic Marquee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#07080A; --bg-2:#0C0E12;
+    --line:rgba(255,255,255,.09);
+    --text:#EEF1F4; --muted:#9AA2AC; --dim:#687078;
+    --brand:#FF4B26; --brand-2:#FF7A3C;
+    --font:'Noto Sans Georgian',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 32px;}
+
+  .kin-sec{position:relative;padding:120px 0 124px;background:linear-gradient(180deg,var(--bg),var(--bg-2));overflow:hidden;}
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brand-2);display:inline-flex;align-items:center;gap:10px;font-weight:500;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.8;}
+  .sec-head{max-width:820px;margin:0 0 18px;padding:0 32px;}
+  .sec-head h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:800;letter-spacing:-.01em;line-height:1.08;margin-top:18px;text-wrap:balance;}
+  .sec-head p{color:var(--muted);font-size:1.05rem;margin-top:14px;max-width:600px;}
+
+  /* marquee belt */
+  .belt{position:relative;margin-top:30px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);}
+  .lane{display:flex;width:max-content;align-items:center;will-change:transform;}
+  .lane.l2r{animation:scrollR var(--dur,52s) linear infinite;}
+  .lane.r2l{animation:scrollL var(--dur,46s) linear infinite;}
+  @keyframes scrollL{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes scrollR{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+  .belt:hover .lane{animation-play-state:paused;}
+
+  .item{display:inline-flex;align-items:center;gap:26px;padding:0 4px;cursor:default;}
+  .word{
+    font-size:clamp(2.4rem,6.4vw,5.2rem);font-weight:800;letter-spacing:-.03em;line-height:1;white-space:nowrap;
+    color:transparent;-webkit-text-stroke:1.4px rgba(255,255,255,.26);text-stroke:1.4px rgba(255,255,255,.26);
+    transition:color .3s var(--ease),-webkit-text-stroke-color .3s var(--ease);
+    position:relative;
+  }
+  .item:hover .word{color:var(--text);-webkit-text-stroke-color:transparent;}
+  /* lane-level: filled accent rows */
+  .lane.accent .word{-webkit-text-stroke-color:rgba(255,75,38,.5);}
+  .lane.accent .item:hover .word{color:var(--brand);-webkit-text-stroke-color:transparent;}
+
+  .sep{flex-shrink:0;display:inline-flex;align-items:center;gap:10px;color:var(--dim);}
+  .sep .star{width:18px;height:18px;color:var(--brand-2);opacity:.8;}
+  .sep .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);}
+
+  /* hover spotlight readout */
+  .stripline{display:flex;align-items:baseline;gap:14px;margin:6px 32px 0;padding-top:18px;border-top:1px solid var(--line);min-height:42px;}
+  .stripline .lead{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-2);}
+  .stripline .txt{color:var(--muted);font-size:1rem;}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){.lane{animation:none !important;}.reveal{opacity:1 !important;transform:none !important;}}
+  @media(max-width:640px){
+    .kin-sec{padding:74px 0 80px;}
+    .sec-head{padding:0 18px;margin-bottom:14px;}
+    .sec-head p{font-size:.96rem;}
+    .belt{margin-top:22px;}
+    .item{gap:18px;}
+    .word{-webkit-text-stroke-width:1px;text-stroke-width:1px;}
+    .sep .star{width:15px;height:15px;}
+    .stripline{margin:6px 18px 0;gap:10px;flex-wrap:wrap;}
+    .stripline .txt{font-size:.92rem;}
+  }
+</style>
+</head>
+<body>
+  <section class="kin-sec">
+    <div class="sec-head reveal">
+      <div class="eyebrow">რას ვაკეთებთ</div>
+      <h2>ცამეტი დისციპლინა — ერთ მოძრაობაში</h2>
+      <p>დაცვის ყველა ფენა, რომელსაც ვფარავთ. შეეხეთ ან გადაატარეთ კურსორი სახელს დეტალისთვის.</p>
+    </div>
+
+    <div class="belt reveal" data-delay="1" id="belt">
+      <div class="lane l2r" id="lane1" style="--dur:58s"></div>
+    </div>
+    <div class="belt reveal" data-delay="2" style="margin-top:8px;">
+      <div class="lane r2l accent" id="lane2" style="--dur:50s"></div>
+    </div>
+    <div class="belt reveal" data-delay="3" style="margin-top:8px;">
+      <div class="lane l2r" id="lane3" style="--dur:64s"></div>
+    </div>
+
+    <div class="stripline reveal" data-delay="2">
+      <span class="lead" id="s-tag">— 13 SERVICES</span>
+      <span class="txt" id="s-txt">გადაატარეთ კურსორი ნებისმიერ სახელს ზემოთ.</span>
+    </div>
+  </section>
+
+<script>
+const DATA=[
+  {n:'XDR / EDR',t:'Endpoint',d:'ბოლო წერტილების უწყვეტი მონიტორინგი და საფრთხეებზე ავტომატური რეაგირება.'},
+  {n:'Network Security',t:'Network',d:'ქსელის პერიმეტრის დაცვა, სეგმენტაცია და ტრაფიკის ღრმა ანალიზი.'},
+  {n:'Cloud Security',t:'Cloud',d:'ღრუბლოვანი ინფრასტრუქტურის კონფიგურაციისა და წვდომის დაცვა.'},
+  {n:'Data Loss Prevention',t:'Data',d:'სენსიტიური მონაცემების გაჟონვის პრევენცია და კონტროლი.'},
+  {n:'Vulnerability Mgmt',t:'Risk',d:'სისუსტეების უწყვეტი სკანირება, პრიორიტეტიზაცია და აღმოფხვრა.'},
+  {n:'SIEM / SOC',t:'Monitoring',d:'უსაფრთხოების მოვლენების ცენტრალიზებული მონიტორინგი 24/7.'},
+  {n:'MFA & Identity',t:'Identity',d:'მრავალფაქტორიანი ავთენტიფიკაცია და იდენტობის მართვა.'},
+  {n:'OT / ICS',t:'OT / ICS',d:'ინდუსტრიული და კრიტიკული ინფრასტრუქტურის სპეციალიზებული დაცვა.'},
+  {n:'Email Security',t:'Email',d:'ფიშინგისა და მავნე დანართების წინააღმდეგ ელფოსტის დაცვა.'},
+  {n:'Penetration Testing',t:'Offensive',d:'რეალური თავდასხმის სიმულაცია სისუსტეების გამოსავლენად.'},
+  {n:'Threat Intelligence',t:'Intel',d:'საფრთხეების შესახებ მონაცემების შეგროვება და ანალიზი.'},
+  {n:'Awareness Training',t:'People',d:'თანამშრომლების ცნობიერების ამაღლება და უწყვეტი ტრენინგი.'},
+  {n:'Sure MDM',t:'Mobile',d:'მობილური მოწყობილობების ცენტრალიზებული მართვა და დაცვა.'}
+];
+const star='<svg class="star" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+
+// split list across 3 lanes
+const lanes=[[],[],[]];
+DATA.forEach((s,i)=>lanes[i%3].push(s));
+
+function buildItem(s){
+  return `<span class="item" data-tag="${s.t}" data-desc="${s.d}">
+    <span class="word">${s.n}</span>
+    <span class="sep">${star}<span class="tag">${s.t}</span></span>
+  </span>`;
+}
+// duplicate sequence twice for seamless -50% loop
+['lane1','lane2','lane3'].forEach((id,k)=>{
+  const seq=lanes[k].map(buildItem).join('');
+  document.getElementById(id).innerHTML=seq+seq;
+});
+
+const sTag=document.getElementById('s-tag'),sTxt=document.getElementById('s-txt');
+function showItem(tag,desc){sTag.textContent='— '+tag.toUpperCase();sTxt.textContent=desc;}
+document.querySelectorAll('.item').forEach(it=>{
+  const set=()=>{stopCycle();showItem(it.dataset.tag,it.dataset.desc);};
+  it.addEventListener('mouseenter',set);
+  it.addEventListener('click',set);
+});
+
+// touch devices have no hover: auto-cycle the readout so it never sits static
+let cyc=null;
+if(window.matchMedia('(hover:none)').matches){
+  let ci=0;
+  cyc=setInterval(()=>{const s=DATA[ci%DATA.length];showItem(s.t,s.d);ci++;},2600);
+}
+function stopCycle(){if(cyc){clearInterval(cyc);cyc=null;}}
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+setTimeout(()=>{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));const s=document.createElement('style');s.textContent='.reveal{opacity:1!important;transform:none!important;transition:none!important}';document.head.appendChild(s);},900);
+</script>
+</body>
+</html>

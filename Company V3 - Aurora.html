@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — Company · Aurora</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* ===== Variant 3 — Aurora Glass ===== */
+  body { background: #06070b; }
+  .g-aurora { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .g-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .42; animation: drift 30s ease-in-out infinite; }
+  .g-blob.b1 { width: 50vw; height: 50vw; left: -12vw; top: -10vw; background: radial-gradient(circle, rgba(255,75,38,.6), transparent 68%); }
+  .g-blob.b2 { width: 46vw; height: 46vw; right: -12vw; top: 12vh; background: radial-gradient(circle, rgba(54,210,230,.5), transparent 68%); animation-delay: -7s; }
+  .g-blob.b3 { width: 44vw; height: 44vw; left: 18vw; bottom: -16vw; background: radial-gradient(circle, rgba(91,110,245,.5), transparent 68%); animation-delay: -14s; }
+  .g-blob.b4 { width: 38vw; height: 38vw; right: 8vw; bottom: 4vh; background: radial-gradient(circle, rgba(37,224,138,.4), transparent 68%); animation-delay: -20s; }
+  @keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(4vw,-3vh) scale(1.08); } 66% { transform: translate(-3vw,3vh) scale(.95); } }
+  .g-grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5;
+    background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 54px 54px; mask-image: radial-gradient(120% 80% at 50% 0%, #000, transparent 80%); }
+
+  main, .footer { position: relative; z-index: 2; }
+  .nav { z-index: 100; }
+  .nav.scrolled { background: rgba(8,9,13,.6); }
+
+  .glass { background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+    border: 1px solid rgba(255,255,255,.1); border-radius: 22px;
+    backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+    box-shadow: 0 30px 70px -36px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.08); }
+
+  .g-sec { position: relative; padding: 120px 0; scroll-margin-top: 84px; }
+  .g-wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 36px; }
+
+  /* section rail */
+  .sec-rail { position: fixed; left: 26px; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 10px;
+    padding: 14px 10px; border-radius: 999px; }
+  .sec-rail a { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--dim); position: relative; transition: color .25s; }
+  .sec-rail a .gd { width: 8px; height: 8px; border-radius: 50%; background: currentColor; transition: transform .3s var(--ease); }
+  .sec-rail a .rl { position: absolute; left: 38px; white-space: nowrap; font-size: .8rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+    background: rgba(12,16,22,.9); border: 1px solid rgba(255,255,255,.1); opacity: 0; transform: translateX(-6px); pointer-events: none; transition: opacity .25s, transform .25s; }
+  .sec-rail a:hover { color: var(--text); } .sec-rail a:hover .rl { opacity: 1; transform: none; }
+  .sec-rail a.on { color: var(--brand-2); } .sec-rail a.on .gd { transform: scale(1.6); box-shadow: 0 0 12px currentColor; }
+
+  /* heading */
+  .g-head { max-width: 760px; margin-bottom: 52px; }
+  .g-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: .74rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--text); padding: 8px 15px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
+  .g-eyebrow .gi { font-weight: 700; color: var(--zone, var(--brand-2)); }
+  .g-head h2 { font-size: clamp(1.95rem, 3.8vw, 3rem); margin-top: 20px; letter-spacing: -.02em; text-wrap: balance; }
+  .g-head .lead { color: var(--muted); font-size: 1.14rem; line-height: 1.72; margin-top: 18px; max-width: 64ch; }
+
+  /* About */
+  .g-about { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .g-card { padding: 30px 28px 32px; transition: transform .35s var(--ease), box-shadow .35s; }
+  .g-card:hover { transform: translateY(-6px); box-shadow: 0 40px 80px -40px rgba(255,75,38,.4), inset 0 1px 0 rgba(255,255,255,.1); }
+  .g-ic { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 20px; color: #fff;
+    background: linear-gradient(150deg, var(--brand-2), var(--brand)); box-shadow: 0 12px 30px -12px var(--brand); }
+  .g-ic svg { width: 24px; height: 24px; }
+  .g-card.teal .g-ic { background: linear-gradient(150deg, var(--teal), var(--teal-2)); box-shadow: 0 12px 30px -12px var(--teal); }
+  .g-card.blue .g-ic { background: linear-gradient(150deg, var(--periwinkle), var(--indigo)); box-shadow: 0 12px 30px -12px var(--indigo); }
+  .g-card h3 { font-size: 1.22rem; font-weight: 700; margin-bottom: 12px; }
+  .g-card p { color: var(--muted); font-size: 1.01rem; line-height: 1.66; }
+  .g-tagline { margin-top: 20px; padding: 34px 40px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    border-radius: 22px; position: relative; overflow: hidden;
+    background: linear-gradient(110deg, rgba(255,75,38,.18), rgba(255,122,60,.06)); border: 1px solid rgba(255,75,38,.3); }
+  .g-tagline svg { width: 46px; height: 46px; color: var(--brand-2); flex-shrink: 0; }
+  .g-tagline p { font-size: clamp(1.25rem, 2.4vw, 1.8rem); font-weight: 800; letter-spacing: -.01em; line-height: 1.2; }
+  .g-tagline .em { color: var(--brand-2); }
+
+  /* Mission timeline */
+  .g-mission { --zone: var(--green); }
+  .g-mission .g-eyebrow { border-color: rgba(37,224,138,.3); }
+  .g-tl { position: relative; margin-left: 10px; padding-left: 40px; }
+  .g-tl::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px;
+    background: linear-gradient(180deg, transparent, rgba(37,224,138,.6), rgba(54,210,230,.5), transparent); }
+  .g-step { position: relative; margin-bottom: 16px; }
+  .g-step .g-dot { position: absolute; left: -40px; top: 22px; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 0 5px rgba(37,224,138,.16), 0 0 16px var(--green); transform: translateX(0); }
+  .g-step .g-card2 { padding: 20px 26px; border-radius: 16px;
+    background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    border: 1px solid rgba(255,255,255,.1); transition: transform .3s var(--ease), border-color .3s; }
+  .g-step:hover .g-card2 { transform: translateX(6px); border-color: rgba(37,224,138,.4); }
+  .g-step .g-card2 p { font-size: 1.08rem; line-height: 1.55; }
+  .g-mnote { margin-top: 26px; padding: 26px 30px; }
+  .g-mnote p { color: var(--muted); font-size: 1.04rem; line-height: 1.7; }
+  .g-mnote .em { color: var(--green); font-weight: 600; }
+
+  /* Relevance bento */
+  .g-relevance { --zone: var(--red); }
+  .g-relevance .g-eyebrow { border-color: rgba(240,68,76,.3); }
+  .g-bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .g-tile { padding: 26px 26px 28px; border-radius: 18px; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.1);
+    transition: transform .3s var(--ease), border-color .3s, box-shadow .3s; }
+  .g-tile:hover { transform: translateY(-5px); border-color: rgba(240,68,76,.4); box-shadow: 0 30px 60px -34px rgba(240,68,76,.5); }
+  .g-tile .gt-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .g-tile .gt-ic { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: #fff;
+    background: linear-gradient(150deg, #FF6B72, var(--red)); box-shadow: 0 10px 24px -12px var(--red); }
+  .g-tile .gt-ic svg { width: 21px; height: 21px; }
+  .g-tile .gt-n { font-family: var(--mono); font-size: .8rem; color: var(--dim); }
+  .g-tile p { color: var(--muted); font-size: 1.01rem; line-height: 1.55; }
+  .g-tile:hover p { color: var(--text); }
+  .g-urgent { margin-top: 18px; padding: 40px 44px; border-radius: 22px;
+    background: linear-gradient(115deg, rgba(240,68,76,.16), rgba(255,75,38,.05)); border: 1px solid rgba(240,68,76,.3); }
+  .g-urgent .lead2 { color: var(--muted); font-size: 1.1rem; line-height: 1.72; max-width: 72ch; margin-bottom: 20px; }
+  .g-urgent .punch { font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -.01em; line-height: 1.18; }
+  .g-urgent .punch .em { color: #FF8085; }
+
+  /* Future */
+  .g-future { --zone: var(--teal); }
+  .g-future .g-eyebrow { border-color: rgba(54,210,230,.3); }
+  .g-fintro { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 44px; }
+  .g-fintro .glass { padding: 28px 30px; } .g-fintro p { color: var(--muted); font-size: 1.06rem; line-height: 1.72; }
+  .g-fintro .glass.lead p { color: var(--text); font-size: 1.14rem; }
+  .g-flabel { font-family: var(--mono); font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .g-flabel::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(54,210,230,.4), transparent); }
+  .marquee { display: flex; flex-direction: column; gap: 14px; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .mq-row { display: flex; gap: 14px; width: max-content; animation: mq 40s linear infinite; }
+  .mq-row.rev { animation-direction: reverse; animation-duration: 48s; }
+  .marquee:hover .mq-row { animation-play-state: paused; }
+  @keyframes mq { to { transform: translateX(-50%); } }
+  .fchip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; padding: 15px 24px; border-radius: 14px;
+    background: linear-gradient(160deg, rgba(255,255,255,.08), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(10px); font-size: 1.04rem; font-weight: 600; transition: border-color .3s, transform .3s; }
+  .fchip:hover { border-color: rgba(54,210,230,.5); transform: translateY(-3px); }
+  .fchip .fdot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
+  .fchip.alt .fdot { background: var(--blue); box-shadow: 0 0 10px var(--blue); }
+  .g-fclose { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; margin-top: 46px; }
+  .g-fclose p { color: var(--muted); font-size: 1.06rem; line-height: 1.72; }
+  .g-fclose .glass { padding: 28px 30px; }
+  .g-fclose .accent p { color: var(--text); font-weight: 500; } .g-fclose .accent .em { color: var(--teal); font-weight: 700; }
+
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+  .r-stagger > * { opacity: 0; transform: translateY(22px) scale(.98); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .r-stagger.in > * { opacity: 1; transform: none; }
+  .r-stagger.in > *:nth-child(1){transition-delay:.04s}.r-stagger.in > *:nth-child(2){transition-delay:.09s}.r-stagger.in > *:nth-child(3){transition-delay:.14s}.r-stagger.in > *:nth-child(4){transition-delay:.19s}.r-stagger.in > *:nth-child(5){transition-delay:.24s}.r-stagger.in > *:nth-child(6){transition-delay:.29s}.r-stagger.in > *:nth-child(7){transition-delay:.34s}.r-stagger.in > *:nth-child(8){transition-delay:.39s}.r-stagger.in > *:nth-child(9){transition-delay:.44s}
+
+  @media (prefers-reduced-motion: reduce) { .g-blob, .mq-row { animation: none !important; } .reveal, .r-stagger > * { opacity: 1 !important; transform: none !important; } }
+  @media (max-width: 1000px) {
+    .sec-rail { display: none; }
+    .g-about, .g-bento { grid-template-columns: repeat(2, 1fr); }
+    .g-fintro, .g-fclose { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .g-wrap { padding: 0 20px; } .g-sec { padding: 84px 0; }
+    .g-about, .g-bento { grid-template-columns: 1fr; }
+    .g-tagline, .g-urgent { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="g-aurora"><span class="g-blob b1"></span><span class="g-blob b2"></span><span class="g-blob b3"></span><span class="g-blob b4"></span></div>
+<div class="g-grain"></div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Cyber<span class="x">X</span></span>
+        <span class="brand-slogan">Secure · Resilient · Ready</span>
+      </span>
+    </a>
+
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item has-dropdown" data-menu="company">
+        <button type="button">Company
+          <svg class="caret" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="menu-item has-dropdown" data-menu="solutions">
+        <button type="button">Solutions
+          <svg class="caret" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Blog V2.html">Blog</a></div>
+      <div class="menu-item has-dropdown" data-menu="industries">
+        <button type="button">Industries
+          <svg class="caret" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="menu-item"><a href="../Contact.html">Contact</a></div>
+    </nav>
+
+    <a class="btn btn-primary nav-cta" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+
+    <button class="hamburger" id="hamburger" aria-label="მენიუ">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- dropdowns -->
+  <div class="dropdown" id="dd-company">
+    <div class="dropdown-inner">
+      <div class="dd-head">Company</div>
+      <div class="dd-grid cols-2">
+        <a class="dd-link" href="#about"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>ჩვენს შესახებ</a>
+        <a class="dd-link" href="#mission"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.7"/></svg></span>CyberX-ის მიზანი</a>
+        <a class="dd-link" href="#relevance"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6.5V12c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6.5L12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>რატომ არის კიბერუსაფრთხოება დღეს უფრო აქტუალური, ვიდრე ოდესმე?</a>
+        <a class="dd-link" href="#future"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>კიბერუსაფრთხოების მომავალი</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dropdown" id="dd-solutions">
+    <div class="dropdown-inner">
+      <div class="dd-head">Solutions</div>
+      <div class="dd-grid cols-4">
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>XDR / EDR Endpoint Protection</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="19" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="18" r="2" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 7.5 11 16M17.5 7.5 13 16M7 6h10" stroke="currentColor" stroke-width="1.6"/></svg></span>Network Security</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 17 18H7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>Cloud Security Solutions</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg></span>Data Loss Prevention (DLP)</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v3M12 18v3M5 7l2 1M17 16l2 1M5 17l2-1M17 8l2-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/></svg></span>Vulnerability Management</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M9 21h6M12 17v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>SIEM / SOC Monitoring</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 11a4 4 0 0 1 8 0M6 14c0-1 .3-2 .6-2.7M18 14c0-1-.3-2-.6-2.7M9 20c-1-1.5-1.5-3.5-1.5-6M15 20c1-1.5 1.5-3.5 1.5-6M12 13v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>MFA &amp; Identity Security</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="9" width="16" height="11" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 9V6h8v3M9 14h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>OT / ICS Infrastructure Protection</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Email Security</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Penetration Testing &amp; Red Teaming</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21a9 9 0 1 0-9-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 12 4 8M12 12v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Threat Intelligence</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4 3 8l9 4 9-4-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11v4c0 1.5 2.2 2.5 5 2.5s5-1 5-2.5v-4" stroke="currentColor" stroke-width="1.6"/></svg></span>Security Awareness Training</a>
+        <a class="dd-link" href="../index.html#solutions"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Sure MDM</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dropdown" id="dd-industries">
+    <div class="dropdown-inner">
+      <div class="dd-head">Industries</div>
+      <div class="dd-grid cols-4">
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/></svg></span>ჯანდაცვა (Healthcare)</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10h16M6 10v8M10 10v8M14 10v8M18 10v8M3 20h18M12 3 4 7h16l-8-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>SMB ბიზნეს გადაწყვეტილებები</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10h16M6 10v8M10 10v8M14 10v8M18 10v8M3 20h18M12 3 4 7h16l-8-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>ბანკები და ფინანსური სექტორი</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M5 21V9l7-5 7 5v12M9 21v-6h6v6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>სახელმწიფო სექტორი</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M8 11a5.7 5.7 0 0 1 8 0M5 8a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>ტელეკომი</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M13 3 5 13h6l-1 8 8-11h-6l1-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>ენერგეტიკა</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>წარმოება</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M6 8h12l1 12H5L6 8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.6"/></svg></span>Retail</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4 3 8l9 4 9-4-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11v4c0 1.5 2.2 2.5 5 2.5s5-1 5-2.5v-4" stroke="currentColor" stroke-width="1.6"/></svg></span>განათლება</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M3 16V8h11v8M14 11h4l3 3v2h-7" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="1.6"/></svg></span>ტრანსპორტი და ლოგისტიკა</a>
+        <a class="dd-link" href="../index.html#industries"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7 11v2M6 12h2M15 11.5h.01M17.5 13.5h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>Gaming &amp; Casinos</a>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="#about">Company</a>
+  <a class="mm-sub" href="#about">— ჩვენს შესახებ</a>
+  <a class="mm-sub" href="#mission">— CyberX-ის მიზანი</a>
+  <a class="mm-sub" href="#relevance">— რატომ აქტუალურია კიბერუსაფრთხოება</a>
+  <a class="mm-sub" href="#future">— კიბერუსაფრთხოების მომავალი</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Blog V2.html">Blog</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+  <a class="btn btn-primary" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<aside class="sec-rail glass" aria-hidden="true">
+  <a href="#about"><span class="gd"></span><span class="rl">ჩვენს შესახებ</span></a>
+  <a href="#mission"><span class="gd"></span><span class="rl">CyberX-ის მიზანი</span></a>
+  <a href="#relevance"><span class="gd"></span><span class="rl">რატომ აქტუალურია</span></a>
+  <a href="#future"><span class="gd"></span><span class="rl">მომავალი</span></a>
+</aside>
+
+<main id="top">
+
+  <!-- 01 ABOUT -->
+  <section class="g-sec co-sec" id="about" style="padding-top:150px;">
+    <div class="g-wrap">
+      <div class="g-head reveal">
+        <span class="g-eyebrow"><span class="gi">01</span> ჩვენს შესახებ</span>
+        <h2>თანამედროვე კიბერდაცვა, ადგილობრივ საჭიროებებზე მორგებული</h2>
+        <p class="lead">CyberX ორგანიზაციებს ეხმარება კიბერსაფრთხეებისგან დაცვაში, IT ინფრასტრუქტურის უსაფრთხოების გაძლიერებასა და თანამედროვე ციფრული რისკების მართვაში — საქართველოსა და კავკასიის რეგიონში.</p>
+      </div>
+
+      <div class="g-about r-stagger">
+        <div class="glass g-card">
+          <span class="g-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>რა არის CyberX</h3>
+          <p>კიბერუსაფრთხოების გადაწყვეტილებების მიმწოდებელი, რომელიც ეხმარება ორგანიზაციებს ციფრული აქტივების დაცვასა და თანამედროვე რისკების მართვაში.</p>
+        </div>
+        <div class="glass g-card teal">
+          <span class="g-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.2 3.2-5.5 7-5.5s7 2.3 7 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          <h3>ვინ ვართ</h3>
+          <p>სანდო პარტნიორი, რომელიც მსოფლიოს წამყვან ბრენდებთან თანამშრომლობს და მათ გადაწყვეტილებებს ბიზნესს, სახელმწიფოსა და კრიტიკულ ინფრასტრუქტურას უსადაგებს.</p>
+        </div>
+        <div class="glass g-card blue">
+          <span class="g-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 9-9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M3 4v4h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m9 12 2 2 4-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>ჩვენი მიდგომა</h3>
+          <p>სრული ციკლი — სწორი გადაწყვეტილების შერჩევიდან დანერგვამდე და შემდგომ მხარდაჭერამდე, მაღალი კომპეტენციითა და გამოცდილებით.</p>
+        </div>
+      </div>
+
+      <div class="g-tagline reveal">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V5l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <p>საფრთხე <span class="em">რეალურია</span> — თქვენი დაცვა ჩვენი <span class="em">პრიორიტეტი</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 MISSION -->
+  <section class="g-sec co-sec g-mission" id="mission">
+    <div class="g-wrap">
+      <div class="g-head reveal">
+        <span class="g-eyebrow"><span class="gi">02</span> CyberX-ის მიზანი</span>
+        <h2>ვეხმარებით ორგანიზაციებს ციფრული აქტივების დაცვაში</h2>
+        <p class="lead">CyberX-ის მიზანია დაეხმაროს ორგანიზაციებს თანამედროვე კიბერსაფრთხეების ეფექტურად მართვასა და ციფრული აქტივების დაცვაში.</p>
+      </div>
+
+      <div class="g-tl r-stagger">
+        <div class="g-step"><span class="g-dot"></span><div class="g-card2"><p>დავიცვათ ბიზნესები, სახელმწიფო უწყებები და კრიტიკული ინფრასტრუქტურა მუდმივად განვითარებადი კიბერსაფრთხეებისგან.</p></div></div>
+        <div class="g-step"><span class="g-dot"></span><div class="g-card2"><p>შევამციროთ უსაფრთხოების რისკები პროაქტიული მიდგომებითა და თანამედროვე ტექნოლოგიებით.</p></div></div>
+        <div class="g-step"><span class="g-dot"></span><div class="g-card2"><p>დავნერგოთ მსოფლიო ლიდერი მწარმოებლების ინოვაციური კიბერუსაფრთხოების გადაწყვეტილებები.</p></div></div>
+        <div class="g-step"><span class="g-dot"></span><div class="g-card2"><p>უზრუნველვყოთ უსაფრთხოების მაღალი დონე, უწყვეტი ოპერირება და ბიზნესის მდგრადობა.</p></div></div>
+        <div class="g-step"><span class="g-dot"></span><div class="g-card2"><p>გავაძლიეროთ ორგანიზაციების კიბერუსაფრთხოების კულტურა და ცნობიერება.</p></div></div>
+        <div class="g-step"><span class="g-dot"></span><div class="g-card2"><p>ხელი შევუწყოთ რეგიონში კიბერუსაფრთხოების სტანდარტებისა და ტექნოლოგიური შესაძლებლობების განვითარებას.</p></div></div>
+        <div class="g-step"><span class="g-dot"></span><div class="g-card2"><p>გავხდეთ სანდო პარტნიორი ორგანიზაციებისთვის, რომლებიც უსაფრთხო და მდგრად ციფრულ გარემოს ქმნიან.</p></div></div>
+      </div>
+
+      <div class="glass g-mnote reveal"><p>CyberX აერთიანებს <span class="em">თანამედროვე ტექნოლოგიებს</span>, საერთაშორისო პარტნიორებსა და პროფესიონალურ გამოცდილებას — რათა შემოგთავაზოთ ეფექტური, მასშტაბირებადი და მომავალზე მორგებული გადაწყვეტილებები.</p></div>
+    </div>
+  </section>
+
+  <!-- 03 RELEVANCE -->
+  <section class="g-sec co-sec g-relevance" id="relevance">
+    <div class="g-wrap">
+      <div class="g-head reveal">
+        <span class="g-eyebrow"><span class="gi">03</span> რატომ აქტუალურია</span>
+        <h2>რატომ არის კიბერუსაფრთხოება დღეს უფრო აქტუალური, ვიდრე ოდესმე?</h2>
+        <p class="lead">ციფრული ტექნოლოგიების სწრაფ განვითარებასთან ერთად კიბერსაფრთხეები ერთ-ერთ ყველაზე მნიშვნელოვან ბიზნეს რისკად იქცა — შეტევები სულ უფრო დახვეწილი, ავტომატიზებული და მასშტაბურია.</p>
+      </div>
+
+      <div class="g-bento r-stagger">
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="gt-n">01</span></div><p>Ransomware შეტევების მუდმივი ზრდა და მათი მზარდი ფინანსური ზიანი.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7" ry="3" stroke="currentColor" stroke-width="1.7"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="gt-n">02</span></div><p>მონაცემთა გაჟონვისა და კონფიდენციალური ინფორმაციის დაკარგვის შემთხვევების მატება.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="7" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.7"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2M3 10h2M3 14h2M19 10h2M19 14h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="gt-n">03</span></div><p>ხელოვნურ ინტელექტზე (AI) დაფუძნებული კიბერშეტევების განვითარება.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 17 18H7Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span><span class="gt-n">04</span></div><p>Cloud ინფრასტრუქტურისა და SaaS სერვისების ფართო გავრცელება.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="gt-n">05</span></div><p>დისტანციური და ჰიბრიდული სამუშაო გარემოების ზრდა.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="gt-n">06</span></div><p>სახელმწიფო, ფინანსურ, ჯანდაცვისა და კრიტიკული ინფრასტრუქტურის სექტორებზე გახშირებული თავდასხმები.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="gt-n">07</span></div><p>Phishing, Business Email Compromise (BEC) და Social Engineering შეტევების ზრდა.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M9 11V7a3 3 0 0 1 6 0v4" stroke="currentColor" stroke-width="1.7"/><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="gt-n">08</span></div><p>რეგულაციებისა და შესაბამისობის (Compliance) მოთხოვნების გამკაცრება.</p></div>
+        <div class="g-tile"><div class="gt-top"><span class="gt-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.4" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="6" r="2.4" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="18" r="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M7.6 7.6 11 15M16.4 7.6 13 15M8 6h8" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="gt-n">09</span></div><p>ბიზნეს პროცესების მზარდი დამოკიდებულება ციფრულ სისტემებსა და მონაცემებზე.</p></div>
+      </div>
+
+      <div class="g-urgent reveal">
+        <p class="lead2">დღეს კიბერუსაფრთხოება აღარ წარმოადგენს მხოლოდ IT დეპარტამენტის პასუხისმგებლობას. ის არის ბიზნესის მდგრადობის, რეპუტაციის, ფინანსური სტაბილურობისა და უწყვეტი ოპერირების ერთ-ერთი მთავარი საფუძველი.</p>
+        <p class="punch">ორგანიზაციებისთვის ეს უკვე <span class="em">აღარ არის არჩევანი</span> — ეს დღევანდელი აუცილებლობაა.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 FUTURE -->
+  <section class="g-sec co-sec g-future" id="future">
+    <div class="g-wrap">
+      <div class="g-head reveal">
+        <span class="g-eyebrow"><span class="gi">04</span> კიბერუსაფრთხოების მომავალი</span>
+        <h2>კიბერუსაფრთხოების მომავალი</h2>
+      </div>
+
+      <div class="g-fintro reveal">
+        <div class="glass lead"><p>ტექნოლოგიების განვითარებასთან ერთად კიბერსაფრთხეებიც უფრო კომპლექსური ხდება. AI, ღრუბლოვანი ინფრასტრუქტურა, IoT და ციფრული ტრანსფორმაცია ორგანიზაციებს სრულიად ახალ გამოწვევებს უქმნის.</p></div>
+        <div class="glass"><p>მომავალი დაფუძნებული იქნება ავტომატიზაციაზე, ხელოვნურ ინტელექტსა და პროაქტიულ დაცვაზე — რაც საფრთხეების რეალურ დროში აღმოჩენისა და შეჩერების საშუალებას მისცემს.</p></div>
+      </div>
+
+      <div class="g-flabel">მომავალი წლების ძირითადი მიმართულებები</div>
+      <div class="marquee" id="future-marquee">
+        <div class="mq-row" data-row="a"></div>
+        <div class="mq-row rev" data-row="b"></div>
+      </div>
+
+      <div class="g-fclose reveal">
+        <div class="glass"><p>მომავალში ორგანიზაციები სულ უფრო მეტად დაეყრდნობიან ინტელექტუალურ, ავტომატიზებულ და მონაცემებზე დაფუძნებულ უსაფრთხოების სისტემებს, რომლებიც შეძლებენ საფრთხეების პროგნოზირებას, პრევენციასა და სწრაფ რეაგირებას.</p></div>
+        <div class="glass accent"><p>CyberX-ის მიზანია მომხმარებლებს <span class="em">დღესვე</span> მიაწოდოს ის ტექნოლოგიები, რომლებიც ხვალინდელი კიბერსაფრთხეების წინააღმდეგ მეტად ეფექტური იქნება.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის — რისკების შესამცირებლად და კიბერმდგრადობის გასაძლიერებლად.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>კომპანია</h4>
+          <a href="#about">ჩვენს შესახებ</a>
+          <a href="#mission">CyberX-ის მიზანი</a>
+          <a href="../index.html#solutions">გადაწყვეტილებები</a>
+          <a href="../index.html#industries">ინდუსტრიები</a>
+        </div>
+        <div class="footer-col">
+          <h4>რესურსები</h4>
+          <a href="../index.html#insights">ბლოგი / Insights</a>
+          <a href="../index.html#final">კონტაქტი</a>
+          <a href="../index.html#vendors">ვენდორები</a>
+        </div>
+        <div class="footer-col">
+          <h4>დაკავშირება</h4>
+          <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="../index.html#final">მოითხოვე კონსულტაცია</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="company-common.js"></script>
+<script src="app.js"></script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#tg)" stroke-width="1.6" fill="rgba(255,75,38,.12)"/>
+    <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#tg)" stroke-width="2.4" stroke-linecap="round"/>
+    <defs><linearGradient id="tg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+  </svg>
+</template>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — ინდუსტრიები · ვერსია 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../industries-motifs.css">
+<style>
+  /* ============================================================
+     INDUSTRIES · V3 — "Scroll Storyboard"
+     ============================================================ */
+
+  /* HERO */
+  .v3-hero { position: relative; overflow: hidden; padding: 124px 0 76px;
+    background: radial-gradient(115% 80% at 82% 4%, rgba(255,75,38,.16), transparent 55%), radial-gradient(80% 70% at 4% 96%, rgba(120,22,10,.30), transparent 60%), linear-gradient(180deg,#0b0608 0%,var(--bg) 82%); }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .8; z-index: 0; }
+  .v3-hero::after { content:""; position:absolute; inset:0; pointer-events:none; background: linear-gradient(180deg, transparent 60%, var(--bg) 100%); }
+  .v3-hero .wrap { position: relative; z-index: 3; }
+  .v3-hero h1 { font-size: clamp(2.05rem,4.4vw,3.6rem); font-weight: 800; letter-spacing: -.03em; margin: 24px 0 0; text-wrap: balance; max-width: 15ch; }
+  .v3-hero h1 .hl { background: linear-gradient(110deg,var(--brand-2),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .v3-hero .sub { font-size: clamp(1.04rem,1.5vw,1.24rem); color: var(--muted); max-width: 620px; margin: 26px 0 0; line-height: 1.7; }
+  .v3-scroll-cue { display:flex; align-items:center; gap:12px; margin-top:40px; font-family:var(--mono); font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:var(--dim); }
+  .v3-scroll-cue .ln { width:46px; height:1px; background: linear-gradient(90deg,var(--brand-2),transparent); position:relative; overflow:hidden; }
+  .v3-scroll-cue .ln::after { content:""; position:absolute; left:-40%; top:0; width:40%; height:100%; background:var(--brand); animation: cueX 2s var(--ease) infinite; }
+  @keyframes cueX { 0%{left:-40%} 60%,100%{left:110%} }
+
+  /* STORY */
+  .v3-story { position: relative; background: var(--bg); }
+  .v3-panel { position: relative; overflow: hidden; min-height: 90vh; display: flex; align-items: center;
+    padding: 100px 0; border-top: 1px solid var(--line);
+    background: radial-gradient(90% 70% at 80% 16%, rgba(var(--rgb),.13), transparent 60%), linear-gradient(180deg, var(--bg), var(--bg-2)); }
+  .v3-panel:nth-child(even) { background: radial-gradient(90% 70% at 18% 16%, rgba(var(--rgb),.13), transparent 60%), linear-gradient(180deg, var(--bg-2), var(--bg)); }
+  .v3-panel::before { content:""; position:absolute; inset:0; pointer-events:none;
+    background-image: linear-gradient(rgba(var(--rgb),.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--rgb),.05) 1px, transparent 1px);
+    background-size: 50px 50px; mask-image: radial-gradient(70% 70% at 78% 30%, #000, transparent 80%); }
+  .v3-panel:nth-child(even)::before { mask-image: radial-gradient(70% 70% at 22% 30%, #000, transparent 80%); }
+
+  .v3-ghost { position: absolute; top: 6%; right: 4%; z-index: 0; font-family: var(--mono); font-weight: 600;
+    font-size: clamp(8rem, 22vw, 22rem); line-height: .8; color: transparent; -webkit-text-stroke: 1.4px rgba(var(--rgb),.16);
+    pointer-events: none; user-select: none; letter-spacing: -.05em; animation: ghostFloat 9s ease-in-out infinite; }
+  .v3-panel:nth-child(even) .v3-ghost { right: auto; left: 4%; }
+  @keyframes ghostFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+
+  .v3-inner { position: relative; z-index: 2; width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 64px;
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: 64px; align-items: center; }
+  .v3-panel:nth-child(even) .v3-content { order: 2; }
+  .v3-panel:nth-child(even) .v3-visual { order: 1; }
+
+  .v3-content { max-width: 600px; }
+  .v3-en { font-family: var(--mono); font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ac); margin-bottom: 16px; }
+  .v3-title { font-size: clamp(2.1rem, 4.4vw, 3.6rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.04; margin-bottom: 22px; text-wrap: balance; }
+  .v3-p1 { font-size: clamp(1.05rem,1.4vw,1.2rem); color: var(--text); line-height: 1.7; opacity: .94; }
+  .v3-help { display: flex; gap: 14px; margin-top: 24px; padding-top: 22px; border-top: 1px dashed rgba(var(--rgb),.32); }
+  .v3-chk { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(var(--rgb),.16); color: var(--ac); margin-top: 2px; }
+  .v3-chk svg { width: 16px; height: 16px; }
+  .v3-help p { font-size: 1.02rem; color: var(--muted); line-height: 1.66; }
+  .v3-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .v3-tag { font-size: .85rem; color: var(--text); padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(var(--rgb),.4); background: rgba(var(--rgb),.08); white-space: nowrap; }
+  .v3-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; font-weight: 600; font-size: .98rem; padding: 14px 26px; border-radius: 999px; color: #0b0507; background: var(--ac); border: 1px solid var(--ac); transition: transform .25s var(--ease), box-shadow .25s, filter .25s; }
+  .v3-cta svg { width: 16px; height: 16px; transition: transform .25s var(--ease); }
+  .v3-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -10px rgba(var(--rgb),.6); filter: brightness(1.06); }
+  .v3-cta:hover svg { transform: translateX(4px); }
+
+  /* visual card */
+  .v3-visual { position: relative; height: clamp(300px, 42vh, 420px); border-radius: 24px; overflow: hidden;
+    border: 1px solid rgba(var(--rgb),.3);
+    background: radial-gradient(120% 100% at 50% 0%, rgba(var(--rgb),.18), transparent 60%), linear-gradient(180deg, var(--panel), #0a0c10);
+    display: grid; place-items: center; }
+  .v3-motif { position: absolute; inset: 0; z-index: 0; opacity: .2; color: var(--ac); pointer-events: none; mask-image: radial-gradient(90% 90% at 50% 50%, #000, transparent 85%); }
+  .v3-bigic { position: relative; z-index: 2; width: 116px; height: 116px; border-radius: 28px; display: grid; place-items: center;
+    background: rgba(var(--rgb),.14); border: 1px solid rgba(var(--rgb),.4); color: var(--ac);
+    box-shadow: 0 0 50px -12px rgba(var(--rgb),.6); animation: icFloat 6s ease-in-out infinite; }
+  .v3-bigic svg { width: 58px; height: 58px; }
+  @keyframes icFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .v3-vlabel { position: absolute; left: 20px; bottom: 16px; z-index: 2; font-family: var(--mono); font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ac); }
+
+  /* reveal (base visible; .in plays entrance then is removed) */
+  .v3-reveal { opacity: 1; }
+  .v3-panel.in .v3-reveal { animation: v3up .6s var(--ease) backwards; }
+  .v3-panel.in .v3-reveal[data-d="1"] { animation-delay: .08s; }
+  .v3-panel.in .v3-reveal[data-d="2"] { animation-delay: .16s; }
+  .v3-panel.in .v3-reveal[data-d="3"] { animation-delay: .24s; }
+  .v3-panel.in .v3-reveal[data-d="4"] { animation-delay: .32s; }
+  @keyframes v3up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+  /* progress rail */
+  .v3-rail { position: fixed; right: 30px; top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 4px; }
+  .v3-rail-line { position: absolute; left: 13px; top: 8px; bottom: 8px; width: 2px; background: var(--line); border-radius: 2px; z-index: -1; }
+  .v3-rail-fill { display: block; width: 100%; height: 0; background: linear-gradient(var(--brand-2), var(--brand)); border-radius: 2px; transition: height .4s var(--ease); box-shadow: 0 0 8px rgba(255,75,38,.6); }
+  .v3-dot { display: flex; align-items: center; gap: 12px; padding: 5px 0; flex-direction: row-reverse; }
+  .v3-dot .v3-dot-i { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--mono); font-size: .66rem; color: var(--dim); background: var(--panel); border: 1px solid var(--line);
+    transition: all .25s var(--ease); }
+  .v3-dot .v3-dot-nm { font-size: .82rem; font-weight: 600; color: var(--muted); white-space: nowrap; opacity: 0; transform: translateX(8px);
+    transition: opacity .25s var(--ease), transform .25s var(--ease); background: rgba(10,12,15,.7); padding: 3px 10px; border-radius: 8px; backdrop-filter: blur(6px); }
+  .v3-dot:hover .v3-dot-nm { opacity: 1; transform: none; }
+  .v3-dot:hover .v3-dot-i { color: var(--text); border-color: var(--line-2); }
+  .v3-dot.active .v3-dot-i { color: #0b0507; background: var(--ac); border-color: var(--ac); box-shadow: 0 0 14px rgba(var(--rgb),.7); transform: scale(1.08); }
+  .v3-dot.active .v3-dot-nm { opacity: 1; transform: none; color: var(--text); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .v3-reveal { opacity: 1 !important; animation: none !important; }
+    .v3-ghost, .v3-bigic, .v3-scroll-cue .ln::after { animation: none !important; }
+  }
+
+  @media (max-width: 980px) {
+    .v3-rail { display: none; }
+    .v3-inner { grid-template-columns: 1fr; gap: 30px; padding: 0 40px; }
+    .v3-panel { min-height: 0; padding: 70px 0; }
+    .v3-panel:nth-child(even) .v3-content { order: 1; }
+    .v3-panel:nth-child(even) .v3-visual { order: 2; }
+    .v3-visual { height: 240px; max-width: 520px; }
+  }
+  @media (max-width: 560px) {
+    .v3-hero { padding: 132px 0 56px; }
+    .v3-inner { padding: 0 22px; }
+    .v3-ghost { font-size: 7rem; }
+    .v3-bigic { width: 92px; height: 92px; }
+    .v3-bigic svg { width: 46px; height: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+    </a>
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="../Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="../Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Blog V2.html">Blog</a></div>
+      <div class="menu-item"><a href="../Industries.html" aria-current="page">Industries</a></div>
+      <div class="menu-item"><a href="../Contact.html">Contact</a></div>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+    <button class="hamburger" id="hamburger" aria-label="მენიუ"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="../Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Blog V2.html">Blog</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+  <a class="btn btn-primary" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<main id="v3-top">
+  <!-- HERO -->
+  <section class="v3-hero" data-screen-label="Industries V3 · Hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="wrap">
+      <span class="eyebrow">ინდუსტრიები</span>
+      <h1>ერთი მისია, <span class="hl">თერთმეტი</span> ფრონტი</h1>
+      <p class="sub">გადაიყვანეთ სკროლი თითო ინდუსტრიაში და ნახეთ, როგორ ერგება CyberX-ის დაცვა თქვენი სექტორის უნიკალურ რისკებს.</p>
+      <div class="v3-scroll-cue"><span>Scroll</span><span class="ln"></span><span>11 სექტორი</span></div>
+    </div>
+  </section>
+
+  <!-- STORYBOARD -->
+  <section class="v3-story" id="v3Section" data-screen-label="Industries V3 · Story">
+    <div class="v3-stack" id="v3stack"></div>
+  </section>
+
+  <!-- progress rail -->
+  <nav class="v3-rail" id="v3rail" aria-label="ინდუსტრიების ნავიგაცია"></nav>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="final" data-screen-label="Industries V3 · CTA">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center">დაიწყეთ აქ</span>
+      <h2>ვერ პოულობთ თქვენს ინდუსტრიას? მაინც დაგიცავთ.</h2>
+      <p>CyberX-ის ექსპერტები შეაფასებენ თქვენი სექტორის სპეციფიკურ რისკებს და შეგირჩევენ მორგებულ უსაფრთხოების ეკოსისტემას.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="../index.html#final">Talk to CyberX Expert <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-ghost" href="../Solutions.html">გადაწყვეტილებების ნახვა</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>კომპანია</h4><a href="../index.html#about">ჩვენს შესახებ</a><a href="../Solutions.html">გადაწყვეტილებები</a><a href="../Industries.html">ინდუსტრიები</a></div>
+        <div class="footer-col"><h4>რესურსები</h4><a href="../index.html#insights">ბლოგი / Insights</a><a href="../Vendors.html">ვენდორები</a></div>
+        <div class="footer-col"><h4>დაკავშირება</h4><a href="#" target="_blank" rel="noopener">LinkedIn</a><a href="../index.html#final">კონტაქტი</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+<script src="../industries-data.js"></script>
+<script src="../industries-v3.js"></script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <circle cx="9" cy="8" r="2.4" stroke="#FF7A3C" stroke-width="1.3"/>
+    <circle cx="9" cy="17" r="2.4" fill="#36D2E6" opacity=".8"/>
+    <circle cx="9" cy="26" r="2.4" stroke="#2D7FF9" stroke-width="1.3"/>
+    <path d="M9 10.4v4.2M9 19.4v4.2" stroke="#fff" stroke-width="1.2" opacity=".3"/>
+    <path d="M16 8h12M16 17h9M16 26h11" stroke="#8B9BF5" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>
+  </svg>
+</template>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ტექნოლოგიური ვენდორები — V3 · Vendor Spotlight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#07080A; --bg-2:#0C0E12; --panel:#121419; --panel-2:#171A20;
+    --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.16);
+    --text:#EEF1F4; --muted:#9AA2AC; --dim:#687078;
+    --brand:#FF4B26; --brand-2:#FF7A3C; --green:#25E08A;
+    --font:'Noto Sans Georgian',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 32px;}
+
+  .vsec{position:relative;padding:118px 0;overflow:hidden;background:linear-gradient(180deg,var(--bg),var(--bg-2));}
+  .vsec .wrap{position:relative;z-index:2;}
+
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brand-2);display:inline-flex;align-items:center;gap:10px;font-weight:500;justify-content:center;}
+  .eyebrow::before,.eyebrow::after{content:"";width:26px;height:1px;background:currentColor;opacity:.7;}
+  .top{text-align:center;max-width:680px;margin:0 auto 14px;}
+  .top p{color:var(--muted);font-size:1.06rem;line-height:1.6;margin-top:18px;}
+
+  /* stage */
+  .stage{position:relative;margin:42px auto 0;max-width:920px;min-height:300px;border:1px solid var(--line);border-radius:20px;
+    background:radial-gradient(70% 120% at 50% 0%, rgba(255,75,38,.12), transparent 60%), linear-gradient(180deg,rgba(18,20,25,.7),rgba(12,14,18,.6));
+    box-shadow:0 50px 100px -60px rgba(0,0,0,.9);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:58px 40px 64px;text-align:center;}
+  .stage::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 5px);pointer-events:none;opacity:.5;}
+  .s-meta{position:relative;font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:12px;}
+  .s-meta .on{color:var(--green);display:inline-flex;align-items:center;gap:7px;}
+  .s-meta .on .d{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+  .s-meta .idx{color:var(--brand-2);}
+  .s-name{position:relative;font-size:clamp(2.2rem,6vw,4.4rem);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:22px 0 16px;text-wrap:balance;}
+  .s-name .logo-card{display:inline-flex;align-items:center;justify-content:center;padding:24px 40px;border-radius:18px;border:1px solid var(--line-2);box-shadow:0 24px 60px -30px rgba(0,0,0,.85);}
+  .s-name .logo-card.light{border-color:var(--line-2);}
+  .s-name .logo-card img{height:clamp(46px,7vw,74px);width:auto;max-width:min(74vw,460px);object-fit:contain;display:block;}
+  .s-cat{position:relative;font-size:1.1rem;color:var(--muted);max-width:480px;}
+  .swap{animation:swapIn .5s var(--ease) both;}
+  @keyframes swapIn{from{transform:translateY(12px);filter:blur(3px);}to{transform:none;filter:none;}}
+  .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:rgba(255,255,255,.06);}
+  .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--brand),var(--brand-2));}
+  .bar i.run{transition:width 3.1s linear;width:100%;}
+
+  /* rail */
+  .rail{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:30px auto 0;max-width:1000px;}
+  .tab{font-family:var(--mono);font-size:.82rem;letter-spacing:.02em;color:var(--muted);background:none;border:1px solid var(--line);
+    border-radius:999px;padding:10px 18px;cursor:pointer;transition:all .25s var(--ease);white-space:nowrap;}
+  .tab:hover{color:var(--text);border-color:var(--line-2);}
+  .tab.active{color:#160803;background:linear-gradient(180deg,var(--brand-2),var(--brand));border-color:transparent;font-weight:600;box-shadow:0 10px 26px -10px rgba(255,75,38,.7);}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){.swap{animation:none!important;}.bar i.run{transition:none!important;}.s-meta .on .d{animation:none;}.reveal{opacity:1!important;transform:none!important;}}
+  @media(max-width:620px){
+    .vsec{padding:74px 0;}.wrap{padding:0 16px;}
+    .top p{font-size:.96rem;}
+    .stage{min-height:240px;padding:40px 22px 48px;border-radius:16px;}
+    .s-cat{font-size:.98rem;}
+    .s-name .logo-card{padding:16px 22px;border-radius:14px;}
+    .rail{gap:8px;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-bottom:6px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .rail::-webkit-scrollbar{display:none;}
+    .tab{font-size:.76rem;padding:9px 15px;flex-shrink:0;}
+  }
+</style>
+</head>
+<body>
+  <section class="vsec">
+    <div class="wrap">
+      <div class="top reveal">
+        <div class="eyebrow">ტექნოლოგიური ვენდორები</div>
+        <p>მსოფლიო დონის ვენდორების ეკოსისტემა — თითოეული შერჩეული კონკრეტული უსაფრთხოების სფეროსთვის.</p>
+      </div>
+
+      <div class="stage reveal" data-delay="1">
+        <div class="s-meta">
+          <span class="on"><span class="d"></span>PARTNER</span>
+          <span>·</span>
+          <span class="idx" id="s-idx">01 / 09</span>
+        </div>
+        <div class="s-name" id="s-name"></div>
+        <div class="s-cat" id="s-cat"></div>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
+
+      <div class="rail reveal" data-delay="2" id="rail"></div>
+    </div>
+  </section>
+
+<script>
+  const LOGO='../vendor-logos/';
+  const VENDORS=[
+    {n:'Fortra',c:'Offensive Security & Data Protection',file:'fortra.png',bg:'#006a56',light:false},
+    {n:'Nozomi Networks',c:'OT / IoT ხილვადობა და დაცვა',file:'nozomi.png',bg:'#ffffff',light:true},
+    {n:'OPSWAT',c:'კრიტიკული ინფრასტრუქტურის დაცვა',file:'opswat.png',bg:'#050f22',light:false},
+    {n:'Secure Code Warrior',c:'უსაფრთხო კოდირების ტრენინგი',file:'secure-code-warrior.png',bg:'#1c4db5',light:false},
+    {n:'42Gears',c:'Unified Endpoint Management',file:'',bg:'#10131a',light:false},
+    {n:'Palo Alto Networks',c:'ქსელისა და Cloud უსაფრთხოება',file:'palo-alto.png',bg:'#040607',light:false},
+    {n:'SentinelOne',c:'XDR / Endpoint დაცვა',file:'sentinelone.png',bg:'#ffffff',light:true},
+    {n:'CyberArk',c:'Identity & Privileged Access',file:'cyberark.png',bg:'#ffffff',light:true},
+    {n:'Energy Logserver',c:'SIEM / SOAR',file:'energy-logserver.png',bg:'#000000',light:false}
+  ];
+  const pad=i=>String(i+1).padStart(2,'0');
+  const rail=document.getElementById('rail');
+  rail.innerHTML=VENDORS.map((v,i)=>`<button class="tab${i===0?' active':''}" data-i="${i}">${v.n}</button>`).join('');
+  const tabs=[...rail.children];
+  const el={name:document.getElementById('s-name'),cat:document.getElementById('s-cat'),idx:document.getElementById('s-idx'),bar:document.getElementById('bar')};
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur=-1, timer=null;
+
+  function show(i){
+    if(i===cur)return; cur=i; const v=VENDORS[i];
+    tabs.forEach((t,k)=>t.classList.toggle('active',k===i));
+    el.name.innerHTML=v.file?`<span class="logo-card${v.light?' light':''}" style="background:${v.bg}"><img src="${LOGO}${v.file}" alt="${v.n}"></span>`:v.n;
+    el.cat.textContent=v.c;
+    el.idx.textContent=pad(i)+' / '+String(VENDORS.length).padStart(2,'0');
+    [el.name,el.cat].forEach(n=>{n.classList.remove('swap');void n.offsetWidth;n.classList.add('swap');});
+    // restart progress bar
+    el.bar.classList.remove('run');el.bar.style.width='0';void el.bar.offsetWidth;
+    if(!reduce)el.bar.classList.add('run');
+  }
+  function next(){show((cur+1)%VENDORS.length);}
+  function play(){stop();if(!reduce)timer=setInterval(next,3100);}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+
+  rail.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b){show(+b.dataset.i);play();}});
+  rail.addEventListener('mouseover',e=>{const b=e.target.closest('.tab');if(b){stop();show(+b.dataset.i);el.bar.classList.remove('run');el.bar.style.width='0';}});
+  rail.addEventListener('mouseleave',play);
+
+  show(0);play();
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(x=>io.observe(x));
+  setTimeout(()=>{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));var s=document.createElement('style');s.textContent='.reveal{opacity:1!important;transform:none!important;transition:none!important}';document.head.appendChild(s);},700);
+</script>
+</body>
+</html>

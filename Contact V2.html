@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — კონტაქტი · ვერსია 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* ============================================================
+     CONTACT · V2 — Conversational stepper
+     ============================================================ */
+  .cv-wrap { position: relative; overflow: hidden; min-height: 100vh; padding: 110px 0 50px; display: flex; flex-direction: column; justify-content: center;
+    background: radial-gradient(110% 70% at 80% 2%, rgba(255,75,38,.16), transparent 55%), radial-gradient(70% 70% at 6% 98%, rgba(45,127,249,.12), transparent 60%), linear-gradient(180deg,#0b0608 0%,var(--bg) 78%); }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .65; z-index: 0; }
+  .cv-wrap > .wrap { position: relative; z-index: 3; width: 100%; max-width: 860px; }
+
+  .cv-top { text-align: center; margin-bottom: 30px; }
+  .cv-top .eyebrow { justify-content: center; }
+  .cv-top h1 { font-size: clamp(2rem,4vw,3.2rem); font-weight: 800; letter-spacing: -.03em; margin-top: 16px; }
+  .cv-top h1 .hl { background: linear-gradient(110deg,var(--brand-2),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* card */
+  .cv-card { position: relative; border: 1px solid var(--line-2); border-radius: 24px; overflow: hidden; min-height: 420px;
+    background: linear-gradient(180deg, rgba(20,23,28,.94), rgba(12,14,18,.94)); backdrop-filter: blur(14px); box-shadow: 0 40px 90px -34px rgba(0,0,0,.75); }
+
+  /* progress */
+  .cv-prog { display: flex; align-items: center; gap: 14px; padding: 22px 34px; border-bottom: 1px solid var(--line); }
+  .cv-dots { display: flex; gap: 7px; flex: 1; }
+  .cv-dots span { height: 5px; flex: 1; border-radius: 3px; background: rgba(255,255,255,.1); overflow: hidden; position: relative; }
+  .cv-dots span.done::after, .cv-dots span.cur::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg,var(--brand-2),var(--brand)); border-radius: 3px; }
+  .cv-dots span.cur::after { animation: growW .4s var(--ease); }
+  @keyframes growW { from { transform: scaleX(.3); transform-origin: left; } to { transform: scaleX(1); } }
+  .cv-step-n { font-family: var(--mono); font-size: .78rem; color: var(--dim); white-space: nowrap; }
+  .cv-step-n b { color: var(--brand-2); }
+
+  /* steps */
+  .cv-stage { position: relative; padding: 48px 50px 28px; }
+  .cv-step { display: none; }
+  .cv-step.on { display: block; animation: cvSlide .42s var(--ease); }
+  @keyframes cvSlide { from { opacity: .35; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .cv-q { font-family: var(--mono); font-size: .76rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brand-2); margin-bottom: 12px; }
+  .cv-step h2 { font-size: clamp(1.5rem,2.6vw,2.1rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 26px; text-wrap: balance; }
+  .cv-input { width: 100%; padding: 16px 0; border: none; border-bottom: 2px solid var(--line-2); background: none; color: var(--text); font-family: inherit; font-size: clamp(1.2rem,2vw,1.6rem); transition: border-color .25s; }
+  .cv-input::placeholder { color: var(--dim); }
+  .cv-input:focus { outline: none; border-bottom-color: var(--brand); }
+  textarea.cv-input { resize: none; min-height: 90px; border: 2px solid var(--line-2); border-radius: 14px; padding: 16px; font-size: 1.1rem; }
+  textarea.cv-input:focus { border-color: var(--brand); }
+  .cv-hint { font-size: .9rem; color: var(--dim); margin-top: 12px; }
+  .cv-hint.err { color: var(--red); }
+
+  /* service chips */
+  .cv-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cv-chip { font-size: .94rem; color: var(--muted); padding: 11px 18px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.03); cursor: pointer; transition: all .2s var(--ease); }
+  .cv-chip:hover { color: var(--text); border-color: var(--line); transform: translateY(-2px); }
+  .cv-chip.sel { color: #0b0507; background: var(--brand); border-color: var(--brand); font-weight: 600; }
+
+  /* nav */
+  .cv-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 50px 34px; }
+  .cv-back { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); background: none; border: none; font-family: inherit; font-size: .95rem; cursor: pointer; transition: color .2s; opacity: 1; }
+  .cv-back:hover { color: var(--text); }
+  .cv-back svg { width: 16px; height: 16px; transform: rotate(180deg); }
+  .cv-back.hide { visibility: hidden; }
+  .cv-next { padding: 14px 30px; }
+  .cv-keyhint { font-family: var(--mono); font-size: .74rem; color: var(--dim); margin-left: auto; margin-right: 14px; }
+  .cv-keyhint kbd { border: 1px solid var(--line-2); border-radius: 5px; padding: 2px 7px; color: var(--muted); }
+
+  /* success */
+  .cv-card.sent .cv-prog, .cv-card.sent .cv-stage, .cv-card.sent .cv-nav { display: none; }
+  .cv-success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 64px 30px; }
+  .cv-card.sent .cv-success { display: flex; animation: cvSlide .5s var(--ease); }
+  .cv-check { width: 80px; height: 80px; border-radius: 50%; display: grid; place-items: center; background: rgba(37,224,138,.12); border: 1px solid rgba(37,224,138,.4); margin-bottom: 24px; }
+  .cv-check svg { width: 42px; height: 42px; color: var(--green); }
+  .cv-check svg path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .6s .15s var(--ease) forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .cv-success h2 { font-size: 1.7rem; font-weight: 800; }
+  .cv-success p { color: var(--muted); margin-top: 12px; max-width: 400px; }
+  .cv-success .btn { margin-top: 26px; }
+
+  /* channels strip */
+  .cv-channels { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .cv-ch { display: inline-flex; align-items: center; gap: 10px; padding: 11px 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(18,20,25,.5); backdrop-filter: blur(6px); color: var(--muted); font-size: .92rem; transition: all .25s var(--ease); }
+  .cv-ch:hover { color: var(--text); border-color: var(--line-2); transform: translateY(-2px); }
+  .cv-ch svg { width: 18px; height: 18px; color: var(--brand-2); }
+
+  @media (prefers-reduced-motion: reduce){ .cv-step.on,.cv-card.sent .cv-success{animation:none} .cv-check svg path{animation:none;stroke-dashoffset:0} .cv-dots span.cur::after{animation:none} }
+  @media (max-width: 600px) {
+    .cv-stage, .cv-prog, .cv-nav { padding-left: 24px; padding-right: 24px; }
+    .cv-keyhint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+    </a>
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="../Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="../Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Industries.html">Industries</a></div>
+      <div class="menu-item"><a href="../Blog V2.html">Insights</a></div>
+      <div class="menu-item"><a href="../Contact.html" aria-current="page">Contact</a></div>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="mailto:info@cyberx.ge">ზარის დაჯავშნა</a>
+    <button class="hamburger" id="hamburger" aria-label="მენიუ"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="../Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Blog V2.html">Insights</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+</div>
+
+<main>
+  <section class="cv-wrap" data-screen-label="Contact V2 · Stepper">
+    <canvas id="hero-canvas"></canvas>
+    <div class="wrap">
+      <div class="cv-top">
+        <span class="eyebrow">Contact our team</span>
+        <h1>დაგვი<span class="hl">კავშირდით</span></h1>
+      </div>
+
+      <div class="cv-card" id="cvCard">
+        <div class="cv-prog">
+          <div class="cv-dots" id="cvDots"></div>
+          <span class="cv-step-n">ნაბიჯი <b id="cvCur">1</b> / <span id="cvTotal">6</span></span>
+        </div>
+        <div class="cv-stage" id="cvStage"></div>
+        <div class="cv-nav">
+          <button class="cv-back hide" id="cvBack" type="button"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> უკან</button>
+          <span class="cv-keyhint"><kbd>Enter ↵</kbd> შემდეგზე</span>
+          <button class="btn btn-primary cv-next" id="cvNext" type="button">შემდეგი <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <div class="cv-success">
+          <div class="cv-check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h2>გმადლობთ, <span id="cvName">მეგობარო</span>!</h2>
+          <p>თქვენი შეტყობინება მიღებულია. CyberX-ის გუნდი მალე დაგიკავშირდებათ მითითებულ ელ. ფოსტაზე.</p>
+          <button class="btn btn-ghost" type="button" id="cvAgain">თავიდან დაწყება</button>
+        </div>
+      </div>
+
+      <div class="cv-channels" id="cvChannels"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-bottom" style="border:none;padding-top:0">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9V7c0-1 .5-1.5 1.6-1.5H17V2.5h-2.4C11.8 2.5 11 4.2 11 6.4V9H8.5v3H11v9.5h3V12h2.3l.4-3H14Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+<script src="../contact-data.js"></script>
+<script>
+(function () {
+  const D = window.CONTACT;
+  const STEPS = [
+    { key: 'name', q: '01 · გაცნობა', h: 'როგორ მოგმართოთ?', type: 'text', ph: 'სახელი, გვარი', required: true, hint: 'მაგ: ნინო ბერიძე' },
+    { key: 'email', q: '02 · კონტაქტი', h: 'სად დაგიკავშირდეთ?', type: 'email', ph: 'თქვენი ელ. ფოსტა', required: true, hint: 'ვუპასუხებთ 24 საათში' },
+    { key: 'mobile', q: '03 · ტელეფონი', h: 'თქვენი მობილური? (სურვილისამებრ)', type: 'tel', ph: '+995 5xx xx xx xx', required: false, hint: 'თუ ზარით გირჩევნიათ კომუნიკაცია' },
+    { key: 'org', q: '04 · ორგანიზაცია', h: 'რომელ ორგანიზაციას წარმოადგენთ?', type: 'text', ph: 'კომპანიის სახელი', required: false, hint: '' },
+    { key: 'service', q: '05 · ინტერესი', h: 'რა გადაწყვეტილება გაინტერესებთ?', type: 'chips', required: false, hint: 'აირჩიეთ ერთი — ან გამოტოვეთ' },
+    { key: 'message', q: '06 · შეტყობინება', h: 'მოგვიყევით მეტი თქვენს საჭიროებაზე', type: 'textarea', ph: 'მოგვწერეთ თქვენი შეკითხვა ან საჭიროება…', required: true, hint: '' },
+  ];
+  const data = {};
+  document.getElementById('cvTotal').textContent = STEPS.length;
+
+  // progress dots
+  const dots = document.getElementById('cvDots');
+  dots.innerHTML = STEPS.map(() => '<span></span>').join('');
+  const dotEls = [...dots.children];
+
+  // render steps
+  const stage = document.getElementById('cvStage');
+  stage.innerHTML = STEPS.map((s, i) => {
+    let field;
+    if (s.type === 'textarea') field = `<textarea class="cv-input" data-key="${s.key}" placeholder="${s.ph}"></textarea>`;
+    else if (s.type === 'chips') field = `<div class="cv-chips">${D.services.map(v => `<button type="button" class="cv-chip" data-v="${v}">${v}</button>`).join('')}</div>`;
+    else field = `<input class="cv-input" type="${s.type}" data-key="${s.key}" placeholder="${s.ph}">`;
+    return `<div class="cv-step" data-i="${i}">
+      <div class="cv-q">${s.q}</div>
+      <h2>${s.h}</h2>
+      ${field}
+      <div class="cv-hint">${s.hint || ''}</div>
+    </div>`;
+  }).join('');
+  const stepEls = [...stage.querySelectorAll('.cv-step')];
+
+  // channels
+  document.getElementById('cvChannels').innerHTML = D.channels.map(c =>
+    `<a class="cv-ch" href="${c.href}"${c.id!=='email'?' target="_blank" rel="noopener"':''}><svg viewBox="0 0 24 24" fill="none">${c.icon}</svg>${c.value}</a>`).join('');
+
+  let cur = 0;
+  const card = document.getElementById('cvCard');
+  const back = document.getElementById('cvBack');
+  const next = document.getElementById('cvNext');
+
+  function show(i) {
+    cur = i;
+    stepEls.forEach((el, k) => el.classList.toggle('on', k === i));
+    dotEls.forEach((d, k) => { d.classList.toggle('done', k < i); d.classList.toggle('cur', k === i); });
+    document.getElementById('cvCur').textContent = i + 1;
+    back.classList.toggle('hide', i === 0);
+    next.innerHTML = i === STEPS.length - 1
+      ? 'გაგზავნა <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : 'შემდეგი <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const f = stepEls[i].querySelector('input,textarea');
+    if (f) setTimeout(() => f.focus({ preventScroll: true }), 60);
+  }
+
+  function validate(i) {
+    const s = STEPS[i];
+    const el = stepEls[i];
+    const hint = el.querySelector('.cv-hint');
+    if (s.type === 'chips') return true;
+    const f = el.querySelector('input,textarea');
+    data[s.key] = f.value.trim();
+    if (s.required && !f.value.trim()) { hint.textContent = 'გთხოვთ შეავსოთ ეს ველი'; hint.classList.add('err'); return false; }
+    if (s.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.value)) { hint.textContent = 'შეიყვანეთ სწორი ელ. ფოსტა'; hint.classList.add('err'); return false; }
+    hint.classList.remove('err'); hint.textContent = s.hint || '';
+    return true;
+  }
+
+  function advance() {
+    if (!validate(cur)) return;
+    if (cur < STEPS.length - 1) show(cur + 1);
+    else { document.getElementById('cvName').textContent = data.name || 'მეგობარო'; card.classList.add('sent'); }
+  }
+  next.addEventListener('click', advance);
+  back.addEventListener('click', () => { if (cur > 0) show(cur - 1); });
+
+  // chips select
+  stage.querySelectorAll('.cv-chip').forEach(ch => ch.addEventListener('click', () => {
+    stage.querySelectorAll('.cv-chip').forEach(c => c.classList.remove('sel'));
+    ch.classList.add('sel'); data.service = ch.dataset.v;
+    setTimeout(advance, 220);
+  }));
+
+  // Enter to advance (not in textarea)
+  stage.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') { e.preventDefault(); advance(); }
+    if (e.key === 'Enter' && e.target.tagName === 'TEXTAREA' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); advance(); }
+  });
+  stage.addEventListener('input', e => { const h = e.target.closest('.cv-step')?.querySelector('.cv-hint'); if (h) h.classList.remove('err'); });
+
+  document.getElementById('cvAgain').addEventListener('click', () => {
+    Object.keys(data).forEach(k => delete data[k]);
+    stage.querySelectorAll('input,textarea').forEach(f => f.value = '');
+    stage.querySelectorAll('.cv-chip').forEach(c => c.classList.remove('sel'));
+    card.classList.remove('sent'); show(0);
+  });
+
+  show(0);
+})();
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <path d="M5 9h10M5 14h16M5 19h7" stroke="#FF7A3C" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="25" cy="22" r="5" stroke="#36D2E6" stroke-width="1.5"/><path d="m23 22 1.5 1.5L27.5 20" stroke="#36D2E6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</template>
+</body>
+</html>

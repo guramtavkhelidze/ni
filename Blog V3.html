@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — Insights · ვერსია 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* ============================================================
+     BLOG · V3 — "Spotlight Deck" (auto-rotating featured)
+     ============================================================ */
+  .bs-hero { position: relative; overflow: hidden; padding: 124px 0 40px;
+    background: radial-gradient(115% 80% at 82% 4%, rgba(255,75,38,.15), transparent 55%), linear-gradient(180deg,#0b0608 0%,var(--bg) 88%); }
+  .bs-hero .wrap { position: relative; z-index: 2; }
+  .bs-hero-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
+  .bs-hero h1 { font-size: clamp(1.95rem,4vw,3.4rem); font-weight: 800; letter-spacing: -.03em; margin: 20px 0 0; text-wrap: balance; max-width: 16ch; }
+  .bs-hero h1 .hl { background: linear-gradient(110deg,var(--brand-2),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .bs-hero .lead { font-size: 1.04rem; color: var(--muted); max-width: 420px; line-height: 1.65; }
+
+  /* spotlight */
+  .bs-stage { position: relative; background: linear-gradient(180deg,var(--bg),var(--bg-2)); padding: 30px 0 20px; }
+  .bs-spot { position: relative; overflow: hidden; border-radius: 24px; border: 1px solid rgba(var(--rgb),.32);
+    --ac:#FF7A3C; --rgb:255,122,60; transition: border-color .6s var(--ease);
+    background: linear-gradient(180deg,var(--panel),#0a0c10); min-height: 460px; display: grid; grid-template-columns: 1fr 1fr; }
+  .bs-spot-body { position: relative; z-index: 3; padding: 52px 50px; display: flex; flex-direction: column; justify-content: center; }
+  .bs-badge { display: inline-flex; align-items: center; gap: 9px; align-self: flex-start; font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; padding: 8px 15px; border-radius: 999px; background: rgba(var(--rgb),.14); border: 1px solid rgba(var(--rgb),.35); color: var(--ac); margin-bottom: 22px; }
+  .bs-badge .d { width: 7px; height: 7px; border-radius: 50%; background: var(--ac); box-shadow: 0 0 10px var(--ac); }
+  .bs-spot-body h2 { font-size: clamp(1.7rem,2.8vw,2.6rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; text-wrap: balance; }
+  .bs-spot-body .ex { color: var(--muted); font-size: 1.06rem; line-height: 1.65; margin-top: 16px; max-width: 46ch; }
+  .bs-meta { display: flex; align-items: center; gap: 13px; margin-top: 22px; font-family: var(--mono); font-size: .82rem; color: var(--dim); }
+  .bs-read { margin-top: 28px; align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: .96rem; padding: 13px 24px; border-radius: 999px; color: #0b0507; background: var(--ac); border: 1px solid var(--ac); transition: transform .25s var(--ease), box-shadow .25s, filter .25s; }
+  .bs-read svg { width: 16px; height: 16px; transition: transform .25s var(--ease); }
+  .bs-read:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -10px rgba(var(--rgb),.6); filter: brightness(1.06); }
+  .bs-read:hover svg { transform: translateX(4px); }
+
+  .bs-spot-cover { position: relative; overflow: hidden; }
+  .bs-spot-cover canvas { position: absolute; inset: 0; width: 100%; height: 100%; animation: kenburns 12s ease-in-out infinite alternate; }
+  @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.1); } }
+  .bs-spot-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--panel) 0%, transparent 36%); }
+
+  .bs-body-anim > * { opacity: 1; }
+  .bs-body-anim.enter > * { animation: bsUp .55s var(--ease) backwards; }
+  .bs-body-anim.enter > *:nth-child(2){animation-delay:.06s} .bs-body-anim.enter > *:nth-child(3){animation-delay:.12s}
+  .bs-body-anim.enter > *:nth-child(4){animation-delay:.18s} .bs-body-anim.enter > *:nth-child(5){animation-delay:.24s}
+  @keyframes bsUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* dots / thumbs rail */
+  .bs-rail { display: flex; gap: 10px; margin-top: 20px; }
+  .bs-thumb { position: relative; flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,.1); overflow: hidden; cursor: pointer; transition: height .2s; }
+  .bs-thumb:hover { height: 7px; }
+  .bs-thumb .fill { position: absolute; inset: 0; width: 0; background: var(--brand); border-radius: 3px; }
+  .bs-thumb.on .fill { background: var(--bac, var(--brand)); }
+
+  /* index list */
+  .bs-index { background: linear-gradient(180deg,var(--bg-2),var(--bg)); }
+  .bs-index-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+  .bs-index-head h2 { font-size: clamp(1.7rem,3vw,2.4rem); }
+  .bs-index-head .note { font-family: var(--mono); font-size: .8rem; color: var(--dim); }
+  .bs-rows { border-top: 1px solid var(--line); }
+  .bs-irow { position: relative; display: grid; grid-template-columns: 46px 1fr auto; gap: 22px; align-items: center; padding: 22px 12px; border-bottom: 1px solid var(--line); transition: background .25s, padding .25s var(--ease); }
+  .bs-irow:hover { background: rgba(255,255,255,.02); padding-left: 22px; }
+  .bs-irow .n { font-family: var(--mono); font-size: .9rem; color: var(--ac); font-weight: 600; }
+  .bs-irow .t { font-size: clamp(1.05rem,1.5vw,1.32rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.25; transition: color .2s; }
+  .bs-irow:hover .t { color: var(--ac); }
+  .bs-irow .mt { font-family: var(--mono); font-size: .78rem; color: var(--dim); display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+  .bs-irow .mt .cat { color: var(--ac); }
+  .bs-irow .mt .ar { width: 18px; height: 18px; opacity: 0; transform: translateX(-6px); transition: all .25s var(--ease); }
+  .bs-irow:hover .mt .ar { opacity: 1; transform: none; }
+
+  /* find */
+  .bs-find { background: var(--bg); }
+  .bs-find-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+  .bs-find-card { padding: 26px 22px 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); transition: transform .3s var(--ease), border-color .3s; }
+  .bs-find-card:hover { transform: translateY(-5px); border-color: rgba(var(--rgb),.4); }
+  .bs-find-ic { width: 44px; height: 44px; border-radius: 11px; display: grid; place-items: center; background: rgba(var(--rgb),.12); border: 1px solid rgba(var(--rgb),.28); color: var(--ac); margin-bottom: 16px; }
+  .bs-find-ic svg { width: 23px; height: 23px; }
+  .bs-find-card h3 { font-size: 1.02rem; font-weight: 700; line-height: 1.25; }
+  .bs-find-card p { color: var(--muted); font-size: .9rem; line-height: 1.55; margin-top: 10px; }
+
+  /* why + subscribe (shared look) */
+  .bs-why { position: relative; overflow: hidden; text-align: center; background: radial-gradient(80% 70% at 50% 0%, rgba(37,224,138,.1), transparent 55%), linear-gradient(180deg,var(--bg),#07090A); }
+  .bs-why .wrap { max-width: 860px; }
+  .bs-why .quote { font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.22; text-wrap: balance; }
+  .bs-why p { color: var(--muted); font-size: 1.04rem; line-height: 1.7; margin-top: 20px; }
+  .bs-why p.b { color: var(--text); }
+
+  .bs-sub { position: relative; overflow: hidden; text-align: center; padding: 110px 0;
+    background: radial-gradient(80% 120% at 50% 0%, rgba(255,75,38,.26), transparent 60%), linear-gradient(180deg,#14060a,#0b0507); }
+  .bs-sub::before { content:""; position:absolute; inset:0; background-image: linear-gradient(rgba(255,75,38,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,75,38,.06) 1px,transparent 1px); background-size:54px 54px; mask-image: radial-gradient(60% 80% at 50% 40%,#000,transparent); }
+  .bs-sub .wrap { position: relative; z-index: 2; }
+  .bs-sub h2 { font-size: clamp(2rem,4vw,3.2rem); margin: 16px auto 0; max-width: 16ch; text-wrap: balance; }
+  .bs-sub p { color: var(--muted); font-size: 1.1rem; max-width: 600px; margin: 18px auto 0; line-height: 1.65; }
+  .bs-form { display: flex; gap: 12px; max-width: 520px; margin: 38px auto 0; flex-wrap: wrap; justify-content: center; }
+  .bs-form input { flex: 1; min-width: 240px; padding: 15px 22px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.05); color: var(--text); font-family: inherit; font-size: 1rem; }
+  .bs-form input::placeholder { color: var(--dim); }
+  .bs-form input:focus { outline: none; border-color: var(--brand); background: rgba(255,255,255,.08); }
+
+  @media (prefers-reduced-motion: reduce) { .bs-spot-cover canvas { animation: none !important; } .bs-body-anim > * { animation: none !important; } }
+  @media (max-width: 900px) {
+    .bs-spot { grid-template-columns: 1fr; min-height: 0; }
+    .bs-spot-cover { height: 220px; order: -1; }
+    .bs-spot-cover::after { background: linear-gradient(0deg, var(--panel) 0%, transparent 50%); }
+    .bs-spot-body { padding: 32px 28px 36px; }
+    .bs-find-grid { grid-template-columns: repeat(2,1fr); }
+    .bs-irow .mt { display: none; }
+    .bs-irow { grid-template-columns: 40px 1fr; }
+  }
+  @media (max-width: 600px) { .bs-hero { padding: 128px 0 30px; } .bs-find-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+    </a>
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="../Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="../Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Industries.html">Industries</a></div>
+      <div class="menu-item"><a href="../Blog V2.html" aria-current="page">Insights</a></div>
+      <div class="menu-item"><a href="../Contact.html">Contact</a></div>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+    <button class="hamburger" id="hamburger" aria-label="მენიუ"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="../Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Blog V2.html">Insights</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+  <a class="btn btn-primary" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<main id="bs-top">
+  <!-- HERO -->
+  <section class="bs-hero" data-screen-label="Blog V3 · Hero">
+    <div class="wrap">
+      <div class="bs-hero-row">
+        <div>
+          <span class="eyebrow" id="bsEy"></span>
+          <h1 id="bsH1"></h1>
+        </div>
+        <p class="lead" id="bsLead"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPOTLIGHT -->
+  <section class="bs-stage" data-screen-label="Blog V3 · Spotlight">
+    <div class="wrap">
+      <div class="bs-spot" id="bsSpot">
+        <div class="bs-spot-body">
+          <div class="bs-body-anim enter" id="bsBody"></div>
+          <div class="bs-rail" id="bsRail"></div>
+        </div>
+        <div class="bs-spot-cover"><canvas id="bsCover"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDEX -->
+  <section class="section bs-index" data-screen-label="Blog V3 · Index">
+    <div class="wrap">
+      <div class="bs-index-head">
+        <div><span class="eyebrow teal">არქივი</span><h2 id="bsIndexH"></h2></div>
+        <span class="note" id="bsIndexNote"></span>
+      </div>
+      <div class="bs-rows" id="bsRows"></div>
+    </div>
+  </section>
+
+  <!-- FIND -->
+  <section class="section bs-find" data-screen-label="Blog V3 · Categories">
+    <div class="wrap">
+      <div class="sec-head reveal" style="margin-bottom:34px"><span class="eyebrow">CyberX Insights</span><h2 id="bsFindH"></h2></div>
+      <div class="bs-find-grid" id="bsFind"></div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="section bs-why" data-screen-label="Blog V3 · Why">
+    <div class="wrap reveal">
+      <span class="eyebrow green" style="justify-content:center">ცნობიერება</span>
+      <p class="quote" id="bsWhyLead" style="margin-top:18px"></p>
+      <p class="b" id="bsWhyP1"></p>
+      <p id="bsWhyP2"></p>
+    </div>
+  </section>
+
+  <!-- SUBSCRIBE -->
+  <section class="bs-sub" id="final" data-screen-label="Blog V3 · Subscribe">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center">Newsletter</span>
+      <h2 id="bsSubH"></h2>
+      <p id="bsSubP1"></p>
+      <form class="bs-form" onsubmit="return false">
+        <input type="email" placeholder="თქვენი ელ. ფოსტა" aria-label="ელ. ფოსტა" required>
+        <button class="btn btn-primary" type="submit" id="bsSubBtn"></button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>კომპანია</h4><a href="../index.html#about">ჩვენს შესახებ</a><a href="../Solutions.html">გადაწყვეტილებები</a><a href="../Industries.html">ინდუსტრიები</a></div>
+        <div class="footer-col"><h4>რესურსები</h4><a href="../Blog V2.html">ბლოგი / Insights</a><a href="../Vendors.html">ვენდორები</a></div>
+        <div class="footer-col"><h4>დაკავშირება</h4><a href="#" target="_blank" rel="noopener">LinkedIn</a><a href="../index.html#final">კონტაქტი</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+<script src="../blog-data.js"></script>
+<script>
+(function () {
+  const B = window.BLOG, C = B.COPY;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ar = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const set = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t; };
+
+  set('bsEy', C.eyebrow); set('bsH1', C.h1); set('bsLead', C.introLead);
+  set('bsIndexH', C.latestHead); set('bsIndexNote', C.latestNote);
+  set('bsFindH', C.findHead);
+  set('bsWhyLead', C.whyLead); set('bsWhyP1', C.why[0]); set('bsWhyP2', C.why[1]);
+  set('bsSubH', C.subHead); set('bsSubP1', C.sub[0]); set('bsSubBtn', C.subBtn);
+
+  /* ---- spotlight rotator ---- */
+  const FEAT = B.POSTS.slice(0, 5);
+  const spot = document.getElementById('bsSpot');
+  const body = document.getElementById('bsBody');
+  const cover = document.getElementById('bsCover');
+  const rail = document.getElementById('bsRail');
+  rail.innerHTML = FEAT.map((p, i) => `<span class="bs-thumb${i === 0 ? ' on' : ''}" data-i="${i}" style="--bac:${p.ac}"><span class="fill"></span></span>`).join('');
+  const thumbs = [...rail.querySelectorAll('.bs-thumb')];
+  let cur = 0, timer = null, et = null;
+  const DUR = 6000;
+
+  function render(i) {
+    cur = (i + FEAT.length) % FEAT.length;
+    const p = FEAT[cur];
+    spot.style.setProperty('--ac', p.ac);
+    spot.style.setProperty('--rgb', p.rgb);
+    body.innerHTML = `
+      <span class="bs-badge"><span class="d"></span>${p.cat}</span>
+      <h2>${p.title}</h2>
+      <p class="ex">${p.excerpt}</p>
+      <div class="bs-meta"><span>${p.date}</span><span>·</span><span>${p.read}</span></div>
+      <a class="bs-read" href="../Blog Post.html">წაიკითხეთ სრულად ${ar}</a>`;
+    body.classList.remove('enter'); void body.offsetWidth; body.classList.add('enter');
+    clearTimeout(et); et = setTimeout(() => body.classList.remove('enter'), 900);
+    B.art(cover, p.rgb, p.seed);
+    thumbs.forEach((t, k) => {
+      t.classList.toggle('on', k === cur);
+      const f = t.querySelector('.fill');
+      f.style.transition = 'none'; f.style.width = '0%';
+    });
+    if (!reduce) {
+      const f = thumbs[cur].querySelector('.fill');
+      setTimeout(() => { f.style.transition = `width ${DUR}ms linear`; f.style.width = '100%'; }, 40);
+    }
+  }
+  function go(i) { render(i); schedule(); }
+  function schedule() { if (timer) clearInterval(timer); if (reduce) return; timer = setInterval(() => render(cur + 1), DUR); }
+  thumbs.forEach(t => t.addEventListener('click', () => go(+t.dataset.i)));
+  spot.addEventListener('pointerenter', () => { if (timer) clearInterval(timer); timer = null; const f = thumbs[cur].querySelector('.fill'); const w = getComputedStyle(f).width; f.style.transition = 'none'; f.style.width = w; });
+  spot.addEventListener('pointerleave', () => schedule());
+  render(0); schedule();
+
+  /* ---- index list (all posts) ---- */
+  document.getElementById('bsRows').innerHTML = B.POSTS.map((p, i) => `
+    <a class="bs-irow" href="../Blog Post.html" style="--ac:${p.ac};--rgb:${p.rgb}">
+      <span class="n">${String(i + 1).padStart(2, '0')}</span>
+      <span class="t">${p.title}</span>
+      <span class="mt"><span class="cat">${p.cat}</span><span>${p.date}</span><span>${p.read}</span><svg class="ar" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>`).join('');
+
+  /* ---- find ---- */
+  document.getElementById('bsFind').innerHTML = C.find.map((x, i) => {
+    const c = B.CATS[i] || B.CATS[0];
+    return `<div class="bs-find-card reveal" data-delay="${i % 4}" style="--ac:${c.ac};--rgb:${c.rgb}">
+      <span class="bs-find-ic"><svg viewBox="0 0 24 24" fill="none">${B.ICONS[x.i]}</svg></span>
+      <h3>${x.t}</h3><p>${x.d}</p></div>`;
+  }).join('');
+
+  if (window.IntersectionObserver) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+  setTimeout(() => document.querySelectorAll('.reveal:not(.in)').forEach(el => el.classList.add('in')), 1600);
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', ev => {
+    const id = a.getAttribute('href').slice(1); if (!id) return;
+    const el = document.getElementById(id); if (!el) return; ev.preventDefault();
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 92, behavior: 'smooth' });
+  }));
+})();
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <rect x="5" y="6" width="24" height="14" rx="2.5" stroke="#FF7A3C" stroke-width="1.4" opacity=".8"/>
+    <circle cx="11" cy="25" r="1.4" fill="#FF7A3C"/><circle cx="17" cy="25" r="1.4" fill="#36D2E6"/><circle cx="23" cy="25" r="1.4" fill="#2D7FF9"/>
+  </svg>
+</template>
+</body>
+</html>

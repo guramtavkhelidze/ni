@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ტექნოლოგიური ვენდორები — V2 · Orbital Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#07080A; --bg-2:#0C0E12; --panel:#121419; --panel-2:#171A20;
+    --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.16);
+    --text:#EEF1F4; --muted:#9AA2AC; --dim:#687078;
+    --brand:#FF4B26; --brand-2:#FF7A3C; --green:#25E08A;
+    --font:'Noto Sans Georgian',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 32px;}
+
+  .vsec{position:relative;padding:110px 0 120px;overflow:hidden;
+    background:radial-gradient(60% 55% at 50% 42%, rgba(255,75,38,.10), transparent 62%), linear-gradient(180deg,var(--bg),var(--bg-2));}
+  .vsec::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+    background-size:50px 50px;mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent 92%);pointer-events:none;}
+  .vsec .wrap{position:relative;z-index:2;}
+
+  .head{text-align:center;max-width:680px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brand-2);display:inline-flex;align-items:center;gap:10px;font-weight:500;}
+  .eyebrow::before,.eyebrow::after{content:"";width:26px;height:1px;background:currentColor;opacity:.7;}
+  .head h2{font-size:clamp(1.8rem,3.6vw,2.8rem);font-weight:800;letter-spacing:-.015em;line-height:1.1;margin-top:16px;text-wrap:balance;}
+  .head p{color:var(--muted);font-size:1.04rem;line-height:1.6;margin-top:16px;}
+
+  /* ---------- orbital stage ---------- */
+  .orbit{--d-out:clamp(320px,84vw,560px);--d-in:clamp(196px,54vw,348px);
+    position:relative;width:var(--d-out);height:var(--d-out);margin:46px auto 0;}
+
+  .sweep{position:absolute;inset:0;margin:auto;width:var(--d-out);height:var(--d-out);border-radius:50%;
+    background:conic-gradient(from 0deg, transparent 0deg, rgba(255,75,38,.14) 26deg, transparent 60deg);
+    animation:spin 7s linear infinite;pointer-events:none;mask:radial-gradient(circle, #000 56%, transparent 72%);}
+
+  .ring{position:absolute;inset:0;margin:auto;border-radius:50%;border:1px dashed rgba(255,75,38,.16);}
+  .ring-out{--R:calc(var(--d-out)/2);width:var(--d-out);height:var(--d-out);animation:spin 48s linear infinite;}
+  .ring-in{--R:calc(var(--d-in)/2);width:var(--d-in);height:var(--d-in);border-color:rgba(54,210,230,.16);animation:spin 38s linear infinite reverse;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .spoke{position:absolute;left:50%;bottom:50%;width:1.5px;height:var(--R);transform-origin:bottom center;
+    transform:translateX(-50%) rotate(var(--a));background:linear-gradient(to top, rgba(255,75,38,.30), transparent 78%);opacity:.55;}
+  .ring-in .spoke{background:linear-gradient(to top, rgba(54,210,230,.28), transparent 78%);}
+
+  .node{position:absolute;top:50%;left:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(-1 * var(--R)));}
+  .cancel{position:absolute;top:0;left:0;}
+  .ring-out .cancel{animation:spin 48s linear infinite reverse;}
+  .ring-in  .cancel{animation:spin 38s linear infinite;}
+  .up{position:absolute;top:0;left:0;transform:rotate(var(--na));}
+
+  .chip{position:absolute;top:0;left:0;width:132px;height:60px;transform:translate(-50%,-50%);
+    border-radius:14px;display:grid;place-items:center;cursor:pointer;overflow:hidden;padding:7px;
+    border:1px solid var(--line-2);box-shadow:0 16px 36px -20px rgba(0,0,0,.9);
+    transition:transform .35s var(--ease),border-color .3s,box-shadow .3s;}
+  .chip.light{border-color:rgba(0,0,0,.16);}
+  .ring-in .chip{width:112px;height:52px;border-radius:12px;}
+  .chip img{width:100%;height:100%;object-fit:contain;display:block;}
+  .chip .wm{font-family:var(--font);font-weight:800;font-size:1.04rem;letter-spacing:-.01em;color:#fff;white-space:nowrap;}
+  .ring-in .chip .wm{font-size:.92rem;}
+  .chip::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(255,75,38,0);transition:box-shadow .35s;pointer-events:none;}
+
+  .chip:hover{transform:translate(-50%,-50%) scale(1.14);border-color:rgba(255,75,38,.7);
+    box-shadow:0 22px 50px -18px rgba(255,75,38,.6);}
+  .ring-in .chip:hover{border-color:rgba(54,210,230,.7);box-shadow:0 22px 50px -18px rgba(54,210,230,.5);}
+  .chip:hover::after{box-shadow:inset 0 0 0 2px rgba(255,75,38,.5);}
+
+  /* tooltip */
+  .tip{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(6px);
+    white-space:nowrap;background:rgba(8,12,14,.96);border:1px solid var(--line-2);border-radius:12px;padding:9px 14px;
+    opacity:0;pointer-events:none;transition:opacity .28s var(--ease),transform .28s var(--ease);z-index:30;
+    box-shadow:0 18px 40px -14px rgba(0,0,0,.8);text-align:center;}
+  .tip b{display:block;font-size:.9rem;font-weight:700;letter-spacing:-.01em;color:var(--text);}
+  .tip i{display:block;font-style:normal;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--brand-2);margin-top:3px;}
+  .ring-in .tip i{color:var(--teal,#36D2E6);}
+  .tip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--line-2);}
+  .chip:hover .tip{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* pause whole system while a chip is hovered */
+  .orbit:has(.chip:hover) .ring-out,
+  .orbit:has(.chip:hover) .ring-in,
+  .orbit:has(.chip:hover) .cancel,
+  .orbit:has(.chip:hover) .sweep{animation-play-state:paused;}
+
+  /* core */
+  .core{position:absolute;inset:0;margin:auto;width:128px;height:128px;border-radius:30px;display:grid;place-items:center;z-index:5;
+    background:radial-gradient(circle at 50% 35%, rgba(255,75,38,.3), rgba(18,20,25,.95) 70%);
+    border:1px solid rgba(255,75,38,.4);box-shadow:0 0 60px -8px rgba(255,75,38,.5), inset 0 0 30px rgba(255,75,38,.18);}
+  .core::before,.core::after{content:"";position:absolute;inset:0;margin:auto;border-radius:50%;border:1px solid rgba(255,75,38,.3);animation:halo 3.4s ease-out infinite;}
+  .core::after{animation-delay:1.7s;}
+  @keyframes halo{0%{width:120px;height:120px;opacity:.7;}100%{width:230px;height:230px;opacity:0;}}
+  .core .mk{width:54px;height:54px;position:relative;z-index:2;}
+  .core .lbl{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);white-space:nowrap;}
+
+  .foot{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin-top:64px;}
+  .foot .it{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+  .foot .it b{color:var(--text);font-weight:600;}
+  .foot .d{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite;}
+  .foot .d.o{background:var(--brand);box-shadow:0 0 10px var(--brand);}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){
+    .ring-out,.ring-in,.cancel,.sweep,.core::before,.core::after,.foot .d{animation:none !important;}
+    .reveal{opacity:1!important;transform:none!important;}
+  }
+  @media(max-width:620px){
+    .vsec{padding:74px 0 84px;}.wrap{padding:0 16px;}
+    .head p{font-size:.96rem;}
+    .orbit{--d-out:clamp(300px,92vw,360px);--d-in:clamp(176px,56vw,210px);}
+    .chip{width:104px;height:48px;border-radius:11px;padding:5px;}
+    .ring-in .chip{width:90px;height:42px;border-radius:10px;}
+    .chip .wm{font-size:.86rem;}.ring-in .chip .wm{font-size:.78rem;}
+    .core{width:104px;height:104px;border-radius:26px;}.core .mk{width:44px;height:44px;}
+    .foot{margin-top:48px;gap:18px;}
+  }
+</style>
+</head>
+<body>
+  <section class="vsec">
+    <div class="wrap">
+      <div class="head reveal">
+        <div class="eyebrow">ტექნოლოგიური ვენდორები</div>
+        <h2>ერთიანი უსაფრთხოების ეკოსისტემა</h2>
+        <p>მსოფლიო დონის ვენდორები ერთ ორბიტაზე CyberX-ის ბირთვის ირგვლივ — გადაატარეთ კურსორი ნებისმიერ ვენდორს.</p>
+      </div>
+
+      <div class="orbit reveal" data-delay="1" id="orbit">
+        <div class="sweep"></div>
+
+        <div class="core">
+          <svg class="mk" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#cg)" stroke-width="1.7" fill="rgba(255,75,38,.12)"/>
+            <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#cg)" stroke-width="2.4" stroke-linecap="round"/>
+            <defs><linearGradient id="cg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+          </svg>
+          <span class="lbl">CyberX Core</span>
+        </div>
+
+        <div class="ring ring-out" id="ringOut"></div>
+        <div class="ring ring-in" id="ringIn"></div>
+      </div>
+
+      <div class="foot reveal" data-delay="2">
+        <span class="it"><span class="d o"></span><b>9</b> ვენდორი</span>
+        <span class="it"><span class="d"></span>აქტიური ინტეგრაცია</span>
+        <span class="it">Enterprise-grade</span>
+      </div>
+    </div>
+  </section>
+
+<script>
+  // logo files live in /vendor-logos (one level up from this file)
+  const LOGO='../vendor-logos/';
+  const VENDORS=[
+    {n:'Fortra',c:'Offensive Security & Data Protection',file:'fortra.png',bg:'#006a56',light:false},
+    {n:'Nozomi Networks',c:'OT / IoT ხილვადობა და დაცვა',file:'nozomi.png',bg:'#ffffff',light:true},
+    {n:'OPSWAT',c:'კრიტიკული ინფრასტრუქტურის დაცვა',file:'opswat.png',bg:'#050f22',light:false},
+    {n:'Secure Code Warrior',c:'უსაფრთხო კოდირების ტრენინგი',file:'secure-code-warrior.png',bg:'#1c4db5',light:false},
+    {n:'42Gears',c:'Unified Endpoint Management',file:'',bg:'#10131a',light:false},
+    {n:'Palo Alto Networks',c:'ქსელისა და Cloud უსაფრთხოება',file:'palo-alto.png',bg:'#040607',light:false},
+    {n:'SentinelOne',c:'XDR / Endpoint დაცვა',file:'sentinelone.png',bg:'#ffffff',light:true},
+    {n:'CyberArk',c:'Identity & PAM',file:'cyberark.png',bg:'#ffffff',light:true},
+    {n:'Energy Logserver',c:'SIEM / SOAR',file:'energy-logserver.png',bg:'#000000',light:false}
+  ];
+  // split across two rings: outer 5, inner 4
+  const outer=[0,1,2,3,4].map(i=>VENDORS[i]);
+  const inner=[5,6,7,8].map(i=>VENDORS[i]);
+
+  function chip(v){
+    const inner=v.file?`<img src="${LOGO}${v.file}" alt="${v.n}">`:`<span class="wm">${v.n}</span>`;
+    return `<div class="chip${v.light?' light':''}" tabindex="0" style="background:${v.bg}">${inner}<span class="tip"><b>${v.n}</b><i>${v.c}</i></span></div>`;
+  }
+  function build(list){
+    const N=list.length;
+    return list.map((v,i)=>{
+      const a=(360/N)*i;
+      return `<i class="spoke" style="--a:${a}deg"></i>
+        <div class="node" style="--a:${a}deg">
+          <div class="cancel"><div class="up" style="--na:${-a}deg">${chip(v)}</div></div>
+        </div>`;
+    }).join('');
+  }
+  document.getElementById('ringOut').innerHTML=build(outer);
+  document.getElementById('ringIn').innerHTML=build(inner);
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  setTimeout(()=>{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));var s=document.createElement('style');s.textContent='.reveal{opacity:1!important;transform:none!important;transition:none!important}';document.head.appendChild(s);},700);
+</script>
+</body>
+</html>

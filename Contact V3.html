@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — კონტაქტი · ვერსია 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* ============================================================
+     CONTACT · V3 — Glass form over animated hero + channel bento
+     ============================================================ */
+  .cg-hero { position: relative; overflow: hidden; padding: 130px 0 80px; min-height: 100vh; display: flex; align-items: center;
+    background: radial-gradient(100% 60% at 50% 0%, rgba(255,75,38,.16), transparent 60%), linear-gradient(180deg,#0a0608 0%,var(--bg) 85%); }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .55; z-index: 0; }
+  .cg-orb { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 0; opacity: .5; pointer-events: none; }
+  .cg-orb.a { width: 460px; height: 460px; background: radial-gradient(circle, rgba(255,75,38,.5), transparent 70%); top: -120px; left: -100px; animation: orbA 18s ease-in-out infinite; }
+  .cg-orb.b { width: 420px; height: 420px; background: radial-gradient(circle, rgba(45,127,249,.4), transparent 70%); bottom: -140px; right: -80px; animation: orbB 22s ease-in-out infinite; }
+  @keyframes orbA { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
+  @keyframes orbB { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-30px)} }
+  .cg-hero > .wrap { position: relative; z-index: 3; width: 100%; max-width: 720px; text-align: center; }
+
+  .cg-hero h1 { font-size: clamp(2rem,4vw,3.3rem); font-weight: 800; letter-spacing: -.03em; margin: 18px 0 0; text-wrap: balance; }
+  .cg-hero h1 .hl { background: linear-gradient(110deg,var(--brand-2),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .cg-hero .sub { font-size: 1.1rem; color: var(--muted); max-width: 500px; margin: 18px auto 0; line-height: 1.65; }
+  .cg-hero .eyebrow { justify-content: center; }
+
+  /* glass card */
+  .cg-card { position: relative; margin: 38px auto 0; text-align: left; border: 1px solid rgba(255,255,255,.14); border-radius: 24px; overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(18,20,25,.55)); backdrop-filter: blur(20px) saturate(140%); box-shadow: 0 50px 100px -40px rgba(0,0,0,.8); }
+  .cg-card::before { content:""; position:absolute; inset:0 0 auto 0; height:3px; background: linear-gradient(90deg,var(--brand),var(--brand-2),var(--teal),var(--blue)); }
+  .cg-in { padding: 38px 40px 34px; }
+  .cg-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fld { display: flex; flex-direction: column; gap: 7px; }
+  .fld.full { grid-column: 1 / -1; }
+  .fld label { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .fld label .req { color: var(--brand-2); }
+  .fld input, .fld select, .fld textarea { width: 100%; padding: 13px 15px; border-radius: 11px; border: 1px solid rgba(255,255,255,.14); background: rgba(0,0,0,.25); color: var(--text); font-family: inherit; font-size: .96rem; transition: border-color .2s, background .2s, box-shadow .2s; }
+  .fld textarea { resize: vertical; min-height: 92px; }
+  .fld input::placeholder, .fld textarea::placeholder { color: var(--dim); }
+  .fld input:focus, .fld select:focus, .fld textarea:focus { outline: none; border-color: var(--brand); background: rgba(0,0,0,.4); box-shadow: 0 0 0 4px rgba(255,75,38,.12); }
+  .fld select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' stroke='%239AA2AC' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+  .fld select option { background: #121419; }
+  .fld .err { font-size: .74rem; color: var(--red); display: none; }
+  .fld.invalid input, .fld.invalid select, .fld.invalid textarea { border-color: var(--red); }
+  .fld.invalid .err { display: block; }
+  .cg-submit { grid-column: 1/-1; display: flex; align-items: center; gap: 14px; margin-top: 4px; flex-wrap: wrap; }
+  .cg-submit .note { font-family: var(--mono); font-size: .74rem; color: var(--dim); }
+
+  .cg-card.sent .cg-form { display: none; }
+  .cg-success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 24px 10px 10px; }
+  .cg-card.sent .cg-success { display: flex; animation: cgUp .5s var(--ease); }
+  @keyframes cgUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+  .cg-check { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: rgba(37,224,138,.12); border: 1px solid rgba(37,224,138,.4); margin-bottom: 20px; color: var(--green); }
+  .cg-check svg { width: 38px; height: 38px; }
+  .cg-success h3 { font-size: 1.4rem; font-weight: 800; }
+  .cg-success p { color: var(--muted); margin-top: 10px; max-width: 340px; }
+  .cg-success .btn { margin-top: 22px; }
+
+  /* channel bento */
+  .cg-bento { background: linear-gradient(180deg,var(--bg),var(--bg-2)); }
+  .cg-bento h2 { text-align: center; font-size: clamp(1.6rem,2.8vw,2.3rem); margin-bottom: 8px; }
+  .cg-bento .cap { text-align: center; color: var(--muted); margin-bottom: 38px; }
+  .cg-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  .cg-tile { position: relative; overflow: hidden; padding: 26px 24px; border-radius: 18px; border: 1px solid rgba(var(--rgb),.28);
+    background: linear-gradient(165deg, rgba(var(--rgb),.12), rgba(18,20,25,.6)); transition: transform .3s var(--ease), border-color .3s, box-shadow .3s; display: flex; flex-direction: column; gap: 14px; min-height: 150px; }
+  .cg-tile:hover { transform: translateY(-5px); border-color: rgba(var(--rgb),.6); box-shadow: 0 22px 50px -22px rgba(var(--rgb),.6); }
+  .cg-tile .ic { width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; background: rgba(var(--rgb),.16); border: 1px solid rgba(var(--rgb),.34); color: var(--ac); }
+  .cg-tile .ic svg { width: 24px; height: 24px; }
+  .cg-tile .t { font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(var(--rgb),.9); }
+  .cg-tile .v { font-size: 1.04rem; font-weight: 700; color: var(--text); margin-top: auto; }
+  .cg-tile.book { background: linear-gradient(165deg, rgba(255,75,38,.2), rgba(18,20,25,.6)); grid-column: span 1; }
+  .cg-tile .go { position: absolute; top: 22px; right: 22px; color: var(--ac); opacity: 0; transform: translateX(-4px); transition: all .25s var(--ease); }
+  .cg-tile:hover .go { opacity: 1; transform: none; }
+  .cg-tile .go svg { width: 18px; height: 18px; }
+
+  .reveal { opacity: 1; }
+  .reveal.in { animation: cgIn .6s var(--ease) both; }
+  .reveal.in[data-d="1"]{animation-delay:.08s} .reveal.in[data-d="2"]{animation-delay:.16s} .reveal.in[data-d="3"]{animation-delay:.24s}
+  @keyframes cgIn { from{opacity:.35;transform:translateY(18px)} to{opacity:1;transform:none} }
+  @media (prefers-reduced-motion: reduce){ .cg-orb{animation:none} .reveal.in{animation:none} }
+
+  @media (max-width: 760px) { .cg-form { grid-template-columns: 1fr; } .cg-grid { grid-template-columns: repeat(2,1fr); } .cg-hero { padding: 120px 0 60px; } }
+  @media (max-width: 460px) { .cg-grid { grid-template-columns: 1fr; } .cg-in { padding: 28px 22px; } }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+    </a>
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="../Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="../Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Industries.html">Industries</a></div>
+      <div class="menu-item"><a href="../Blog V2.html">Insights</a></div>
+      <div class="menu-item"><a href="../Contact.html" aria-current="page">Contact</a></div>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="#cgForm">ზარის დაჯავშნა</a>
+    <button class="hamburger" id="hamburger" aria-label="მენიუ"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="../Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Blog V2.html">Insights</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+</div>
+
+<main>
+  <!-- HERO + GLASS FORM -->
+  <section class="cg-hero" data-screen-label="Contact V3 · Hero form">
+    <canvas id="hero-canvas"></canvas>
+    <span class="cg-orb a"></span><span class="cg-orb b"></span>
+    <div class="wrap">
+      <span class="eyebrow reveal">Contact our team</span>
+      <h1 class="reveal" data-d="1">დაგვი<span class="hl">კავშირდით</span></h1>
+      <p class="sub reveal" data-d="2">მოგვწერეთ თქვენი საჭიროება — და CyberX-ის გუნდი დაგიკავშირდებათ მორგებული რეკომენდაციით.</p>
+
+      <div class="cg-card reveal" data-d="2" id="cgForm">
+        <div class="cg-in">
+          <form class="cg-form" id="cgFormEl" novalidate>
+            <div class="fld"><label>სახელი, გვარი <span class="req">*</span></label><input type="text" name="name" placeholder="ნინო ბერიძე" required><span class="err">შეავსეთ ეს ველი</span></div>
+            <div class="fld"><label>ელ. ფოსტა <span class="req">*</span></label><input type="email" name="email" placeholder="nino@company.ge" required><span class="err">შეიყვანეთ სწორი ელ. ფოსტა</span></div>
+            <div class="fld"><label>მობილური</label><input type="tel" name="mobile" placeholder="+995 5xx xx xx xx"><span class="err"></span></div>
+            <div class="fld"><label>ორგანიზაცია</label><input type="text" name="org" placeholder="კომპანიის სახელი"><span class="err"></span></div>
+            <div class="fld full"><label>ინტერესის სერვისი</label><select name="service" id="cgService"><option value="" disabled selected>აირჩიეთ სერვისი…</option></select><span class="err"></span></div>
+            <div class="fld full"><label>შეტყობინება <span class="req">*</span></label><textarea name="message" placeholder="მოგვწერეთ თქვენი შეკითხვა ან საჭიროება…" required></textarea><span class="err">დაწერეთ შეტყობინება</span></div>
+            <div class="cg-submit">
+              <button class="btn btn-primary" type="submit">გაგზავნა <svg class="arr" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <span class="note">ვუპასუხებთ 24 საათში.</span>
+            </div>
+          </form>
+          <div class="cg-success">
+            <div class="cg-check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>გმადლობთ!</h3>
+            <p>თქვენი შეტყობინება მიღებულია. CyberX-ის გუნდი მალე დაგიკავშირდებათ.</p>
+            <button class="btn btn-ghost" type="button" id="cgAgain">ახალი შეტყობინება</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHANNEL BENTO -->
+  <section class="section cg-bento" data-screen-label="Contact V3 · Channels">
+    <div class="wrap">
+      <h2 class="reveal">სხვა არხები</h2>
+      <p class="cap reveal" data-d="1">აირჩიეთ თქვენთვის მოსახერხებელი გზა დასაკავშირებლად.</p>
+      <div class="cg-grid" id="cgGrid"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>კომპანია</h4><a href="../index.html#about">ჩვენს შესახებ</a><a href="../Solutions.html">გადაწყვეტილებები</a><a href="../Industries.html">ინდუსტრიები</a></div>
+        <div class="footer-col"><h4>რესურსები</h4><a href="../Blog V2.html">ბლოგი / Insights</a><a href="../Vendors.html">ვენდორები</a></div>
+        <div class="footer-col"><h4>დაკავშირება</h4><a href="mailto:info@cyberx.ge">info@cyberx.ge</a><a href="../Contact.html">კონტაქტი</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9V7c0-1 .5-1.5 1.6-1.5H17V2.5h-2.4C11.8 2.5 11 4.2 11 6.4V9H8.5v3H11v9.5h3V12h2.3l.4-3H14Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+<script src="../contact-data.js"></script>
+<script>
+(function () {
+  const D = window.CONTACT;
+  const cols = ['255,75,38','45,127,249','37,224,138','54,210,230'];
+  const accs = ['#FF7A3C','#5B9BFF','#25E08A','#36D2E6'];
+
+  // service options
+  const sel = document.getElementById('cgService');
+  D.services.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+
+  // bento tiles: channels + Book a Call
+  const goSvg = '<span class="go"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  let html = D.channels.map((c, i) => `
+    <a class="cg-tile reveal" data-d="${Math.min(i,3)}" href="${c.href}"${c.id!=='email'?' target="_blank" rel="noopener"':''} style="--ac:${accs[i%4]};--rgb:${cols[i%4]}">
+      ${goSvg}<span class="ic"><svg viewBox="0 0 24 24" fill="none">${c.icon}</svg></span>
+      <span><span class="t">${c.label}</span></span><span class="v">${c.value}</span>
+    </a>`).join('');
+  html += `<a class="cg-tile book reveal" data-d="3" href="mailto:info@cyberx.ge" style="--ac:#FF7A3C;--rgb:255,75,38">
+    ${goSvg}<span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M15.5 13.5 14 15c-1.5-.6-3.9-3-4.5-4.5L11 9c.4-.4.4-1 .1-1.5L9.5 5C9 4.3 8 4.2 7.4 4.8l-1 1c-.7.7-.9 1.7-.5 2.6C7.3 12 10 14.7 13.6 16c.9.4 1.9.2 2.6-.5l1-1c.6-.6.5-1.6-.2-2.1l-2-1.5c-.5-.3-1.1-.3-1.5.1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+    <span><span class="t">Book a Call</span></span><span class="v">ზარის დაჯავშნა</span></a>`;
+  document.getElementById('cgGrid').innerHTML = html;
+
+  // validation
+  const form = document.getElementById('cgFormEl');
+  const card = document.getElementById('cgForm');
+  function validate() {
+    let ok = true;
+    form.querySelectorAll('[required]').forEach(inp => {
+      const fld = inp.closest('.fld'); let bad = !inp.value.trim();
+      if (inp.type === 'email' && inp.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(inp.value)) bad = true;
+      fld.classList.toggle('invalid', bad); if (bad) ok = false;
+    });
+    return ok;
+  }
+  form.querySelectorAll('input,textarea').forEach(inp => inp.addEventListener('input', () => inp.closest('.fld').classList.remove('invalid')));
+  form.addEventListener('submit', e => { e.preventDefault(); if (!validate()) { form.querySelector('.invalid input,.invalid textarea')?.focus(); return; } card.classList.add('sent'); });
+  document.getElementById('cgAgain').addEventListener('click', () => { form.reset(); card.classList.remove('sent'); });
+
+  if (window.IntersectionObserver) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+  setTimeout(() => document.querySelectorAll('.reveal:not(.in)').forEach(el => el.classList.add('in')), 1400);
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', ev => {
+    const id = a.getAttribute('href').slice(1); if (!id) return;
+    const el = document.getElementById(id); if (!el) return; ev.preventDefault();
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 92, behavior: 'smooth' });
+  }));
+})();
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <rect x="7" y="7" width="20" height="14" rx="3" stroke="#FF7A3C" stroke-width="1.4"/>
+    <rect x="5" y="24" width="7" height="5" rx="1.5" stroke="#36D2E6" stroke-width="1.3"/><rect x="14" y="24" width="7" height="5" rx="1.5" stroke="#2D7FF9" stroke-width="1.3"/><rect x="23" y="24" width="6" height="5" rx="1.5" stroke="#25E08A" stroke-width="1.3"/>
+  </svg>
+</template>
+</body>
+</html>

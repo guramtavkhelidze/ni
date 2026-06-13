@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberX — Insights / ბლოგი</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* ============================================================
+     BLOG · V1 — Editorial
+     ============================================================ */
+  .bl-hero { position: relative; overflow: hidden; padding: 124px 0 50px;
+    background: radial-gradient(115% 80% at 82% 4%, rgba(255,75,38,.16), transparent 55%), radial-gradient(80% 70% at 4% 96%, rgba(120,22,10,.30), transparent 60%), linear-gradient(180deg,#0b0608 0%,var(--bg) 86%); }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .75; z-index: 0; }
+  .bl-hero::after { content:""; position:absolute; inset:0; pointer-events:none; background: linear-gradient(180deg, transparent 60%, var(--bg) 100%); }
+  .bl-hero .wrap { position: relative; z-index: 3; }
+  .bl-hero h1 { font-size: clamp(2.05rem,4.3vw,3.6rem); font-weight: 800; letter-spacing: -.03em; margin: 22px 0 0; text-wrap: balance; max-width: 18ch; }
+  .bl-hero h1 .hl { background: linear-gradient(110deg,var(--brand-2),var(--brand)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .bl-hero .lead { font-size: clamp(1.04rem,1.4vw,1.2rem); color: var(--muted); max-width: 680px; margin: 24px 0 0; line-height: 1.7; }
+
+  /* featured */
+  .bl-feat-wrap { position: relative; background: linear-gradient(180deg,var(--bg),var(--bg-2)); padding: 30px 0 10px; }
+  .bl-feat { position: relative; z-index: 2; display: grid; grid-template-columns: 1.15fr .85fr; gap: 0; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--panel); transition: border-color .3s, transform .3s var(--ease); }
+  .bl-feat:hover { border-color: var(--line-2); transform: translateY(-4px); }
+  .bl-feat-cover { position: relative; min-height: 360px; overflow: hidden; }
+  .bl-feat-cover canvas { width: 100%; height: 100%; display: block; }
+  .bl-feat-badge { position: absolute; top: 20px; left: 20px; z-index: 2; font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; background: rgba(7,8,10,.6); backdrop-filter: blur(6px); color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+  .bl-feat-badge .d { width: 7px; height: 7px; border-radius: 50%; background: var(--ac); box-shadow: 0 0 10px var(--ac); }
+  .bl-feat-body { padding: 44px 44px 40px; display: flex; flex-direction: column; justify-content: center; }
+  .bl-feat-kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brand-2); margin-bottom: 16px; }
+  .bl-feat-body h2 { font-size: clamp(1.5rem,2.4vw,2.2rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.12; text-wrap: balance; }
+  .bl-feat-body p { color: var(--muted); font-size: 1.05rem; line-height: 1.65; margin-top: 16px; }
+  .bl-feat-meta { display: flex; align-items: center; gap: 14px; margin-top: 24px; font-family: var(--mono); font-size: .82rem; color: var(--dim); }
+  .bl-read { margin-top: 26px; display: inline-flex; align-items: center; gap: 9px; font-weight: 600; color: var(--brand-2); font-size: .98rem; }
+  .bl-read svg { width: 17px; height: 17px; transition: transform .25s var(--ease); }
+  .bl-feat:hover .bl-read svg { transform: translateX(4px); }
+
+  /* listing */
+  .bl-list { background: linear-gradient(180deg,var(--bg-2),var(--bg)); }
+  .bl-list-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 26px; }
+  .bl-list-head h2 { font-size: clamp(1.7rem,3vw,2.4rem); }
+  .bl-list-head .note { font-family: var(--mono); font-size: .8rem; color: var(--dim); }
+  .bl-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
+  .bl-pill { font-size: .9rem; font-weight: 500; color: var(--muted); padding: 9px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; transition: all .25s var(--ease); display: inline-flex; align-items: center; gap: 8px; }
+  .bl-pill .d { width: 8px; height: 8px; border-radius: 50%; background: var(--ac, var(--brand)); }
+  .bl-pill:hover { color: var(--text); border-color: var(--line-2); transform: translateY(-2px); }
+  .bl-pill.on { color: #0b0507; background: var(--ac, var(--brand)); border-color: transparent; font-weight: 600; }
+  .bl-pill.on .d { background: rgba(0,0,0,.5); }
+
+  .blog-thumb canvas { width: 100%; height: 100%; display: block; }
+  .blog-card { transition: transform .35s var(--ease), border-color .3s, opacity .35s; }
+  .blog-card.hide { display: none; }
+  .blog-cat { color: var(--ac); }
+  .blog-card .blog-readmore { color: var(--ac); }
+
+  /* find (what you'll find) */
+  .bl-find { background: var(--bg); position: relative; }
+  .bl-find-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .bl-find-card { position: relative; overflow: hidden; padding: 30px 28px 32px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); transition: transform .3s var(--ease), border-color .3s, background .3s; }
+  .bl-find-card::before { content:""; position:absolute; inset:0 0 auto 0; height:2px; background: var(--ac); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+  .bl-find-card:hover { transform: translateY(-5px); border-color: rgba(var(--rgb),.4); background: var(--panel-2); }
+  .bl-find-card:hover::before { transform: scaleX(1); }
+  .bl-find-ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(var(--rgb),.12); border: 1px solid rgba(var(--rgb),.28); color: var(--ac); margin-bottom: 18px; }
+  .bl-find-ic svg { width: 24px; height: 24px; }
+  .bl-find-card h3 { font-size: 1.12rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; }
+  .bl-find-card p { color: var(--muted); font-size: .96rem; line-height: 1.6; margin-top: 12px; }
+
+  /* why */
+  .bl-why { position: relative; overflow: hidden;
+    background: radial-gradient(80% 70% at 85% 10%, rgba(37,224,138,.12), transparent 55%), radial-gradient(70% 80% at 5% 95%, rgba(54,210,230,.1), transparent 60%), linear-gradient(180deg,var(--bg),#07090A); }
+  .bl-why::before { content:""; position:absolute; inset:0; pointer-events:none; background-image: linear-gradient(rgba(37,224,138,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(37,224,138,.05) 1px,transparent 1px); background-size:60px 60px; mask-image: radial-gradient(70% 70% at 72% 30%,#000,transparent); }
+  .bl-why .wrap { position: relative; z-index: 2; }
+  .bl-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .bl-why h2 { font-size: clamp(1.8rem,3.2vw,2.7rem); margin-top: 16px; text-wrap: balance; }
+  .bl-why .quote { font-size: clamp(1.3rem,2vw,1.7rem); font-weight: 700; line-height: 1.3; letter-spacing: -.01em; color: var(--text); }
+  .bl-why .quote .bar { display:block; width: 44px; height: 3px; border-radius: 3px; background: var(--green); margin-bottom: 22px; }
+  .bl-why p { color: var(--muted); font-size: 1.04rem; line-height: 1.7; margin-top: 18px; }
+
+  /* subscribe */
+  .bl-sub { position: relative; overflow: hidden; text-align: center; padding: 110px 0;
+    background: radial-gradient(80% 120% at 50% 0%, rgba(255,75,38,.26), transparent 60%), linear-gradient(180deg,#14060a,#0b0507); }
+  .bl-sub::before { content:""; position:absolute; inset:0; background-image: linear-gradient(rgba(255,75,38,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,75,38,.06) 1px,transparent 1px); background-size:54px 54px; mask-image: radial-gradient(60% 80% at 50% 40%,#000,transparent); }
+  .bl-sub .wrap { position: relative; z-index: 2; }
+  .bl-sub h2 { font-size: clamp(2rem,4vw,3.2rem); margin: 16px auto 0; max-width: 16ch; text-wrap: balance; }
+  .bl-sub p { color: var(--muted); font-size: 1.1rem; max-width: 600px; margin: 18px auto 0; line-height: 1.65; }
+  .bl-form { display: flex; gap: 12px; max-width: 520px; margin: 38px auto 0; flex-wrap: wrap; justify-content: center; }
+  .bl-form input { flex: 1; min-width: 240px; padding: 15px 22px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.05); color: var(--text); font-family: inherit; font-size: 1rem; transition: border-color .25s, background .25s; }
+  .bl-form input::placeholder { color: var(--dim); }
+  .bl-form input:focus { outline: none; border-color: var(--brand); background: rgba(255,255,255,.08); }
+  .bl-form button { white-space: nowrap; }
+  .bl-sub-note { margin-top: 18px; font-family: var(--mono); font-size: .8rem; color: var(--dim); }
+
+  @media (max-width: 980px) {
+    .bl-feat { grid-template-columns: 1fr; }
+    .bl-feat-cover { min-height: 240px; }
+    .bl-feat-body { padding: 32px 28px 34px; }
+    .bl-find-grid { grid-template-columns: repeat(2,1fr); }
+    .bl-why-grid { grid-template-columns: 1fr; gap: 30px; }
+  }
+  @media (max-width: 640px) {
+    .bl-hero { padding: 132px 0 40px; }
+    .bl-find-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html#top" aria-label="CyberX — Home">
+      <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/>
+        <path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg)" stroke-width="2.2" stroke-linecap="round"/>
+        <defs><linearGradient id="mg" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs>
+      </svg>
+      <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+    </a>
+    <nav class="menu" aria-label="მთავარი ნავიგაცია">
+      <div class="menu-item"><a href="../Company V4 - Operations.html">Company</a></div>
+      <div class="menu-item"><a href="../Solutions.html">Solutions</a></div>
+      <div class="menu-item"><a href="../Vendors.html">Vendors</a></div>
+      <div class="menu-item"><a href="../Industries.html">Industries</a></div>
+      <div class="menu-item"><a href="../Blog V2.html" aria-current="page">Insights</a></div>
+      <div class="menu-item"><a href="../Contact.html">Contact</a></div>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+    <button class="hamburger" id="hamburger" aria-label="მენიუ"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mm-close" id="mm-close" aria-label="დახურვა"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a class="mm-item" href="../Company V4 - Operations.html">Company</a>
+  <a class="mm-item" href="../Solutions.html">Solutions</a>
+  <a class="mm-item" href="../Vendors.html">Vendors</a>
+  <a class="mm-item" href="../Industries.html">Industries</a>
+  <a class="mm-item" href="../Blog V2.html">Insights</a>
+  <a class="mm-item" href="../Contact.html">Contact</a>
+  <a class="btn btn-primary" href="../index.html#final">მოითხოვე კონსულტაცია</a>
+</div>
+
+<main id="bl-top">
+  <!-- HERO -->
+  <section class="bl-hero" data-screen-label="Blog · Hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="wrap">
+      <span class="eyebrow" id="blEyebrow"></span>
+      <h1 id="blH1"></h1>
+      <p class="lead" id="blLead"></p>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="bl-feat-wrap section" style="padding-top:34px" data-screen-label="Blog · Featured">
+    <div class="wrap"><a class="bl-feat reveal" id="blFeat" href="../Blog Post.html"></a></div>
+  </section>
+
+  <!-- LISTING -->
+  <section class="section bl-list" data-screen-label="Blog · Latest">
+    <div class="wrap">
+      <div class="bl-list-head">
+        <div><span class="eyebrow teal" id="blLatestEy"></span><h2 id="blLatestH"></h2></div>
+        <span class="note" id="blLatestNote"></span>
+      </div>
+      <div class="bl-filters" id="blFilters"></div>
+      <div class="blog-grid" id="blGrid"></div>
+    </div>
+  </section>
+
+  <!-- FIND -->
+  <section class="section bl-find" data-screen-label="Blog · Categories">
+    <div class="wrap">
+      <div class="sec-head center reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+        <span class="eyebrow" style="justify-content:center">CyberX Insights</span>
+        <h2 id="blFindH"></h2>
+      </div>
+      <div class="bl-find-grid" id="blFind"></div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="section bl-why" data-screen-label="Blog · Why">
+    <div class="wrap">
+      <div class="bl-why-grid">
+        <div class="reveal">
+          <span class="eyebrow green">ცნობიერება</span>
+          <h2 id="blWhyH"></h2>
+        </div>
+        <div class="reveal" data-delay="1">
+          <p class="quote"><span class="bar"></span><span id="blWhyLead"></span></p>
+          <p id="blWhyP1"></p>
+          <p id="blWhyP2"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIBE -->
+  <section class="bl-sub" id="final" data-screen-label="Blog · Subscribe">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center">Newsletter</span>
+      <h2 id="blSubH"></h2>
+      <p id="blSubP1"></p>
+      <p id="blSubP2" style="margin-top:8px"></p>
+      <form class="bl-form" id="blForm" onsubmit="return false">
+        <input type="email" placeholder="თქვენი ელ. ფოსტა" aria-label="ელ. ფოსტა" required>
+        <button class="btn btn-primary" type="submit" id="blSubBtn"></button>
+      </form>
+      <p class="bl-sub-note">სპამის გარეშე. გააუქმეთ გამოწერა ნებისმიერ დროს.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html#top">
+          <svg class="mark" viewBox="0 0 34 34" fill="none"><path d="M17 2.2 30 7.4v9.1c0 8-5.4 13.6-13 15.9C9.4 30.1 4 24.5 4 16.5V7.4L17 2.2Z" stroke="url(#mg2)" stroke-width="1.6" fill="rgba(255,75,38,.08)"/><path d="M12 12.5 22 21.5M22 12.5 12 21.5" stroke="url(#mg2)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="mg2" x1="4" y1="2" x2="30" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A3C"/><stop offset="1" stop-color="#FF4B26"/></linearGradient></defs></svg>
+          <span class="brand-text"><span class="brand-name">Cyber<span class="x">X</span></span><span class="brand-slogan">Secure · Resilient · Ready</span></span>
+        </a>
+        <p>თანამედროვე კიბერუსაფრთხოების ტექნოლოგიები და გადაწყვეტილებები ორგანიზაციებისთვის.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>კომპანია</h4><a href="../index.html#about">ჩვენს შესახებ</a><a href="../Solutions.html">გადაწყვეტილებები</a><a href="../Industries.html">ინდუსტრიები</a></div>
+        <div class="footer-col"><h4>რესურსები</h4><a href="../Blog V2.html">ბლოგი / Insights</a><a href="../Vendors.html">ვენდორები</a></div>
+        <div class="footer-col"><h4>დაკავშირება</h4><a href="#" target="_blank" rel="noopener">LinkedIn</a><a href="../index.html#final">კონტაქტი</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CyberX. ყველა უფლება დაცულია.</span>
+      <div class="social">
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.74V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9V9Z"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.1L4 21H1l7.5-8.6L.6 3H7l4.5 5.6L17.5 3Zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+<script src="../blog-data.js"></script>
+<script>
+(function () {
+  const B = window.BLOG, C = B.COPY;
+  const ar = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const set = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t; };
+
+  set('blEyebrow', C.eyebrow); set('blH1', C.h1); set('blLead', C.introLead);
+  set('blLatestEy', 'უახლესი'); set('blLatestH', C.latestHead); set('blLatestNote', C.latestNote);
+  set('blFindH', C.findHead);
+  set('blWhyH', C.whyHead); set('blWhyLead', C.whyLead); set('blWhyP1', C.why[0]); set('blWhyP2', C.why[1]);
+  set('blSubH', C.subHead); set('blSubP1', C.sub[0]); set('blSubP2', C.sub[1]); set('blSubBtn', C.subBtn);
+
+  // featured = first post
+  const f = B.POSTS[0];
+  document.getElementById('blFeat').style.setProperty('--ac', f.ac);
+  document.getElementById('blFeat').style.setProperty('--rgb', f.rgb);
+  document.getElementById('blFeat').innerHTML = `
+    <div class="bl-feat-cover"><span class="bl-feat-badge"><span class="d"></span>${f.cat}</span><canvas data-art data-rgb="${f.rgb}" data-seed="${f.seed}"></canvas></div>
+    <div class="bl-feat-body">
+      <div class="bl-feat-kicker">★ რჩეული სტატია</div>
+      <h2>${f.title}</h2>
+      <p>${f.excerpt}</p>
+      <div class="bl-feat-meta"><span>${f.date}</span><span>·</span><span>${f.read}</span></div>
+      <span class="bl-read">წაიკითხეთ სრულად ${ar}</span>
+    </div>`;
+
+  // filter pills
+  const filt = document.getElementById('blFilters');
+  filt.innerHTML = `<button class="bl-pill on" data-cat="all" style="--ac:var(--brand)">ყველა</button>` +
+    B.CATS.map(c => `<button class="bl-pill" data-cat="${c.name}" style="--ac:${c.ac}"><span class="d"></span>${c.name}</button>`).join('');
+
+  // grid (rest of posts)
+  const grid = document.getElementById('blGrid');
+  grid.innerHTML = B.POSTS.slice(1).map(p => `
+    <a class="blog-card reveal" href="../Blog Post.html" data-cat="${p.cat}" style="--ac:${p.ac};--rgb:${p.rgb}">
+      <div class="blog-thumb"><canvas data-art data-rgb="${p.rgb}" data-seed="${p.seed}"></canvas></div>
+      <div class="blog-body">
+        <span class="blog-cat">${p.cat}</span>
+        <h3>${p.title}</h3>
+        <p>${p.excerpt}</p>
+        <div class="blog-meta"><span>${p.date}</span><span>·</span><span>${p.read}</span></div>
+        <span class="blog-readmore">წაკითხვა ${ar}</span>
+      </div>
+    </a>`).join('');
+
+  filt.querySelectorAll('.bl-pill').forEach(btn => btn.addEventListener('click', () => {
+    filt.querySelectorAll('.bl-pill').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const cat = btn.dataset.cat;
+    grid.querySelectorAll('.blog-card').forEach(card => {
+      card.classList.toggle('hide', cat !== 'all' && card.dataset.cat !== cat);
+    });
+  }));
+
+  // find cards
+  document.getElementById('blFind').innerHTML = C.find.map((x, i) => {
+    const c = B.CATS[i] || B.CATS[0];
+    return `<div class="bl-find-card reveal" data-delay="${i % 3}" style="--ac:${c.ac};--rgb:${c.rgb}">
+      <span class="bl-find-ic"><svg viewBox="0 0 24 24" fill="none">${B.ICONS[x.i]}</svg></span>
+      <h3>${x.t}</h3><p>${x.d}</p></div>`;
+  }).join('');
+
+  // paint covers + reveal fallback
+  B.paintAll();
+  if (window.IntersectionObserver) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+  setTimeout(() => document.querySelectorAll('.reveal:not(.in)').forEach(el => el.classList.add('in')), 1600);
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', ev => {
+    const id = a.getAttribute('href').slice(1); if (!id) return;
+    const el = document.getElementById(id); if (!el) return; ev.preventDefault();
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 92, behavior: 'smooth' });
+  }));
+})();
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:#0c0d10">
+    <rect x="5" y="6" width="24" height="8" rx="2" stroke="#FF7A3C" stroke-width="1.3" opacity=".7"/>
+    <rect x="5" y="17" width="11" height="11" rx="2" stroke="#36D2E6" stroke-width="1.3" opacity=".7"/>
+    <path d="M19 19h10M19 23h8M19 27h10" stroke="#8B9BF5" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
+  </svg>
+</template>
+</body>
+</html>

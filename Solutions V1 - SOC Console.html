@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>რას ვაკეთებთ — V1 · SOC Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#07080A; --bg-2:#0C0E12; --panel:#121419; --panel-2:#171A20;
+    --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.14);
+    --text:#EEF1F4; --muted:#9AA2AC; --dim:#687078;
+    --brand:#FF4B26; --brand-2:#FF7A3C; --green:#25E08A; --teal:#36D2E6; --blue:#2D7FF9;
+    --font:'Noto Sans Georgian',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 32px;}
+
+  .console-sec{
+    position:relative;padding:120px 0;
+    background:
+      radial-gradient(60% 50% at 82% 8%, rgba(255,75,38,.10), transparent 60%),
+      linear-gradient(180deg,var(--bg),var(--bg-2));
+  }
+  .console-sec::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(80% 75% at 50% 30%,#000,transparent 95%);pointer-events:none;
+  }
+  .console-sec .wrap{position:relative;z-index:2;}
+
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brand-2);display:inline-flex;align-items:center;gap:10px;font-weight:500;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.8;}
+  .sec-head{max-width:780px;margin-bottom:46px;}
+  .sec-head h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:800;letter-spacing:-.01em;line-height:1.08;margin-top:18px;text-wrap:balance;}
+
+  /* the console shell */
+  .console{
+    display:grid;grid-template-columns:minmax(0,1fr) 1.05fr;gap:0;
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(18,20,25,.7),rgba(12,14,18,.7));
+    box-shadow:0 40px 90px -50px rgba(0,0,0,.9);
+  }
+  .console-bar{
+    grid-column:1 / -1;display:flex;align-items:center;gap:14px;
+    padding:13px 20px;border-bottom:1px solid var(--line);
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;
+    background:rgba(0,0,0,.25);
+  }
+  .console-bar .dots{display:flex;gap:7px;}
+  .console-bar .dots i{width:11px;height:11px;border-radius:50%;background:#2a2e36;display:block;}
+  .console-bar .dots i:first-child{background:var(--brand);}
+  .console-bar .live{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--green);}
+  .console-bar .live .pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(37,224,138,.6);animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,224,138,.5);}70%{box-shadow:0 0 0 7px rgba(37,224,138,0);}100%{box-shadow:0 0 0 0 rgba(37,224,138,0);}}
+
+  /* index list */
+  .index{border-right:1px solid var(--line);padding:8px 0;max-height:560px;overflow:auto;scrollbar-width:thin;}
+  .row{
+    position:relative;display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;
+    padding:14px 22px;cursor:pointer;border:none;background:none;width:100%;text-align:left;color:inherit;
+    font-family:inherit;transition:background .25s var(--ease),color .25s;
+  }
+  .row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);transform:scaleY(0);transform-origin:center;transition:transform .3s var(--ease);}
+  .row:hover{background:rgba(255,255,255,.03);}
+  .row.active{background:linear-gradient(90deg,rgba(255,75,38,.12),transparent);}
+  .row.active::before{transform:scaleY(1);}
+  .row .idx{font-family:var(--mono);font-size:.82rem;color:var(--dim);letter-spacing:.05em;}
+  .row.active .idx{color:var(--brand-2);}
+  .row .name{font-size:1rem;font-weight:600;line-height:1.3;letter-spacing:-.01em;color:var(--muted);transition:color .25s;}
+  .row:hover .name,.row.active .name{color:var(--text);}
+  .row .tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);padding:4px 8px;border-radius:6px;white-space:nowrap;}
+  .row.active .tag{color:var(--brand-2);border-color:rgba(255,75,38,.35);}
+
+  /* detail / radar pane */
+  .detail{position:relative;padding:40px 42px 44px;overflow:hidden;display:flex;flex-direction:column;min-height:560px;}
+  .detail .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px);pointer-events:none;opacity:.5;mix-blend-mode:overlay;}
+  .radar{position:absolute;top:-60px;right:-60px;width:340px;height:340px;opacity:.55;pointer-events:none;}
+  .radar .ring{fill:none;stroke:rgba(255,75,38,.16);stroke-width:1;}
+  .radar .cross{stroke:rgba(255,75,38,.12);stroke-width:1;}
+  .radar .sweep{transform-origin:170px 170px;animation:sweep 4s linear infinite;}
+  @keyframes sweep{to{transform:rotate(360deg);}}
+  .radar .blip{fill:var(--brand-2);animation:blip 4s linear infinite;}
+  @keyframes blip{0%,18%{opacity:0;}22%{opacity:1;}60%{opacity:0;}100%{opacity:0;}}
+
+  .detail-inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
+  .d-status{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:9px;margin-bottom:auto;}
+  .d-status .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+  .d-icon{width:62px;height:62px;border-radius:14px;display:grid;place-items:center;background:rgba(255,75,38,.1);border:1px solid rgba(255,75,38,.25);color:var(--brand-2);margin:30px 0 22px;}
+  .d-icon svg{width:32px;height:32px;}
+  .d-num{font-family:var(--mono);font-size:.8rem;color:var(--dim);letter-spacing:.16em;}
+  .d-title{font-size:clamp(1.6rem,2.6vw,2.3rem);font-weight:800;letter-spacing:-.02em;line-height:1.08;margin:8px 0 16px;text-wrap:balance;}
+  .d-desc{color:var(--muted);font-size:1.08rem;line-height:1.65;max-width:440px;}
+  .d-meta{margin-top:28px;display:flex;gap:26px;flex-wrap:wrap;}
+  .d-meta .m{display:flex;flex-direction:column;gap:4px;}
+  .d-meta .mk{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);}
+  .d-meta .mv{font-family:var(--mono);font-size:1.2rem;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;}
+  .d-meta .mv.g{color:var(--green);}
+  /* fade-swap animation */
+  .swap{animation:swapIn .5s var(--ease);}
+  @keyframes swapIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+
+  @media(max-width:900px){
+    .console{grid-template-columns:1fr;}
+    .index{border-right:none;border-bottom:1px solid var(--line);max-height:300px;}
+    .detail{min-height:auto;}
+    .row .tag{display:none;}
+  }
+  @media(max-width:640px){
+    .console-sec{padding:72px 0;}
+    .wrap{padding:0 18px;}
+    .sec-head{margin-bottom:30px;}
+    .console{border-radius:13px;}
+    .console-bar{gap:10px;padding:11px 14px;font-size:.62rem;letter-spacing:.08em;}
+    .console-bar .url{display:none;}
+    .console-bar .live{font-size:.6rem;}
+    .index{max-height:248px;padding:4px 0;}
+    .row{grid-template-columns:34px 1fr;gap:10px;padding:13px 16px;}
+    .row .name{font-size:.94rem;}
+    .detail{padding:26px 20px 30px;}
+    .radar{width:230px;height:230px;top:-40px;right:-50px;}
+    .d-icon{width:52px;height:52px;margin:22px 0 18px;}
+    .d-icon svg{width:27px;height:27px;}
+    .d-desc{font-size:1rem;}
+    .d-meta{gap:18px 22px;margin-top:22px;}
+    .d-meta .mv{font-size:1.05rem;}
+  }
+  @media(prefers-reduced-motion:reduce){.radar .sweep,.radar .blip,.pulse{animation:none !important;}.reveal{opacity:1 !important;transform:none !important;}}
+</style>
+</head>
+<body>
+  <section class="console-sec">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">რას ვაკეთებთ</div>
+        <h2>კიბერუსაფრთხოების ცოცხალი ოპერაციული ცენტრი</h2>
+      </div>
+
+      <div class="console reveal" data-delay="1">
+        <div class="console-bar">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <span class="url">cyberx://soc/services — monitor</span>
+          <span class="live"><span class="pulse"></span>LIVE · 13 SERVICES</span>
+        </div>
+
+        <div class="index" id="index"></div>
+
+        <div class="detail">
+          <div class="scan"></div>
+          <svg class="radar" viewBox="0 0 340 340" aria-hidden="true">
+            <circle class="ring" cx="170" cy="170" r="160"/>
+            <circle class="ring" cx="170" cy="170" r="115"/>
+            <circle class="ring" cx="170" cy="170" r="68"/>
+            <line class="cross" x1="170" y1="10" x2="170" y2="330"/>
+            <line class="cross" x1="10" y1="170" x2="330" y2="170"/>
+            <g class="sweep">
+              <defs><linearGradient id="sw" x1="170" y1="170" x2="330" y2="170" gradientUnits="userSpaceOnUse"><stop stop-color="#FF4B26" stop-opacity=".5"/><stop offset="1" stop-color="#FF4B26" stop-opacity="0"/></linearGradient></defs>
+              <path d="M170 170 L330 170 A160 160 0 0 0 250 32 Z" fill="url(#sw)"/>
+            </g>
+            <circle class="blip" cx="248" cy="96" r="4"/>
+            <circle class="blip" cx="112" cy="232" r="3" style="animation-delay:1.3s"/>
+            <circle class="blip" cx="220" cy="220" r="3.4" style="animation-delay:2.5s"/>
+          </svg>
+
+          <div class="detail-inner">
+            <div class="d-status"><span class="dot"></span><span id="d-status-txt">SERVICE ONLINE · MONITORING</span></div>
+            <div id="d-body">
+              <div class="d-icon" id="d-icon"></div>
+              <div class="d-num" id="d-num">01 / 13</div>
+              <h3 class="d-title" id="d-title"></h3>
+              <p class="d-desc" id="d-desc"></p>
+              <div class="d-meta">
+                <div class="m"><span class="mk">Category</span><span class="mv" id="d-cat"></span></div>
+                <div class="m"><span class="mk">Coverage</span><span class="mv g">24/7</span></div>
+                <div class="m"><span class="mk">Threats / min</span><span class="mv g" id="d-tpm">0</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+const ic = {
+  shield:'<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+  net:'<circle cx="5" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="19" cy="6" r="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="18" r="2" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 7.5 11 16M17.5 7.5 13 16M7 6h10" stroke="currentColor" stroke-width="1.6"/>',
+  cloud:'<path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 17 18H7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+  lock:'<rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/>',
+  bug:'<path d="M12 3v3M12 18v3M5 7l2 1M17 16l2 1M5 17l2-1M17 8l2-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/>',
+  monitor:'<rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M9 21h6M12 17v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  id:'<path d="M8 11a4 4 0 0 1 8 0M9 20c-1-1.5-1.5-3.5-1.5-6M15 20c1-1.5 1.5-3.5 1.5-6M12 13v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  ot:'<rect x="4" y="9" width="16" height="11" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 9V6h8v3M9 14h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+  target:'<circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  intel:'<path d="M12 21a9 9 0 1 0-9-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 12 4 8M12 12v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  people:'<path d="M12 4 3 8l9 4 9-4-9-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11v4c0 1.5 2.2 2.5 5 2.5s5-1 5-2.5v-4" stroke="currentColor" stroke-width="1.6"/>',
+  phone:'<rect x="7" y="3" width="10" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'
+};
+const DATA=[
+  {n:'XDR / EDR Endpoint Protection',t:'Endpoint',i:'shield',d:'ბოლო წერტილების უწყვეტი მონიტორინგი და საფრთხეებზე ავტომატური, რეალურ დროში რეაგირება.'},
+  {n:'Network Security',t:'Network',i:'net',d:'ქსელის პერიმეტრის დაცვა, სეგმენტაცია და ტრაფიკის ღრმა ანალიზი ანომალიების აღმოსაჩენად.'},
+  {n:'Cloud Security Solutions',t:'Cloud',i:'cloud',d:'ღრუბლოვანი ინფრასტრუქტურის კონფიგურაციის, იდენტობისა და წვდომის უწყვეტი დაცვა.'},
+  {n:'Data Loss Prevention (DLP)',t:'Data',i:'lock',d:'სენსიტიური მონაცემების გაჟონვის პრევენცია, კლასიფიკაცია და კონტროლი არხებზე.'},
+  {n:'Vulnerability Management',t:'Risk',i:'bug',d:'სისუსტეების უწყვეტი სკანირება, რისკის მიხედვით პრიორიტეტიზაცია და აღმოფხვრა.'},
+  {n:'SIEM / SOC Monitoring',t:'Monitoring',i:'monitor',d:'უსაფრთხოების მოვლენების ცენტრალიზებული შეგროვება და მონიტორინგი 24/7 რეჟიმში.'},
+  {n:'MFA & Identity Security',t:'Identity',i:'id',d:'მრავალფაქტორიანი ავთენტიფიკაცია და იდენტობის სასიცოცხლო ციკლის მართვა.'},
+  {n:'OT / ICS Infrastructure Protection',t:'OT / ICS',i:'ot',d:'ინდუსტრიული და კრიტიკული ინფრასტრუქტურის სისტემების სპეციალიზებული დაცვა.'},
+  {n:'Email Security',t:'Email',i:'mail',d:'ფიშინგის, მავნე დანართებისა და BEC შეტევების წინააღმდეგ ელფოსტის დაცვა.'},
+  {n:'Penetration Testing & Red Teaming',t:'Offensive',i:'target',d:'რეალური თავდასხმის სიმულაცია სისუსტეების გამოსავლენად, სანამ მათ მოწინააღმდეგე იპოვის.'},
+  {n:'Threat Intelligence',t:'Intel',i:'intel',d:'საფრთხეების შესახებ მონაცემების შეგროვება, ანალიზი და პროაქტიული პროგნოზირება.'},
+  {n:'Security Awareness Training',t:'People',i:'people',d:'თანამშრომლების ცნობიერების ამაღლება — ადამიანი ხდება პირველი თავდაცვის ხაზი.'},
+  {n:'Sure MDM',t:'Mobile',i:'phone',d:'მობილური მოწყობილობების ცენტრალიზებული მართვა, პოლიტიკა და დაცვა.'}
+];
+
+const svg=p=>'<svg viewBox="0 0 24 24" fill="none">'+p+'</svg>';
+const pad=n=>String(n+1).padStart(2,'0');
+const index=document.getElementById('index');
+index.innerHTML=DATA.map((s,i)=>`<button class="row${i===0?' active':''}" data-i="${i}">
+  <span class="idx">${pad(i)}</span>
+  <span class="name">${s.n}</span>
+  <span class="tag">${s.t}</span>
+</button>`).join('');
+
+const el={icon:document.getElementById('d-icon'),num:document.getElementById('d-num'),title:document.getElementById('d-title'),desc:document.getElementById('d-desc'),cat:document.getElementById('d-cat'),body:document.getElementById('d-body'),tpm:document.getElementById('d-tpm'),status:document.getElementById('d-status-txt')};
+let cur=-1, tpmTimer;
+function select(i){
+  if(i===cur) return; cur=i; const s=DATA[i];
+  document.querySelectorAll('.row').forEach(r=>r.classList.toggle('active',+r.dataset.i===i));
+  el.icon.innerHTML=svg(ic[s.i]);
+  el.num.textContent=pad(i)+' / 13';
+  el.title.textContent=s.n;
+  el.desc.textContent=s.d;
+  el.cat.textContent=s.t;
+  el.status.textContent='SERVICE ONLINE · '+s.t.toUpperCase();
+  el.body.classList.remove('swap'); void el.body.offsetWidth; el.body.classList.add('swap');
+  // animate threats/min counter
+  clearInterval(tpmTimer);
+  const target=120+Math.floor(Math.random()*900); let v=0;
+  const t0=performance.now(),dur=900;
+  tpmTimer=setInterval(()=>{
+    const p=Math.min((performance.now()-t0)/dur,1);
+    el.tpm.textContent=Math.round(target*(1-Math.pow(1-p,3))).toLocaleString();
+    if(p>=1) clearInterval(tpmTimer);
+  },30);
+}
+select(0);
+
+let auto=setInterval(()=>select((cur+1)%DATA.length),3200);
+function stopAuto(){clearInterval(auto);auto=null;}
+index.addEventListener('mouseover',e=>{const r=e.target.closest('.row');if(r){stopAuto();select(+r.dataset.i);}});
+index.addEventListener('click',e=>{const r=e.target.closest('.row');if(r){stopAuto();select(+r.dataset.i);}});
+
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// fallback (e.g. embedded in an iframe where IO may not fire)
+setTimeout(()=>{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));const s=document.createElement('style');s.textContent='.reveal{opacity:1!important;transform:none!important;transition:none!important}';document.head.appendChild(s);},900);
+</script>
+</body>
+</html>
