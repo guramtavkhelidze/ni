@@ -26,7 +26,7 @@
     },
     {
       id: 'fortra', name: 'Fortra', cat: 'Data Protection & Cybersecurity Solutions',
-      plate: { kind: 'img', src: 'vendor-logos/fortra.png', bg: '#006a56' },
+      plate: { kind: 'img', src: 'fortra.png', bg: '#006a56' },
       lead: 'Fortra წარმოადგენს კიბერუსაფრთხოების ფართო ეკოსისტემას, რომელიც მოიცავს მონაცემთა დაცვას, Managed File Transfer-ს, Email Security-ს, Threat Intelligence-სა და უსაფრთხოების ავტომატიზაციას.',
       desc: 'Fortra ეხმარება ორგანიზაციებს დაიცვან კრიტიკული ინფორმაცია, გააუმჯობესონ შესაბამისობა (Compliance) და შეამცირონ მონაცემთა გაჟონვისა და კიბერინციდენტების რისკები.',
       solutions: ['Data Protection', 'Managed File Transfer', 'Email Security', 'Threat Intelligence'],
@@ -35,7 +35,7 @@
     },
     {
       id: 'nozomi', name: 'Nozomi Networks', cat: 'OT & ICS Security',
-      plate: { kind: 'img', src: 'vendor-logos/nozomi.png', bg: '#ffffff' },
+      plate: { kind: 'img', src: 'nozomi.png', bg: '#ffffff' },
       lead: 'Nozomi Networks სპეციალიზდება სამრეწველო და კრიტიკული ინფრასტრუქტურის კიბერუსაფრთხოებაში. პლატფორმა უზრუნველყოფს OT, ICS და IoT გარემოების სრულ ხილვადობას, მონიტორინგსა და საფრთხეების აღმოჩენას.',
       desc: 'Nozomi განსაკუთრებით მნიშვნელოვანია ენერგეტიკის, წარმოების, წყლის, ტრანსპორტისა და სხვა კრიტიკული სექტორებისთვის, სადაც ოპერაციული ტექნოლოგიების უსაფრთხოება პირდაპირ უკავშირდება ბიზნესის უწყვეტობას.',
       solutions: ['OT Security', 'ICS Monitoring', 'IoT Visibility', 'Threat Detection'],
@@ -44,7 +44,7 @@
     },
     {
       id: 'opswat', name: 'OPSWAT', cat: 'Critical Infrastructure Protection',
-      plate: { kind: 'img', src: 'vendor-logos/opswat.png', bg: '#050f22' },
+      plate: { kind: 'img', src: 'opswat.png', bg: '#050f22' },
       lead: 'OPSWAT უზრუნველყოფს ორგანიზაციების დაცვას ფაილებზე დაფუძნებული საფრთხეების, მოწყობილობების რისკებისა და მონაცემთა გადაცემასთან დაკავშირებული კიბერსაფრთხეებისგან.',
       desc: 'კომპანიის ტექნოლოგიები ფართოდ გამოიყენება კრიტიკულ ინფრასტრუქტურაში, სადაც აუცილებელია მავნე ფაილების აღმოჩენა, მონაცემთა უსაფრთხო გაცვლა და ქსელში შემავალი მოწყობილობების კონტროლი.',
       solutions: ['File Threat Prevention', 'Secure Data Transfer', 'Device Control', 'CIP'],
@@ -53,7 +53,7 @@
     },
     {
       id: 'scw', name: 'Secure Code Warrior', cat: 'Application Security & Secure Development',
-      plate: { kind: 'img', src: 'vendor-logos/secure-code-warrior.png', bg: '#1d46b2' },
+      plate: { kind: 'img', src: 'secure-code-warrior.png', bg: '#1d46b2' },
       lead: 'Secure Code Warrior ეხმარება ორგანიზაციებს შექმნან უსაფრთხო პროგრამული უზრუნველყოფა დეველოპერების კიბერუსაფრთხოების უნარების გაუმჯობესების გზით.',
       desc: 'პლატფორმა უზრუნველყოფს ინტერაქტიულ ტრენინგებს, პრაქტიკულ სავარჯიშოებსა და უსაფრთხო კოდის განვითარების საუკეთესო პრაქტიკების დანერგვას.',
       solutions: ['Secure Code Training', 'Developer Upskilling', 'Hands-on Labs', 'AppSec'],
@@ -71,7 +71,7 @@
     },
     {
       id: 'paloalto', name: 'Palo Alto', cat: 'AI-Powered Cybersecurity Platform',
-      plate: { kind: 'img', src: 'vendor-logos/palo-alto.png', bg: '#030507' },
+      plate: { kind: 'img', src: 'palo-alto.png', bg: '#030507' },
       lead: 'Palo Alto Networks მსოფლიო ლიდერია თანამედროვე კიბერუსაფრთხოების სფეროში. კომპანიის გადაწყვეტილებები მოიცავს Network Security, Cloud Security, Security Operations, Zero Trust და AI-driven Threat Prevention ტექნოლოგიებს.',
       desc: 'Palo Alto Networks ეხმარება ორგანიზაციებს დაიცვან მთელი ციფრული ეკოსისტემა ერთიანი უსაფრთხოების პლატფორმის მეშვეობით.',
       solutions: ['Network Security', 'Cloud Security', 'Zero Trust', 'AI Threat Prevention'],
@@ -80,7 +80,7 @@
     },
     {
       id: 'sentinelone', name: 'SentinelOne', cat: 'Autonomous Endpoint Security',
-      plate: { kind: 'img', src: 'vendor-logos/sentinelone.png', bg: '#ffffff' },
+      plate: { kind: 'img', src: 'sentinelone.png', bg: '#ffffff' },
       lead: 'SentinelOne წარმოადგენს AI-ზე დაფუძნებულ XDR და Endpoint Security პლატფორმას, რომელიც ავტომატურად აღმოაჩენს, აანალიზებს და ბლოკავს თანამედროვე კიბერსაფრთხეებს.',
       desc: 'პლატფორმა განსაკუთრებით ეფექტურია ransomware შეტევების, malware-ისა და advanced persistent threat (APT) აქტივობების წინააღმდეგ.',
       solutions: ['XDR', 'Endpoint Protection', 'AI Detection', 'Ransomware Defense'],
@@ -89,7 +89,7 @@
     },
     {
       id: 'cyberark', name: 'CyberArk', cat: 'Identity Security & Privileged Access Management',
-      plate: { kind: 'img', src: 'vendor-logos/cyberark.png', bg: '#ffffff' },
+      plate: { kind: 'img', src: 'cyberark.png', bg: '#ffffff' },
       lead: 'CyberArk არის Privileged Access Management (PAM) და Identity Security მიმართულების გლობალური ლიდერი.',
       desc: 'კომპანიის გადაწყვეტილებები იცავს ადმინისტრატორულ ანგარიშებს, კრიტიკულ წვდომებსა და ორგანიზაციის ყველაზე მნიშვნელოვან ციფრულ აქტივებს. დღეს, როდესაც თავდამსხმელთა უმეტესობა სწორედ მომხმარებლის იდენტობებისა და წვდომების გატაცებას ცდილობს, CyberArk ერთ-ერთ ყველაზე მნიშვნელოვან უსაფრთხოების ფენას წარმოადგენს.',
       solutions: ['PAM', 'Identity Security', 'Privileged Access', 'Secrets Management'],
@@ -98,7 +98,7 @@
     },
     {
       id: 'energy', name: 'Energy Log Server', cat: 'Log Management & Security Monitoring',
-      plate: { kind: 'img', src: 'vendor-logos/energy-logserver.png', bg: '#000000' },
+      plate: { kind: 'img', src: 'energy-logserver.png', bg: '#000000' },
       lead: 'EventLog Analyzer წარმოადგენს ლოგების მართვისა და უსაფრთხოების მონიტორინგის პლატფორმას, რომელიც ორგანიზაციებს საშუალებას აძლევს ცენტრალიზებულად შეაგროვონ, გააანალიზონ და შეინახონ სისტემური მოვლენები.',
       desc: 'გადაწყვეტილება ეხმარება უსაფრთხოების გუნდებს სწრაფად აღმოაჩინონ საეჭვო აქტივობები, შეასრულონ შესაბამისობის მოთხოვნები (Compliance) და გააუმჯობესონ ინციდენტებზე რეაგირება.',
       solutions: ['Log Management', 'SIEM', 'Compliance', 'Incident Response'],
